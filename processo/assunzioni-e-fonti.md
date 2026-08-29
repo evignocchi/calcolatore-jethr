@@ -129,7 +129,11 @@ dimensione aziendale in un modo che non è deducibile dalla sola RAL.
 netto non è ovunque monotono in RAL (le soglie di legge creano piccoli salti
 all'ingiù, es. l'esenzione comunale di Milano). La bisezione converge entro
 un centesimo lontano dalle soglie; in loro prossimità il valore resta
-"circa", non un valore unico — dichiarato in pagina, non nascosto.
+"circa", non un valore unico. La pagina lo segnala attivamente: se la RAL
+trovata cade entro 300 € (di imponibile o di RAL, a seconda della soglia) da
+uno dei punti noti del motore diretto, mostra un avviso nel risultato, non
+solo nel dettaglio. L'input accetta anche un netto mensile (con la
+mensilità di riferimento), convertito in target annuale prima di risolvere.
 
 ### L'insight sul welfare esente
 

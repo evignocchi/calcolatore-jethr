@@ -53,9 +53,14 @@
   input[type=text]{width:100%;font-family:inherit;font-size:1.05rem;padding:11px 12px;
     border:1px solid #cfcec5;border-radius:9px;background:#fff;color:var(--text);}
   input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;}
-  .euro-input{position:relative;}
-  .euro-input span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);}
-  .euro-input input{padding-left:28px;}
+  .euro-input{display:flex;gap:8px;}
+  .euro-input-field{position:relative;flex:1;min-width:0;}
+  .euro-input-field span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);}
+  .euro-input-field input{padding-left:28px;width:100%;}
+  #mensilita-dip{flex:none;font-family:inherit;font-size:.85rem;padding:0 10px;border:1px solid #cfcec5;
+    border-radius:9px;background:#fff;color:var(--text);}
+  .seg-toggle-small{margin:8px 0 10px;display:inline-flex;}
+  .seg-toggle-small button{font-size:.78rem;padding:6px 12px;}
 
   button.cta{font-family:inherit;font-size:1rem;font-weight:700;padding:12px 20px;border-radius:9px;
     border:none;background:var(--text);color:#fff;cursor:pointer;width:100%;margin-top:14px;}
@@ -99,6 +104,20 @@
     border-radius:12px;padding:16px;font-size:.86rem;line-height:1.55;}
   .callout h4{margin:0 0 6px;font-size:.86rem;display:flex;align-items:center;gap:6px;color:var(--accent);}
   .callout svg{width:16px;height:16px;flex:none;}
+
+  .avviso-soglia{margin-top:14px;border:1px solid var(--stima-fg);background:var(--stima-bg);
+    color:var(--stima-fg);border-radius:12px;padding:12px 14px;font-size:.84rem;line-height:1.5;}
+
+  .btn-copia{margin-top:14px;font-family:inherit;font-size:.84rem;font-weight:600;
+    border:1px solid var(--border);background:#fff;color:var(--text);padding:9px 16px;
+    border-radius:9px;cursor:pointer;}
+  .btn-copia:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-copia[data-stato="copiato"]{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+
+  @media (prefers-reduced-motion: no-preference){
+    @keyframes pop-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .risultati.pop{animation:pop-in .35s cubic-bezier(.2,.8,.2,1);}
+  }
 
   .breakdown-head{display:flex;justify-content:space-between;align-items:center;gap:12px;
     flex-wrap:wrap;margin-bottom:14px;}
@@ -171,11 +190,11 @@
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" id="tab-azienda" aria-selected="true" data-modo="azienda">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"/><path d="M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"/><path d="M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1"/></svg>
       Per l'azienda — da una RAL
     </button>
     <button class="tab" role="tab" id="tab-dipendente" aria-selected="false" data-modo="dipendente">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
       Per il dipendente — da un netto desiderato
     </button>
   </div>
@@ -187,11 +206,22 @@
       </div>
       <div id="intro-dipendente" hidden>
         <label class="field-label" for="input-valore">Sei un dipendente? Scopri di quanto deve
-          essere la RAL per un netto annuale di</label>
+          essere la RAL per il netto che vuoi</label>
+        <div class="seg-toggle seg-toggle-small" id="toggle-periodo-dip">
+          <button type="button" data-periodo="annuale" aria-pressed="true">Netto annuale</button>
+          <button type="button" data-periodo="mensile" aria-pressed="false">Netto al mese</button>
+        </div>
       </div>
       <div class="euro-input">
-        <span>€</span>
-        <input type="text" id="input-valore" inputmode="decimal" placeholder="Es. 35.000" autocomplete="off">
+        <div class="euro-input-field">
+          <span>€</span>
+          <input type="text" id="input-valore" inputmode="decimal" placeholder="Es. 35.000" autocomplete="off">
+        </div>
+        <select id="mensilita-dip" hidden aria-label="Mensilità di riferimento per il netto al mese">
+          <option value="12">su 12 mensilità</option>
+          <option value="13" selected>su 13 mensilità</option>
+          <option value="14">su 14 mensilità</option>
+        </select>
       </div>
       <p class="hint" id="hint-input">Solo il numero, con o senza punti/virgole. Da 0 a 1.000.000 €.</p>
       <button type="submit" class="cta">Calcola</button>
@@ -218,7 +248,9 @@
       <div class="ris-box" id="box-netto"></div>
     </div>
     <div class="flow" id="flow-dipendente"></div>
+    <p class="avviso-soglia" id="avviso-soglia" hidden></p>
     <div class="callout" id="callout-welfare"></div>
+    <button type="button" class="btn-copia" id="btn-copia">Copia riepilogo</button>
   </div>
 
   <div class="card" id="breakdown" hidden style="margin-top:16px;">
@@ -235,8 +267,8 @@
     </div>
 
     <h3 class="sez-titolo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-      Costo azienda <span class="tag stima" data-info="stima" tabindex="0" role="button" style="margin-left:6px">stima <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      Costo azienda <span class="tag stima" data-info="stima" tabindex="0" role="button" style="margin-left:6px">stima <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>
     </h3>
     <table><thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
       <tbody id="voci-azienda"></tbody>
@@ -244,8 +276,8 @@
     </table>
 
     <h3 class="sez-titolo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-      Netto dipendente <span class="tag verificato" data-info="verificato" tabindex="0" role="button" style="margin-left:6px">calcolo verificato <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      Netto dipendente <span class="tag verificato" data-info="verificato" tabindex="0" role="button" style="margin-left:6px">calcolo verificato <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>
     </h3>
     <table><thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
       <tbody id="voci-dipendente"></tbody>
@@ -277,14 +309,14 @@
     </div>
   </details>
 
-  <footer class="page">Prototipo per il task Product Builder — Jet HR · agosto 2026</footer>
+  <footer class="page">Prototipo per il task Product Builder — Jet HR · regole 2026, fonti verificate il 29 agosto 2026</footer>
 </div>
 
 <dialog id="dialog-fonte">
   <div class="dialog-head">
     <h3 id="dialog-titolo"></h3>
     <button type="button" id="dialog-chiudi" aria-label="Chiudi">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
   <p class="dialog-sez-lab">Cosa dice la norma</p>
@@ -321,12 +353,22 @@
   };
 
   var ICONE = {
-    contributo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg>',
-    imposta: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h4"/></svg>',
-    integrazione: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11"/><path d="M4 9V6a2 2 0 0 1 2-2h1a2 2 0 0 1 0 4M20 9V6a2 2 0 0 0-2-2h-1a2 2 0 0 0 0 4M12 4v16"/></svg>'
+    contributo: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg>',
+    imposta: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h4"/></svg>',
+    integrazione: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11"/><path d="M4 9V6a2 2 0 0 1 2-2h1a2 2 0 0 1 0 4M20 9V6a2 2 0 0 0-2-2h-1a2 2 0 0 0 0 4M12 4v16"/></svg>'
   };
 
-  var S = { modo: 'azienda', vista: 'annuale', mensilita: 13, ultimo: null };
+  var S = { modo: 'azienda', vista: 'annuale', mensilita: 13, periodoDip: 'annuale', mensilitaDip: 13, ultimo: null };
+
+  // Soglie note del motore diretto (vedi processo/assunzioni-e-fonti.md):
+  // il calcolo inverso converge bene lontano da qui, "circa" nei paraggi.
+  var SOGLIE_IMPONIBILE = [15000, 20000, 23000, 25000, 28000, 32000, 35000, 40000, 50000];
+  var SOGLIE_RAL = [56224, 122295];
+  function vicinoSoglia(ral){
+    var imp = Motore.imponibile(ral);
+    return SOGLIE_IMPONIBILE.some(function(s){ return Math.abs(imp - s) < 300; }) ||
+      SOGLIE_RAL.some(function(s){ return Math.abs(ral - s) < 300; });
+  }
 
   // toFixed(2) su un numero come 454.98/12 può arrotondare per difetto per
   // imprecisione binaria (37.915 rappresentato come 37.91499...998). La
@@ -365,20 +407,42 @@
   var risultati = document.getElementById('risultati');
   var breakdown = document.getElementById('breakdown');
   var mensilitaSel = document.getElementById('mensilita');
+  var mensilitaDipSel = document.getElementById('mensilita-dip');
+
+  function placeholderInput(){
+    if (S.modo === 'azienda') return 'Es. 35.000';
+    return S.periodoDip === 'mensile' ? 'Es. 2.000' : 'Es. 26.000';
+  }
 
   document.querySelectorAll('.tab').forEach(function(btn){
     btn.addEventListener('click', function(){
       document.querySelectorAll('.tab').forEach(function(b){ b.setAttribute('aria-selected', 'false'); });
       btn.setAttribute('aria-selected', 'true');
       S.modo = btn.dataset.modo;
+      S.periodoDip = 'annuale';
+      document.querySelectorAll('#toggle-periodo-dip button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.periodo === 'annuale')); });
+      mensilitaDipSel.hidden = true;
       document.getElementById('intro-azienda').hidden = S.modo !== 'azienda';
       document.getElementById('intro-dipendente').hidden = S.modo !== 'dipendente';
-      campo.placeholder = S.modo === 'azienda' ? 'Es. 35.000' : 'Es. 26.000';
+      campo.placeholder = placeholderInput();
       boxErrore.hidden = true;
       risultati.hidden = true;
       breakdown.hidden = true;
       campo.value = '';
     });
+  });
+
+  document.querySelectorAll('#toggle-periodo-dip button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#toggle-periodo-dip button').forEach(function(b){ b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      S.periodoDip = btn.dataset.periodo;
+      mensilitaDipSel.hidden = S.periodoDip !== 'mensile';
+      campo.placeholder = placeholderInput();
+    });
+  });
+  mensilitaDipSel.addEventListener('change', function(){
+    S.mensilitaDip = parseInt(mensilitaDipSel.value, 10);
   });
 
   document.querySelectorAll('#toggle-vista button').forEach(function(btn){
@@ -589,7 +653,7 @@
         btn.type = 'button';
         btn.className = 'btn-info';
         btn.setAttribute('aria-label', 'Perché si applica: ' + v.label);
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg>';
+        btn.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg>';
         btn.addEventListener('click', function(){ apriSpiegazione(v, ctx); });
         s.appendChild(btn);
       }
@@ -638,16 +702,16 @@
     var deltaCostoWelfare = 1000 + Motore.inailIndicativo(1000) + Motore.tfrMaturando(1000);
     var el = document.getElementById('callout-welfare');
     el.hidden = false;
-    el.innerHTML = '<h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>Un\'idea di cost-saving</h4>' +
-      '1.000 € in più di RAL costano all\'azienda circa ' + eur(deltaCostoRal) + ' e arrivano al dipendente come circa ' + eur(deltaNettoRal) + ' netti. ' +
-      '1.000 € di welfare esente (L. 207/2024) costano invece circa ' + eur(deltaCostoWelfare) + ' e arrivano interi, 1.000 €, perché non sono tassati né contribuiti. ' +
-      'Stima semplificata, non una policy retributiva.';
+    el.innerHTML = '<h4>Welfare invece di RAL</h4>' +
+      '1.000 € in più di RAL costano all\'azienda circa ' + eur(deltaCostoRal) + ' e diventano circa ' + eur(deltaNettoRal) + ' netti per il dipendente. ' +
+      '1.000 € di welfare esente (L. 207/2024) costano invece circa ' + eur(deltaCostoWelfare) + ' e arrivano interi, perché non sono tassati né contribuiti. ' +
+      'Stima semplificata: non tiene conto di limiti annui o di quanto welfare l\'azienda offra già.';
   }
 
   function tagHtml(tipo){
     var label = tipo === 'stima' ? 'stima' : 'calcolo verificato';
     return '<span class="tag ' + tipo + '" data-info="' + tipo + '" tabindex="0" role="button">' + label +
-      ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>';
+      ' <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>';
   }
 
   function render(dati){
@@ -680,6 +744,14 @@
     flowBar(ralUsata, calc.contributi, imposteNette, calc.netto);
     welfareCallout(ralUsata);
 
+    var avviso = document.getElementById('avviso-soglia');
+    if (modo === 'dipendente' && vicinoSoglia(ralUsata)) {
+      avviso.hidden = false;
+      avviso.textContent = 'La RAL trovata cade vicino a una soglia di legge (per esempio l\'esenzione comunale o i confini del cuneo fiscale): a piccole variazioni del netto richiesto può corrispondere una RAL che si sposta più del previsto, non in proporzione.';
+    } else {
+      avviso.hidden = true;
+    }
+
     var vociAzienda = document.getElementById('voci-azienda');
     vociAzienda.innerHTML = '';
     var ralRiga = document.createElement('tr');
@@ -701,6 +773,40 @@
     breakdown.hidden = false;
   }
 
+  function costruisciRiepilogo(dati){
+    var calc = dati.calc, costo = dati.costo, ral = dati.ral;
+    var righe = [];
+    var mensilitaRif = S.vista === 'mensile' ? S.mensilita : 13;
+    righe.push(dati.modo === 'azienda' ? 'Costo aziendale e netto da una RAL di ' + eur(ral) : 'RAL necessaria per il netto richiesto');
+    righe.push('RAL: ' + eur(ral));
+    righe.push('Costo azienda (stima): ' + eur(costo.totale) + ' l\'anno');
+    righe.push('Netto dipendente (calcolo verificato): ' + eur(calc.netto) + ' l\'anno — ' + eur(calc.netto / mensilitaRif) + ' al mese su ' + mensilitaRif + ' mensilità');
+    righe.push('');
+    righe.push('Costo azienda, voce per voce:');
+    costo.voci.forEach(function(v){ righe.push('  ' + v.label + ': ' + eur(v.importo)); });
+    righe.push('');
+    righe.push('Netto dipendente, voce per voce:');
+    calc.voci.forEach(function(v){ righe.push('  ' + v.label + ': ' + eur(v.importo)); });
+    righe.push('');
+    righe.push('Profilo: impiegato privato, tempo indeterminato, Milano, nessun carico di famiglia, nessuna agevolazione.');
+    righe.push('Prototipo — task Product Builder, Jet HR. Regole 2026, fonti verificate il 29 agosto 2026.');
+    return righe.join('\n');
+  }
+
+  var btnCopia = document.getElementById('btn-copia');
+  btnCopia.addEventListener('click', function(){
+    if (!S.ultimo) return;
+    var testo = costruisciRiepilogo(S.ultimo);
+    navigator.clipboard.writeText(testo).then(function(){
+      btnCopia.textContent = 'Copiato';
+      btnCopia.dataset.stato = 'copiato';
+      setTimeout(function(){ btnCopia.textContent = 'Copia riepilogo'; btnCopia.removeAttribute('data-stato'); }, 1800);
+    }).catch(function(){
+      btnCopia.textContent = 'Non riesco a copiare — seleziona a mano';
+      setTimeout(function(){ btnCopia.textContent = 'Copia riepilogo'; }, 2200);
+    });
+  });
+
   form.addEventListener('submit', function(ev){
     ev.preventDefault();
     var val = parseValore(campo.value);
@@ -714,7 +820,8 @@
       if (calc.errore) { mostraErrore(calc.errore); return; }
       ral = val;
     } else {
-      var inv = Motore.ralPerNetto(val);
+      var targetAnnuale = S.periodoDip === 'mensile' ? val * S.mensilitaDip : val;
+      var inv = Motore.ralPerNetto(targetAnnuale);
       if (inv.errore) { mostraErrore(inv.errore); return; }
       ral = inv.ral;
       calc = Motore.calcola(ral);
@@ -722,6 +829,9 @@
     var costo = Motore.costoAzienda(ral);
     boxErrore.hidden = true;
     render({ calc: calc, costo: costo, modo: S.modo, ral: ral });
+
+    risultati.classList.remove('pop'); void risultati.offsetWidth; risultati.classList.add('pop');
+    risultati.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   });
 
   var qs = new URLSearchParams(location.search);
