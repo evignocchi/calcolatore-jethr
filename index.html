@@ -79,6 +79,10 @@
     text-transform:uppercase;letter-spacing:.03em;padding:3px 9px;border-radius:999px;margin-bottom:10px;}
   .tag.verificato{background:var(--accent-bg);color:var(--accent);}
   .tag.stima{background:var(--stima-bg);color:var(--stima-fg);}
+  .tag[data-info]{cursor:pointer;border:none;font-family:inherit;}
+  .tag[data-info] svg{width:12px;height:12px;opacity:.8;}
+  .tag[data-info]:hover,.tag[data-info]:focus-visible{box-shadow:0 0 0 2px currentColor inset;}
+  .tag[data-info]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   .ris-box .num{font-size:1.9rem;font-weight:800;line-height:1.1;word-break:break-word;}
   .ris-box .lab{font-size:.82rem;color:var(--muted);margin-top:3px;}
   .ris-box.primario{grid-column:1 / -1;}
@@ -130,10 +134,11 @@
   footer.page{color:var(--muted);font-size:.78rem;text-align:center;margin:28px 0 8px;}
   footer.page a{color:inherit}
 
-  .btn-info{border:none;background:none;padding:0;margin-left:5px;cursor:pointer;color:var(--muted);
-    display:inline-flex;vertical-align:middle;border-radius:50%;}
-  .btn-info svg{width:14px;height:14px;}
-  .btn-info:hover{color:var(--accent);}
+  .btn-info{border:1px solid var(--border);background:var(--bg);padding:3px;margin-left:6px;
+    cursor:pointer;color:var(--muted);display:inline-flex;vertical-align:middle;border-radius:50%;}
+  .btn-info svg{width:13px;height:13px;}
+  .btn-info:hover,.btn-info:focus-visible{color:var(--accent);border-color:var(--accent);background:var(--accent-bg);}
+  .btn-info:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
 
   dialog#dialog-fonte{border:none;border-radius:16px;padding:22px;max-width:440px;width:calc(100% - 32px);
     color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.18);}
@@ -231,7 +236,7 @@
 
     <h3 class="sez-titolo">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-      Costo azienda <span class="tag stima" style="margin-left:6px">stima</span>
+      Costo azienda <span class="tag stima" data-info="stima" tabindex="0" role="button" style="margin-left:6px">stima <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>
     </h3>
     <table><thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
       <tbody id="voci-azienda"></tbody>
@@ -240,7 +245,7 @@
 
     <h3 class="sez-titolo">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-      Netto dipendente <span class="tag verificato" style="margin-left:6px">calcolo verificato</span>
+      Netto dipendente <span class="tag verificato" data-info="verificato" tabindex="0" role="button" style="margin-left:6px">calcolo verificato <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>
     </h3>
     <table><thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
       <tbody id="voci-dipendente"></tbody>
@@ -290,8 +295,10 @@
     <p class="dialog-sez-lab">Da considerare</p>
     <p id="dialog-considerazione"></p>
   </div>
-  <p class="dialog-sez-lab">Fonte</p>
-  <p id="dialog-fonte-link" class="dialog-link"></p>
+  <div id="dialog-fonte-wrap">
+    <p class="dialog-sez-lab">Fonte</p>
+    <p id="dialog-fonte-link" class="dialog-link"></p>
+  </div>
 </dialog>
 
 <script src="motore.js"></script>
@@ -493,14 +500,27 @@
     }
   };
 
+  // Spiegazioni generiche dietro i tag "stima" / "calcolo verificato" —
+  // non legate a una voce, ma alla differenza di affidabilità fra le due
+  // metà della pagina.
+  var GENERICI = {
+    stima: {
+      titolo: 'Perché il costo azienda è una stima',
+      norma: 'Il costo azienda è una stima, non un calcolo verificato come il netto dipendente.',
+      meccanismo: 'Quattro delle cinque voci (contributi IVS datore, NASpI, Fondo Garanzia TFR, TFR maturando) sono aliquote nazionali stabili. L\'INAIL, però, usa un tasso indicativo (0,50%) al posto del tasso reale della lavorazione della tua azienda, che può variare da 0,4% a oltre l\'8% a seconda del settore.',
+      considerazione: 'Se questo numero deve guidare un budget reale, verifica il tasso INAIL effettivo della tua azienda: la differenza può valere centinaia o migliaia di euro l\'anno. Apri l\'icona (i) sulla riga INAIL per i dettagli.'
+    },
+    verificato: {
+      titolo: 'Perché il netto dipendente è un calcolo verificato',
+      norma: 'Ogni voce del netto è derivata da fonti primarie e ricontrollata a mano contro un caso guida calcolato passo per passo (RAL 35.000 € → netto 26.032,17 €).',
+      meccanismo: 'IRPEF, detrazioni, addizionale regionale e comunale sono regole nazionali o comunali, uguali per ogni impiegato privato con questo profilo — non dipendono dal settore o dalle scelte dell\'azienda, a differenza del costo azienda.',
+      considerazione: 'Resta comunque un prototipo, non un cedolino: nessun consulente del lavoro l\'ha validato, e vale solo per il profilo dichiarato (Milano, tempo indeterminato, nessun carico di famiglia, nessuna agevolazione).'
+    }
+  };
+
   var dialogFonte = document.getElementById('dialog-fonte');
-  function apriSpiegazione(v, ctx){
-    var gen = SPIEGAZIONI[v.id];
-    var contenuto = gen ? gen(ctx) : null;
-    document.getElementById('dialog-titolo').textContent = v.label;
-    var fonte = FONTI[v.fonte];
-    document.getElementById('dialog-fonte-link').innerHTML = fonte && fonte[1]
-      ? '<a href="' + fonte[1] + '" target="_blank" rel="noopener">' + fonte[0] + '</a>' : (fonte ? fonte[0] : '');
+  function riempiDialog(titolo, contenuto, fonteHtml){
+    document.getElementById('dialog-titolo').textContent = titolo;
     document.getElementById('dialog-norma').textContent = contenuto ? contenuto.norma : '';
     document.getElementById('dialog-meccanismo').textContent = contenuto ? contenuto.meccanismo : '';
     var consEl = document.getElementById('dialog-considerazione');
@@ -510,10 +530,42 @@
     } else {
       consEl.parentElement.hidden = true;
     }
+    var fonteWrap = document.getElementById('dialog-fonte-wrap');
+    if (fonteHtml) {
+      document.getElementById('dialog-fonte-link').innerHTML = fonteHtml;
+      fonteWrap.hidden = false;
+    } else {
+      fonteWrap.hidden = true;
+    }
     dialogFonte.showModal();
+  }
+  function apriSpiegazione(v, ctx){
+    var gen = SPIEGAZIONI[v.id];
+    var contenuto = gen ? gen(ctx) : null;
+    var fonte = FONTI[v.fonte];
+    var fonteHtml = fonte ? (fonte[1] ? '<a href="' + fonte[1] + '" target="_blank" rel="noopener">' + fonte[0] + '</a>' : fonte[0]) : '';
+    riempiDialog(v.label, contenuto, fonteHtml);
+  }
+  function apriGenerico(tipo){
+    var g = GENERICI[tipo];
+    if (!g) return;
+    riempiDialog(g.titolo, g, '');
   }
   document.getElementById('dialog-chiudi').addEventListener('click', function(){ dialogFonte.close(); });
   dialogFonte.addEventListener('click', function(ev){ if (ev.target === dialogFonte) dialogFonte.close(); });
+
+  // Delega: i tag "stima"/"calcolo verificato" vengono ricreati a ogni
+  // render() con innerHTML, quindi un listener per elemento non
+  // sopravviverebbe — si intercetta il click sul contenitore.
+  document.addEventListener('click', function(ev){
+    var t = ev.target.closest('.tag[data-info]');
+    if (t) apriGenerico(t.dataset.info);
+  });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    var t = ev.target.closest('.tag[data-info]');
+    if (t) { ev.preventDefault(); apriGenerico(t.dataset.info); }
+  });
 
   function rigaVoce(v, tbody, ctx){
     var tr = document.createElement('tr');
@@ -592,6 +644,12 @@
       'Stima semplificata, non una policy retributiva.';
   }
 
+  function tagHtml(tipo){
+    var label = tipo === 'stima' ? 'stima' : 'calcolo verificato';
+    return '<span class="tag ' + tipo + '" data-info="' + tipo + '" tabindex="0" role="button">' + label +
+      ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>';
+  }
+
   function render(dati){
     S.ultimo = dati;
     var calc = dati.calc, costo = dati.costo, modo = dati.modo, ralUsata = dati.ral;
@@ -599,12 +657,12 @@
 
     document.getElementById('box-primario').innerHTML =
       (modo === 'azienda'
-        ? '<span class="tag stima">stima</span><div class="num">' + eur(costo.totale / d) + '</div><div class="lab">costo azienda' + (S.vista==='mensile' ? ' (media '+S.mensilita+' mensilità)' : ' annuale') + '</div>'
-        : '<span class="tag verificato">calcolo verificato</span><div class="num">' + eur(ralUsata) + '</div><div class="lab">RAL necessaria per il netto richiesto</div>');
+        ? tagHtml('stima') + '<div class="num">' + eur(costo.totale / d) + '</div><div class="lab">costo azienda' + (S.vista==='mensile' ? ' (media '+S.mensilita+' mensilità)' : ' annuale') + '</div>'
+        : tagHtml('verificato') + '<div class="num">' + eur(ralUsata) + '</div><div class="lab">RAL necessaria per il netto richiesto</div>');
     document.getElementById('box-costo').innerHTML =
-      '<span class="tag stima">stima</span><div class="num" style="font-size:1.5rem">' + eur(costo.totale / d) + '</div><div class="lab">costo azienda' + (S.vista==='mensile' ? ' mensile' : ' annuale') + '</div>';
+      tagHtml('stima') + '<div class="num" style="font-size:1.5rem">' + eur(costo.totale / d) + '</div><div class="lab">costo azienda' + (S.vista==='mensile' ? ' mensile' : ' annuale') + '</div>';
     document.getElementById('box-netto').innerHTML =
-      '<span class="tag verificato">calcolo verificato</span><div class="num" style="font-size:1.5rem">' + eur(calc.netto / d) + '</div><div class="lab">netto dipendente' + (S.vista==='mensile' ? ' mensile' : ' annuale') + '</div>';
+      tagHtml('verificato') + '<div class="num" style="font-size:1.5rem">' + eur(calc.netto / d) + '</div><div class="lab">netto dipendente' + (S.vista==='mensile' ? ' mensile' : ' annuale') + '</div>';
 
     var boxCosto = document.getElementById('box-costo'), boxNetto = document.getElementById('box-netto');
     if (modo === 'azienda') {
