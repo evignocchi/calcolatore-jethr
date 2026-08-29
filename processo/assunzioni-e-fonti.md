@@ -90,8 +90,52 @@ ricalcolato a parte — così la tabella mostrata in pagina chiude sempre.
 
 ## Mensilità
 
-Il brief chiede "netto annuale e mensile". Il prototipo mostra la **media su
-13 mensilità** come valore principale (convenzione più comune per un impiegato
-privato) e la media su 12 come alternativa, dichiarando esplicitamente che è
-una media e non l'importo del singolo cedolino — la tredicesima non gode delle
-stesse detrazioni mensili e il conguaglio annuale riequilibra le differenze.
+Il brief chiede "netto annuale e mensile". Il prototipo mostra la media su
+12, 13 o 14 mensilità a scelta, dichiarando esplicitamente che è una media e
+non l'importo del singolo cedolino — la tredicesima non gode delle stesse
+detrazioni mensili e il conguaglio annuale riequilibra le differenze. La
+quattordicesima non spetta a ogni CCNL: mostrarla come opzione non significa
+dichiarare che spetta nel caso base — è una divisione di presentazione dello
+stesso netto annuale, non un ricalcolo.
+
+## Estensioni oltre il perimetro del brief
+
+Il brief chiede RAL → netto dipendente. Due estensioni sono state aggiunte
+dopo, esplicitamente fuori dal perimetro minimo, e vanno lette con un livello
+di fiducia diverso dal resto:
+
+### Costo azienda — stima, non calcolo verificato
+
+Il netto dipendente è uniforme per ogni impiegato privato: stesse regole
+IRPEF, stesse detrazioni, indipendentemente dal settore. Il costo azienda no:
+dipende da variabili che la RAL da sola non contiene.
+
+| Voce | Aliquota | Solidità |
+|---|---:|---|
+| Contributi IVS datore | 23,81% (33% totale − 9,19% lavoratore) | Stessa fonte già verificata (INPS, circolare 101/2024) |
+| NASpI | 1,31% | Aliquota ordinaria stabile dal 2013 (L. 92/2012, art. 2 c. 25) |
+| Fondo Garanzia TFR | 0,20% | INPS — scheda di servizio dedicata |
+| TFR maturando | 6,91% (RAL/13,5 = 7,41%, meno lo 0,5% versato all'INPS) | Confermato dal blog di Jet HR stesso, incrociato con un manuale tecnico di payroll |
+| **INAIL** | **0,50%, tasso indicativo** | **Non verificabile dalla sola RAL**: il tasso reale dipende dalla "voce di tariffa" della lavorazione dell'azienda (da 0,4% a oltre 8%), pubblicata da INAIL per singola azienda, non per mansione |
+
+Per questo il costo azienda è marcato in pagina come **stima**, distinto dal
+netto dipendente marcato come **calcolo verificato**. Esclusi esplicitamente:
+CIGO/CIGS e fondi di solidarietà bilaterali, che dipendono da settore e
+dimensione aziendale in un modo che non è deducibile dalla sola RAL.
+
+### Calcolo inverso (netto → RAL)
+
+`ralPerNetto()` risolve per bisezione: non c'è una formula chiusa perché il
+netto non è ovunque monotono in RAL (le soglie di legge creano piccoli salti
+all'ingiù, es. l'esenzione comunale di Milano). La bisezione converge entro
+un centesimo lontano dalle soglie; in loro prossimità il valore resta
+"circa", non un valore unico — dichiarato in pagina, non nascosto.
+
+### L'insight sul welfare esente
+
+Un confronto, non un calcolo verificato: quanto costa all'azienda e quanto
+arriva al dipendente scegliendo 1.000 € di welfare esente (L. 207/2024,
+esente sia fiscalmente sia contributivamente) invece di 1.000 € di RAL in
+più. Sul lato costo azienda, INAIL e TFR restano inclusi per prudenza — la
+loro esenzione sul welfare non è verificata in questo prototipo, quindi il
+risparmio mostrato è una stima conservativa, non un limite superiore.

@@ -1,19 +1,24 @@
-# Dove va la tua RAL — netto 2026
+# Calcola il costo aziendale e il netto di un dipendente dalla RAL
 
-Prototipo per il task Product Builder di Jet HR: da una RAL, il netto annuale
-e mensile che percepisce il dipendente, e ogni voce trattenuta al lordo lungo
-la strada.
+Prototipo per il task Product Builder di Jet HR. Due direzioni sullo stesso
+motore: **da una RAL** il costo per l'azienda e il netto per il dipendente,
+voce per voce; **da un netto desiderato** la RAL necessaria a ottenerlo.
 
 **Caso coperto**: impiegato del settore privato, tempo indeterminato,
 residente a Milano, anno intero, nessuna agevolazione — le semplificazioni
-suggerite dal task stesso. Il resto del dominio (altri comuni, CCNL, nucleo
-familiare, costo azienda) è esplicitamente fuori perimetro; il perché è in
+suggerite dal task stesso. Il netto dipendente è un **calcolo verificato**
+(fonti incrociate, esempio ricalcolato a mano). Il costo azienda è una
+**stima** dichiarata: l'INAIL usa un tasso indicativo, non quello reale della
+lavorazione dell'azienda. Il resto del dominio (altri comuni, CCNL, nucleo
+familiare) resta fuori perimetro; il perché è in
 [`processo/assunzioni-e-fonti.md`](processo/assunzioni-e-fonti.md).
 
 ## Come si apre
 
-Doppio clic su `index.html` — nessuna dipendenza, nessun passo di build,
-funziona anche offline. `motore.js` deve stare nella stessa cartella.
+Doppio clic su `index.html` — nessuna dipendenza, nessun passo di build.
+`motore.js` deve stare nella stessa cartella. La pagina carica il font Wix
+Madefor Display da Google Fonts; senza rete usa il font di sistema, il resto
+funziona lo stesso.
 
 ## Come si verificano i numeri
 

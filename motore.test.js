@@ -93,3 +93,37 @@ test('input non validi vengono rifiutati con un messaggio, non con un numero', (
   assert.ok(M.calcola(1000001).errore, 'oltre il tetto dichiarato deve dare errore');
   assert.ok(!M.calcola(1000000).errore, 'il tetto stesso, 1.000.000, deve essere accettato');
 });
+
+test('costo azienda: RAL 50.000 -> 66.365 € (contributi 23,81% + NASpI + Fondo Garanzia TFR + INAIL indicativo + TFR)', () => {
+  const c = M.costoAzienda(50000);
+  assert.equal(c.voci.find(v => v.id === 'contrDatore').importo, 11905);
+  assert.equal(c.voci.find(v => v.id === 'naspi').importo, 655);
+  assert.equal(c.voci.find(v => v.id === 'fondoGaranzia').importo, 100);
+  assert.equal(c.voci.find(v => v.id === 'tfr').importo, 3455);
+  assert.equal(c.totale, 66365);
+  const daVoci = M.centesimo(c.voci.reduce((s, v) => s + v.importo, c.ral));
+  assert.equal(daVoci, c.totale, 'la somma delle voci deve ricostruire il totale dichiarato');
+});
+
+test('costo azienda: contributi datore rispettano lo stesso massimale contributivo del lavoratore', () => {
+  const c1 = M.contributiDatore(130000);
+  const c2 = M.contributiDatore(400000);
+  assert.equal(c1, c2, 'sopra 122.295 € i contributi datore non devono più salire, come quelli del lavoratore');
+});
+
+test('calcolo inverso: ralPerNetto è la funzione inversa di calcola() entro un centesimo', () => {
+  for (const target of [1000, 15000, 20032.17, 26032.17, 60000, 200000]) {
+    const inv = M.ralPerNetto(target);
+    assert.ok(!inv.errore, `netto ${target} dovrebbe essere raggiungibile`);
+    vicino(inv.netto, target, 0.02);
+    // la RAL trovata, ripassata in avanti, deve dare lo stesso netto
+    const forward = M.calcola(inv.ral);
+    assert.equal(forward.netto, inv.netto);
+  }
+});
+
+test('calcolo inverso: netto 0 -> RAL 0, netto oltre il massimo copribile viene rifiutato', () => {
+  assert.equal(M.ralPerNetto(0).ral, 0);
+  const nettoMax = M.calcola(M.RAL_MASSIMA).netto;
+  assert.ok(M.ralPerNetto(nettoMax + 1).errore, 'un netto irraggiungibile entro 1.000.000 di RAL deve dare errore, non un numero a caso');
+});

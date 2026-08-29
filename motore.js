@@ -14,14 +14,20 @@
     cuneo: { sogliaBonus: 20000, sogliaUltFissa: 32000, sogliaUltZero: 40000, ultImporto: 1000 },
     trattIntegrativo: { sogliaReddito: 15000, importo: 1200, scarto: 75 },
     lombardia: { scaglioni: [[15000, 0.0123], [28000, 0.0158], [50000, 0.0172], [Infinity, 0.0173]] },
-    milano: { esenzioneFinoA: 23000, aliquota: 0.008 }
+    milano: { esenzioneFinoA: 23000, aliquota: 0.008 },
+    // Costo azienda: le prime quattro voci sono aliquote nazionali stabili;
+    // INAIL è l'eccezione, un tasso indicativo dichiarato (vedi
+    // processo/assunzioni-e-fonti.md), non uno dei tassi ufficiali di
+    // tariffa, che dipendono dalla lavorazione dell'azienda, non dalla RAL.
+    costoAzienda: { ivsDatore: 0.2381, naspi: 0.0131, fondoGaranziaTfr: 0.0020, inailIndicativo: 0.0050, tfr: 0.0691 }
   };
 
   // Arrotondamento commerciale al centesimo. +1e-9 evita che errori di
   // rappresentazione binaria (es. 1.005 memorizzato come 1.00499...) tronchino
   // verso il basso invece di arrotondare a mezzo in su.
   function centesimo(x) {
-    return Math.round((x + 1e-9) * 100) / 100;
+    var segno = x < 0 ? -1 : 1;
+    return segno * Math.round((Math.abs(x) + 1e-9) * 100) / 100;
   }
 
   // L'art. 13 TUIR impone il troncamento a quattro cifre decimali sui
@@ -178,8 +184,69 @@
     };
   }
 
+  // Costo azienda: stima, non calcolo verificato come il netto dipendente.
+  // Le prime quattro voci sono aliquote nazionali stabili; l'INAIL è un tasso
+  // indicativo (vedi K.costoAzienda.inailIndicativo) perché il tasso reale
+  // dipende dalla lavorazione dell'azienda, non deducibile dalla sola RAL.
+  function contributiDatore(ral) { return centesimo(Math.min(ral, K.inps.massimale) * K.costoAzienda.ivsDatore); }
+  function naspi(ral) { return centesimo(ral * K.costoAzienda.naspi); }
+  function fondoGaranziaTfr(ral) { return centesimo(ral * K.costoAzienda.fondoGaranziaTfr); }
+  function inailIndicativo(ral) { return centesimo(ral * K.costoAzienda.inailIndicativo); }
+  // RAL/13,5 = 7,41% di accantonamento lordo, meno lo 0,5% versato
+  // all'INPS (Fondo Adeguamento Pensioni): 6,91% netto. Fonte: blog Jet HR
+  // "TFR in busta paga", incrociata con un manuale tecnico di payroll.
+  function tfrMaturando(ral) { return centesimo(ral * K.costoAzienda.tfr); }
+
+  function costoAzienda(ralInput) {
+    if (typeof ralInput !== 'number' || !isFinite(ralInput) || ralInput < 0 || ralInput > RAL_MASSIMA) {
+      return { errore: 'RAL non valida.' };
+    }
+    var ral = ralInput;
+    var voci = [
+      { id: 'contrDatore', label: 'Contributi INPS a carico azienda (23,81%)', importo: contributiDatore(ral), fonte: 'inps101' },
+      { id: 'naspi', label: 'NASpI (1,31%)', importo: naspi(ral), fonte: 'naspi' },
+      { id: 'fondoGaranzia', label: 'Fondo Garanzia TFR (0,20%)', importo: fondoGaranziaTfr(ral), fonte: 'fgtfr' },
+      { id: 'inail', label: 'INAIL (tasso indicativo 0,50%)', importo: inailIndicativo(ral), fonte: 'inail' },
+      { id: 'tfr', label: 'TFR maturando (6,91%)', importo: tfrMaturando(ral), fonte: 'tfr' }
+    ];
+    var totale = centesimo(voci.reduce(function (s, v) { return s + v.importo; }, ral));
+    return { ral: ral, voci: voci, totale: totale };
+  }
+
+  // Calcolo inverso: da un netto annuale desiderato, la RAL che lo produce.
+  // Il netto non è ovunque monotono in RAL (le soglie del motore diretto
+  // creano piccoli salti all'ingiù): la bisezione converge correttamente
+  // quasi ovunque, ma vicino a una soglia il risultato è "circa", non un
+  // valore unico. Lo dichiariamo in UI, non solo qui.
+  function ralPerNetto(nettoTarget) {
+    if (typeof nettoTarget !== 'number' || !isFinite(nettoTarget) || nettoTarget < 0) {
+      return { errore: 'Netto non valido. Inserisci un numero maggiore o uguale a zero.' };
+    }
+    var nettoMax = calcola(RAL_MASSIMA).netto;
+    if (nettoTarget > nettoMax) {
+      return { errore: 'Netto troppo alto per il tetto di 1.000.000 € di RAL coperto dal calcolatore.' };
+    }
+    var basso = 0, alto = RAL_MASSIMA;
+    for (var i = 0; i < 60; i++) {
+      var meta = (basso + alto) / 2;
+      var r = calcola(meta);
+      if (r.netto < nettoTarget) basso = meta; else alto = meta;
+      if (alto - basso < 0.005) break;
+    }
+    var ral = centesimo((basso + alto) / 2);
+    var risultato = calcola(ral);
+    return { ral: ral, netto: risultato.netto, scarto: centesimo(risultato.netto - nettoTarget) };
+  }
+
   var API = {
     calcola: calcola,
+    costoAzienda: costoAzienda,
+    ralPerNetto: ralPerNetto,
+    contributiDatore: contributiDatore,
+    naspi: naspi,
+    fondoGaranziaTfr: fondoGaranziaTfr,
+    inailIndicativo: inailIndicativo,
+    tfrMaturando: tfrMaturando,
     contributiIvs: contributiIvs,
     contributoAggiuntivo: contributoAggiuntivo,
     imponibile: imponibile,

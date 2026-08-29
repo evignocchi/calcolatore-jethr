@@ -3,126 +3,251 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dove va la tua RAL — netto 2026</title>
+<title>Calcola il costo aziendale e il netto di un dipendente dalla RAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f7f7f5; --fg:#1a1a1a; --muted:#5b5b5b; --card:#ffffff;
-    --line:#e2e0db; --accent:#0b6b4f; --accent-bg:#eaf4ef;
-    --neg:#8a3b2b; --pos:#0b6b4f;
+    --bg:#F5F5F0; --card:#ffffff; --border:#E3E2DA; --text:#11150A; --muted:#68675F;
+    --accent:#0E6B52; --accent-bg:#E8F2EC; --neg:#8A3B2B; --neg-bg:#F7EDEA;
+    --stima-bg:#FBF3E3; --stima-fg:#8A5A00;
+    --radius:16px;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    overflow-x:hidden;}
-  body{padding:16px;max-width:720px;margin:0 auto;}
-  h1{font-size:1.4rem;margin:0 0 4px;}
-  .sub{color:var(--muted);font-size:.92rem;margin:0 0 20px;line-height:1.4;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
-    padding:18px;margin-bottom:16px;}
-  label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px;}
-  .input-row{display:flex;gap:10px;flex-wrap:wrap;}
-  input[type=text]{flex:1;min-width:0;font-size:1.1rem;padding:10px 12px;
-    border:1px solid #c9c7c0;border-radius:8px;background:#fff;color:var(--fg);}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);overflow-x:hidden;}
+  body{font-family:'Wix Madefor Display',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:15px; line-height:1.5;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 16px 40px;}
+
+  header.top{border-bottom:1px solid var(--border);background:#fff;margin-bottom:28px;}
+  .top-inner{max-width:960px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;}
+  .brand .mark{width:28px;height:28px;border-radius:7px;background:var(--text);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex:none;}
+  .top-tag{font-size:.78rem;color:var(--muted);}
+
+  h1{font-size:32px;font-weight:700;color:var(--text);margin:0 0 16px;line-height:1.15;}
+  p.sub{color:var(--muted);font-size:.95rem;line-height:1.55;margin:0 0 24px;max-width:640px;}
+
+  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .tab{font-family:inherit;font-size:.88rem;font-weight:600;padding:9px 16px;border-radius:999px;
+    border:1px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;
+    display:flex;align-items:center;gap:6px;}
+  .tab[aria-selected="true"]{background:var(--text);color:#fff;border-color:var(--text);}
+  .tab svg{width:15px;height:15px;flex:none;}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:0;}
+  @media(min-width:760px){ .grid{grid-template-columns:1fr 1fr;} }
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;}
+  .panel-card{display:grid;grid-template-columns:1fr;}
+  @media(min-width:760px){ .panel-card{grid-template-columns:1fr 1fr;padding:0;} }
+  .panel-col{padding:22px;}
+  .panel-col + .panel-col{border-top:1px solid var(--border);}
+  @media(min-width:760px){ .panel-col + .panel-col{border-top:none;border-left:1px solid var(--border);} }
+
+  label.field-label{display:block;font-size:.76rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:.03em;color:var(--muted);margin-bottom:8px;}
+  input[type=text]{width:100%;font-family:inherit;font-size:1.05rem;padding:11px 12px;
+    border:1px solid #cfcec5;border-radius:9px;background:#fff;color:var(--text);}
   input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;}
-  button{font-size:1rem;font-weight:600;padding:10px 18px;border-radius:8px;
-    border:none;background:var(--accent);color:#fff;cursor:pointer;}
-  button:hover{opacity:.92}
-  .hint{color:var(--muted);font-size:.82rem;margin-top:6px;}
-  .errore{color:var(--neg);font-size:.9rem;margin-top:8px;font-weight:600;}
+  .euro-input{position:relative;}
+  .euro-input span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);}
+  .euro-input input{padding-left:28px;}
+
+  button.cta{font-family:inherit;font-size:1rem;font-weight:700;padding:12px 20px;border-radius:9px;
+    border:none;background:var(--text);color:#fff;cursor:pointer;width:100%;margin-top:14px;}
+  button.cta:hover{opacity:.9}
+  .hint{color:var(--muted);font-size:.78rem;margin-top:8px;}
+  .errore{color:var(--neg);font-size:.86rem;margin-top:10px;font-weight:600;}
   [hidden]{display:none!important}
 
-  .risultato-netto{text-align:center;padding:8px 0 4px;}
-  .risultato-netto .grande{font-size:2.4rem;font-weight:800;color:var(--accent);
-    line-height:1.1;word-break:break-word;}
-  .risultato-netto .label{color:var(--muted);font-size:.85rem;margin-top:2px;}
-  .mensilita{display:flex;justify-content:center;gap:22px;margin-top:14px;
-    flex-wrap:wrap;text-align:center;}
-  .mensilita div span{display:block;}
-  .mensilita .val{font-size:1.15rem;font-weight:700;}
-  .mensilita .lab{font-size:.78rem;color:var(--muted);}
+  .anagrafica dl{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin:0;}
+  .anagrafica dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);
+    margin-bottom:2px;}
+  .anagrafica dd{margin:0;font-weight:600;font-size:.92rem;}
+  .anagrafica .nota{font-size:.78rem;color:var(--muted);margin:14px 0 0;line-height:1.5;}
+  .anagrafica .nota a{color:var(--muted);}
 
-  table{width:100%;border-collapse:collapse;font-size:.92rem;}
-  th,td{text-align:left;padding:8px 4px;border-bottom:1px solid var(--line);
-    vertical-align:top;}
-  th{font-size:.78rem;color:var(--muted);font-weight:600;text-transform:uppercase;
-    letter-spacing:.02em;}
-  td.importo{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;}
-  .neg{color:var(--neg);}
-  .pos{color:var(--pos);}
-  .fonte{display:block;font-size:.76rem;color:var(--muted);margin-top:2px;}
+  .risultati{margin-top:20px;}
+  .ris-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+  @media(min-width:600px){ .ris-grid{grid-template-columns:1fr 1fr;} }
+  .ris-box{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fff;}
+  .ris-box .tag{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.03em;padding:3px 9px;border-radius:999px;margin-bottom:10px;}
+  .tag.verificato{background:var(--accent-bg);color:var(--accent);}
+  .tag.stima{background:var(--stima-bg);color:var(--stima-fg);}
+  .ris-box .num{font-size:1.9rem;font-weight:800;line-height:1.1;word-break:break-word;}
+  .ris-box .lab{font-size:.82rem;color:var(--muted);margin-top:3px;}
+  .ris-box.primario{grid-column:1 / -1;}
+  .ris-box.primario .num{font-size:2.5rem;}
+
+  .flow{margin-top:16px;}
+  .flow .bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--border);}
+  .flow .seg{height:100%;}
+  .flow .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:.76rem;color:var(--muted);}
+  .flow .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .flow .dot{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  .callout{margin-top:16px;border:1px solid var(--accent);background:var(--accent-bg);
+    border-radius:12px;padding:16px;font-size:.86rem;line-height:1.55;}
+  .callout h4{margin:0 0 6px;font-size:.86rem;display:flex;align-items:center;gap:6px;color:var(--accent);}
+  .callout svg{width:16px;height:16px;flex:none;}
+
+  .breakdown-head{display:flex;justify-content:space-between;align-items:center;gap:12px;
+    flex-wrap:wrap;margin-bottom:14px;}
+  .seg-toggle{display:flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;}
+  .seg-toggle button{font-family:inherit;font-size:.82rem;font-weight:600;padding:7px 14px;
+    border:none;background:#fff;color:var(--muted);cursor:pointer;}
+  .seg-toggle button[aria-pressed="true"]{background:var(--text);color:#fff;}
+  select#mensilita{font-family:inherit;font-size:.82rem;font-weight:600;padding:7px 10px;
+    border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--text);}
+
+  h3.sez-titolo{display:flex;align-items:center;gap:8px;font-size:.95rem;margin:22px 0 10px;}
+  h3.sez-titolo:first-child{margin-top:0;}
+  h3.sez-titolo svg{width:18px;height:18px;flex:none;color:var(--muted);}
+
+  table{width:100%;border-collapse:collapse;font-size:.9rem;}
+  th,td{text-align:left;padding:9px 4px;border-bottom:1px solid var(--border);vertical-align:top;}
+  th{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.02em;}
+  td.importo{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600;}
+  .neg{color:var(--neg);} .pos{color:var(--accent);}
+  .voce-label{display:flex;align-items:center;gap:8px;}
+  .voce-label svg{width:16px;height:16px;flex:none;color:var(--muted);}
+  .fonte{display:block;font-size:.74rem;color:var(--muted);margin-top:2px;font-weight:400;}
   .fonte a{color:inherit;}
-  tr.totale td{border-top:2px solid var(--fg);border-bottom:none;font-weight:700;
-    padding-top:10px;}
+  tr.totale td{border-top:2px solid var(--text);border-bottom:none;font-weight:700;padding-top:12px;}
 
-  details summary{cursor:pointer;font-weight:600;font-size:.92rem;
-    color:var(--accent);padding:4px 0;}
-  .assunzioni-body{font-size:.88rem;color:var(--muted);line-height:1.55;margin-top:8px;}
+  details.card{margin-top:20px;}
+  details summary{cursor:pointer;font-weight:700;font-size:.92rem;color:var(--accent);padding:2px 0;
+    list-style:none;}
+  details summary::-webkit-details-marker{display:none;}
+  .assunzioni-body{font-size:.88rem;color:var(--muted);line-height:1.6;margin-top:10px;}
   .assunzioni-body ul{margin:6px 0;padding-left:20px;}
-  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
-  .badge{background:var(--accent-bg);color:var(--accent);border-radius:20px;
-    padding:3px 12px;font-size:.78rem;font-weight:600;}
-  footer{color:var(--muted);font-size:.78rem;text-align:center;margin:24px 0 8px;}
-  footer a{color:inherit}
+
+  footer.page{color:var(--muted);font-size:.78rem;text-align:center;margin:28px 0 8px;}
+  footer.page a{color:inherit}
 </style>
 </head>
 <body>
 
-  <h1>Dove va la tua RAL</h1>
-  <p class="sub">Da una retribuzione annua lorda, il netto che resta e ogni voce trattenuta lungo
-    la strada. Regole 2026, caso standard: impiegato privato, tempo indeterminato, Milano.</p>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><span class="mark">R</span> RAL → costo &amp; netto</div>
+    <span class="top-tag">Prototipo — task Product Builder, Jet HR (dati aggiornati a gennaio 2026)</span>
+  </div>
+</header>
 
-  <div class="badge-row" aria-hidden="true">
-    <span class="badge">Milano</span>
-    <span class="badge">Regole 2026</span>
-    <span class="badge">Tempo indeterminato</span>
+<div class="wrap">
+
+  <h1>Calcola il costo aziendale e il netto di un dipendente dalla RAL</h1>
+  <p class="sub">Il costo aziendale di un dipendente è più della sua RAL: contributi, TFR e altri
+    oneri si aggiungono sopra. Questa pagina mostra entrambi i numeri, voce per voce, con le fonti
+    di ogni riga — caso standard: impiegato privato, tempo indeterminato, Milano.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-azienda" aria-selected="true" data-modo="azienda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"/><path d="M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1"/></svg>
+      Per l'azienda — da una RAL
+    </button>
+    <button class="tab" role="tab" id="tab-dipendente" aria-selected="false" data-modo="dipendente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      Per il dipendente — da un netto desiderato
+    </button>
   </div>
 
-  <form class="card" id="form-input">
-    <label for="ral">Retribuzione annua lorda (RAL)</label>
-    <div class="input-row">
-      <input type="text" id="ral" name="ral" inputmode="decimal" placeholder="Es. 35.000"
-        autocomplete="off">
-      <button type="submit">Calcola</button>
+  <form class="card panel-card" id="form-input">
+    <div class="panel-col">
+      <div id="intro-azienda">
+        <label class="field-label" for="input-valore">Retribuzione annua lorda (RAL)</label>
+      </div>
+      <div id="intro-dipendente" hidden>
+        <label class="field-label" for="input-valore">Sei un dipendente? Scopri di quanto deve
+          essere la RAL per un netto annuale di</label>
+      </div>
+      <div class="euro-input">
+        <span>€</span>
+        <input type="text" id="input-valore" inputmode="decimal" placeholder="Es. 35.000" autocomplete="off">
+      </div>
+      <p class="hint" id="hint-input">Solo il numero, con o senza punti/virgole. Da 0 a 1.000.000 €.</p>
+      <button type="submit" class="cta">Calcola</button>
+      <p class="errore" id="errore" hidden></p>
     </div>
-    <p class="hint">Solo il numero, con o senza punti/virgole. Da 0 a 1.000.000 €.</p>
-    <p class="errore" id="errore" hidden></p>
+    <div class="panel-col anagrafica">
+      <label class="field-label">Chi stiamo calcolando</label>
+      <dl>
+        <div><dt>Contratto</dt><dd>Tempo indeterminato</dd></div>
+        <div><dt>Sede</dt><dd>Milano (MI)</dd></div>
+        <div><dt>Carichi di famiglia</dt><dd>Nessuno</dd></div>
+        <div><dt>Agevolazioni</dt><dd>Nessuna</dd></div>
+      </dl>
+      <p class="nota">Perimetro fisso di questo prototipo — altri casi (altri comuni, CCNL, nucleo
+        familiare) si discutono in interview. Dettagli in
+        <a href="processo/assunzioni-e-fonti.md">assunzioni-e-fonti.md</a>.</p>
+    </div>
   </form>
 
-  <section class="card" id="risultato" hidden aria-live="polite">
-    <div class="risultato-netto">
-      <div class="grande" id="netto-annuale">—</div>
-      <div class="label">netto annuale stimato</div>
-      <div class="mensilita">
-        <div><span class="val" id="netto-13">—</span><span class="lab">media su 13 mensilità</span></div>
-        <div><span class="val" id="netto-12">—</span><span class="lab">media su 12 mensilità</span></div>
-      </div>
+  <div class="risultati" id="risultati" hidden>
+    <div class="ris-grid">
+      <div class="ris-box primario" id="box-primario"></div>
+      <div class="ris-box" id="box-costo"></div>
+      <div class="ris-box" id="box-netto"></div>
     </div>
-  </section>
+    <div class="flow" id="flow-dipendente"></div>
+    <div class="callout" id="callout-welfare"></div>
+  </div>
 
-  <section class="card" id="dettaglio" hidden>
-    <table>
-      <thead>
-        <tr><th>Voce</th><th style="text-align:right">Importo</th></tr>
-      </thead>
-      <tbody id="voci-body"></tbody>
-      <tfoot>
-        <tr class="totale"><td>Netto annuale</td><td class="importo" id="netto-totale">—</td></tr>
-      </tfoot>
+  <div class="card" id="breakdown" hidden style="margin-top:16px;">
+    <div class="breakdown-head">
+      <div class="seg-toggle" id="toggle-vista">
+        <button type="button" data-vista="annuale" aria-pressed="true">Annuale</button>
+        <button type="button" data-vista="mensile" aria-pressed="false">Mensile</button>
+      </div>
+      <select id="mensilita" hidden>
+        <option value="12">12 mensilità</option>
+        <option value="13" selected>13 mensilità</option>
+        <option value="14">14 mensilità</option>
+      </select>
+    </div>
+
+    <h3 class="sez-titolo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      Costo azienda <span class="tag stima" style="margin-left:6px">stima</span>
+    </h3>
+    <table><thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
+      <tbody id="voci-azienda"></tbody>
+      <tfoot><tr class="totale"><td>Costo azienda</td><td class="importo" id="tot-azienda">—</td></tr></tfoot>
     </table>
-  </section>
+
+    <h3 class="sez-titolo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      Netto dipendente <span class="tag verificato" style="margin-left:6px">calcolo verificato</span>
+    </h3>
+    <table><thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
+      <tbody id="voci-dipendente"></tbody>
+      <tfoot><tr class="totale"><td>Netto</td><td class="importo" id="tot-dipendente">—</td></tr></tfoot>
+    </table>
+  </div>
 
   <details class="card">
     <summary>Assunzioni e limiti del modello</summary>
     <div class="assunzioni-body">
-      <p>Questo è un prototipo, non un cedolino né un parere fiscale. Copre un solo caso:</p>
+      <p>Questo è un prototipo, non un cedolino né un parere fiscale o contributivo. Copre un solo caso:</p>
       <ul>
         <li>Impiegato del settore privato, tempo indeterminato, anno intero, Milano.</li>
         <li>Un solo reddito, nessun familiare a carico, nessun onere deducibile/detraibile
           ulteriore, nessun benefit o premio.</li>
-        <li>Contribuzione INPS ordinaria FPLD 9,19% — CCNL, settore e fondi di solidarietà
-          possono cambiarla e non sono qui rappresentati.</li>
-        <li>Il risultato è il carico fiscale <em>maturato</em> sulla RAL nel 2026, non l'importo
-          del singolo cedolino: le addizionali si versano a rate dopo il conguaglio.</li>
+        <li>Contribuzione INPS ordinaria FPLD — CCNL, settore e fondi di solidarietà possono
+          cambiarla e non sono qui rappresentati.</li>
+        <li><strong>Il costo azienda è una stima</strong>, non un calcolo verificato come il netto:
+          l'INAIL usa un tasso indicativo (0,50%), non il tasso reale della lavorazione
+          dell'azienda, che varia molto per settore.</li>
+        <li><strong>Il calcolo inverso (netto → RAL)</strong> usa una ricerca numerica: è preciso
+          al centesimo lontano dalle soglie di legge, "circa" nelle loro vicinanze.</li>
+        <li>Il risultato annuale è il carico fiscale <em>maturato</em> sulla RAL nel 2026, non
+          l'importo del singolo cedolino: le addizionali si versano a rate dopo il conguaglio.</li>
         <li>Nessun consulente del lavoro ha validato questi numeri: sono derivati da fonti
           primarie e verificati a mano.</li>
       </ul>
@@ -130,7 +255,8 @@
     </div>
   </details>
 
-  <footer>Prototipo per il task Product Builder — Jet HR · agosto 2026</footer>
+  <footer class="page">Prototipo per il task Product Builder — Jet HR · agosto 2026</footer>
+</div>
 
 <script src="motore.js"></script>
 <script>
@@ -143,26 +269,45 @@
     lomb: ['Regione Lombardia — addizionale regionale IRPEF', 'https://www.regione.lombardia.it/bollo-auto-e-tributi-regionali/red-addizionale-regionale-irpef'],
     milano: ['Comune di Milano — addizionale comunale IRPEF', 'https://www.comune.milano.it/argomenti/tributi/addizionale-comunale-irpef'],
     l207c4: ['L. 207/2024, art. 1 c. 4-9 (cuneo fiscale)', 'https://www.normattiva.it/eli/stato/LEGGE/2024/12/30/207/CONSOLIDATED/20251219'],
-    dl3: ['D.L. 3/2020, art. 1 (trattamento integrativo)', 'https://www.normattiva.it/atto/caricaDettaglioAtto?atto.codiceRedazionale=20A02005&atto.dataPubblicazioneGazzetta=2020-04-04&tipoDettaglio=multivigenza']
+    dl3: ['D.L. 3/2020, art. 1 (trattamento integrativo)', 'https://www.normattiva.it/atto/caricaDettaglioAtto?atto.codiceRedazionale=20A02005&atto.dataPubblicazioneGazzetta=2020-04-04&tipoDettaglio=multivigenza'],
+    inps101: ['INPS, circolare 101/2024 (IVS datore 23,81%)', 'https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2024.11.circolare-numero-101-del-29-11-2024_14714.html'],
+    naspi: ['L. 92/2012, art. 2 c. 25 (contribuzione NASpI)', null],
+    fgtfr: ['INPS — Fondo di garanzia del TFR', 'https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50186.fondo-di-garanzia-del-tfr-e-dei-crediti-di-lavoro.html'],
+    inail: ['INAIL — consultazione dei tassi applicabili (tasso indicativo, non quello reale della lavorazione)', 'https://www.inail.it/portale/assicurazione/it/Datore-di-Lavoro/Impresa-con-dipendenti-industria-artigianato-terziario-altre-attivita/pagamento-premio-assicurativo-e-regolarita-impresa-con-dipendenti/autoliquidazione-impresa-con-dipendenti/consultazione-dei-tassi-applicabili-impresa-con-dipendenti.html'],
+    tfr: ['Jet HR — TFR in busta paga (7,41% − 0,5% INPS = 6,91%)', 'https://www.jethr.com/risorse/tfr-in-busta-paga-dove-trovarlo-e-come-leggerlo/']
   };
 
+  var ICONE = {
+    contributo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg>',
+    imposta: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h4"/></svg>',
+    integrazione: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11"/><path d="M4 9V6a2 2 0 0 1 2-2h1a2 2 0 0 1 0 4M20 9V6a2 2 0 0 0-2-2h-1a2 2 0 0 0 0 4M12 4v16"/></svg>'
+  };
+
+  var S = { modo: 'azienda', vista: 'annuale', mensilita: 13, ultimo: null };
+
+  // toFixed(2) su un numero come 454.98/12 può arrotondare per difetto per
+  // imprecisione binaria (37.915 rappresentato come 37.91499...998). La
+  // stessa correzione già usata in motore.js: un piccolo scarto verso l'alto
+  // prima di tagliare a due decimali.
+  function centesimo(n){
+    var segno = n < 0 ? -1 : 1;
+    return segno * Math.round((Math.abs(n) + 1e-9) * 100) / 100;
+  }
+
   function eur(n){
-    var neg = n < 0, x = Math.abs(n).toFixed(2).split('.');
+    var v = centesimo(n);
+    var neg = v < 0, x = Math.abs(v).toFixed(2).split('.');
     var interi = x[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     return (neg ? '−' : '') + interi + ',' + x[1] + ' €';
   }
 
-  function parseRal(s){
+  function parseValore(s){
     var t = String(s || '').trim().replace(/\s|€/g, '');
     if (t === '') return null;
     if (/^-/.test(t)) return -1;
     if (/,/.test(t)) {
-      // 35.000,50 -> 35000.50: la virgola è il decimale, i punti sono migliaia.
       t = t.replace(/\./g, '').replace(',', '.');
     } else if (/\./.test(t)) {
-      // Senza virgola, un punto in italiano è quasi sempre la migliaia
-      // (35.000), non il decimale — tranne quando l'ultimo gruppo ha 1 o 2
-      // cifre (35.5, 35.50), che è la forma di un decimale scritto all'inglese.
       var parti = t.split('.');
       var ultimo = parti[parti.length - 1];
       if (parti.length > 1 && ultimo.length === 3) t = parti.join('');
@@ -172,74 +317,194 @@
   }
 
   var form = document.getElementById('form-input');
-  var campoRal = document.getElementById('ral');
+  var campo = document.getElementById('input-valore');
   var boxErrore = document.getElementById('errore');
-  var sezRisultato = document.getElementById('risultato');
-  var sezDettaglio = document.getElementById('dettaglio');
-  var vociBody = document.getElementById('voci-body');
+  var risultati = document.getElementById('risultati');
+  var breakdown = document.getElementById('breakdown');
+  var mensilitaSel = document.getElementById('mensilita');
+
+  document.querySelectorAll('.tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(b){ b.setAttribute('aria-selected', 'false'); });
+      btn.setAttribute('aria-selected', 'true');
+      S.modo = btn.dataset.modo;
+      document.getElementById('intro-azienda').hidden = S.modo !== 'azienda';
+      document.getElementById('intro-dipendente').hidden = S.modo !== 'dipendente';
+      campo.placeholder = S.modo === 'azienda' ? 'Es. 35.000' : 'Es. 26.000';
+      boxErrore.hidden = true;
+      risultati.hidden = true;
+      breakdown.hidden = true;
+      campo.value = '';
+    });
+  });
+
+  document.querySelectorAll('#toggle-vista button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#toggle-vista button').forEach(function(b){ b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
+      S.vista = btn.dataset.vista;
+      mensilitaSel.hidden = S.vista !== 'mensile';
+      if (S.ultimo) render(S.ultimo);
+    });
+  });
+  mensilitaSel.addEventListener('change', function(){
+    S.mensilita = parseInt(mensilitaSel.value, 10);
+    if (S.ultimo) render(S.ultimo);
+  });
 
   function mostraErrore(msg){
     boxErrore.textContent = msg;
     boxErrore.hidden = false;
-    sezRisultato.hidden = true;
-    sezDettaglio.hidden = true;
+    risultati.hidden = true;
+    breakdown.hidden = true;
   }
 
-  function rigaVoce(v){
+  function divisore(){ return S.vista === 'mensile' ? S.mensilita : 1; }
+
+  function rigaVoce(v, tbody){
     var tr = document.createElement('tr');
     var tdLabel = document.createElement('td');
-    tdLabel.textContent = v.label;
+    var icona = ICONE[v.tipo] || '';
+    tdLabel.innerHTML = '<span class="voce-label">' + icona + '<span>' + v.label + '</span></span>';
     var fonte = FONTI[v.fonte];
     if (fonte){
       var s = document.createElement('span');
       s.className = 'fonte';
-      var a = document.createElement('a');
-      a.href = fonte[1]; a.target = '_blank'; a.rel = 'noopener';
-      a.textContent = fonte[0];
-      s.appendChild(a);
-      tdLabel.appendChild(s);
+      if (fonte[1]){
+        var a = document.createElement('a');
+        a.href = fonte[1]; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = fonte[0];
+        s.appendChild(a);
+      } else {
+        s.textContent = fonte[0];
+      }
+      tdLabel.querySelector('.voce-label').appendChild(s);
     }
     var tdImporto = document.createElement('td');
-    tdImporto.className = 'importo ' + (v.importo < 0 ? 'neg' : 'pos');
-    tdImporto.textContent = (v.importo < 0 ? '' : '+') + eur(v.importo);
+    var val = v.importo / divisore();
+    tdImporto.className = 'importo ' + (val < 0 ? 'neg' : (val > 0 ? 'pos' : ''));
+    tdImporto.textContent = (val > 0 ? '+' : '') + eur(val);
     tr.appendChild(tdLabel);
     tr.appendChild(tdImporto);
-    return tr;
+    tbody.appendChild(tr);
   }
 
-  function mostraRisultato(r){
-    boxErrore.hidden = true;
+  function flowBar(ral, contributi, imposte, netto){
+    var d = divisore();
+    var container = document.getElementById('flow-dipendente');
+    var tot = ral || 1;
+    var pNetto = Math.max(0, netto) / tot * 100;
+    var pContrib = Math.max(0, contributi) / tot * 100;
+    var pImposte = Math.max(0, imposte) / tot * 100;
+    container.innerHTML =
+      '<div class="bar">' +
+        '<div class="seg" style="width:' + pNetto + '%;background:var(--accent)"></div>' +
+        '<div class="seg" style="width:' + pContrib + '%;background:#B7B6AC"></div>' +
+        '<div class="seg" style="width:' + pImposte + '%;background:var(--text)"></div>' +
+      '</div>' +
+      '<div class="legend">' +
+        '<span><i class="dot" style="background:var(--accent)"></i>Netto ' + eur(netto / d) + '</span>' +
+        '<span><i class="dot" style="background:#B7B6AC"></i>Contributi ' + eur(contributi / d) + '</span>' +
+        '<span><i class="dot" style="background:var(--text)"></i>Imposte ' + eur(imposte / d) + '</span>' +
+      '</div>';
+  }
 
-    document.getElementById('netto-annuale').textContent = eur(r.netto);
-    document.getElementById('netto-13').textContent = eur(r.mensile13);
-    document.getElementById('netto-12').textContent = eur(r.mensile12);
-    document.getElementById('netto-totale').textContent = eur(r.netto);
+  function welfareCallout(ral){
+    if (ral > 900000) { document.getElementById('callout-welfare').hidden = true; return; }
+    var conRal = Motore.calcola(ral + 1000);
+    var senzaRal = Motore.calcola(ral);
+    var deltaNettoRal = conRal.netto - senzaRal.netto;
+    var conCosto = Motore.costoAzienda(ral + 1000);
+    var senzaCosto = Motore.costoAzienda(ral);
+    var deltaCostoRal = conCosto.totale - senzaCosto.totale;
+    // Welfare esente L. 207/2024: nessun IRPEF né contributo INPS (datore e
+    // lavoratore), su entrambi i lati. INAIL e TFR restano nella stima per
+    // prudenza, la loro esenzione sul welfare non è verificata qui.
+    var deltaCostoWelfare = 1000 + Motore.inailIndicativo(1000) + Motore.tfrMaturando(1000);
+    var el = document.getElementById('callout-welfare');
+    el.hidden = false;
+    el.innerHTML = '<h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>Un\'idea di cost-saving</h4>' +
+      '1.000 € in più di RAL costano all\'azienda circa ' + eur(deltaCostoRal) + ' e arrivano al dipendente come circa ' + eur(deltaNettoRal) + ' netti. ' +
+      '1.000 € di welfare esente (L. 207/2024) costano invece circa ' + eur(deltaCostoWelfare) + ' e arrivano interi, 1.000 €, perché non sono tassati né contribuiti. ' +
+      'Stima semplificata, non una policy retributiva.';
+  }
 
-    vociBody.innerHTML = '';
+  function render(dati){
+    S.ultimo = dati;
+    var calc = dati.calc, costo = dati.costo, modo = dati.modo, ralUsata = dati.ral;
+    var d = divisore();
+
+    document.getElementById('box-primario').innerHTML =
+      (modo === 'azienda'
+        ? '<span class="tag stima">stima</span><div class="num">' + eur(costo.totale / d) + '</div><div class="lab">costo azienda' + (S.vista==='mensile' ? ' (media '+S.mensilita+' mensilità)' : ' annuale') + '</div>'
+        : '<span class="tag verificato">calcolo verificato</span><div class="num">' + eur(ralUsata) + '</div><div class="lab">RAL necessaria per il netto richiesto</div>');
+    document.getElementById('box-costo').innerHTML =
+      '<span class="tag stima">stima</span><div class="num" style="font-size:1.5rem">' + eur(costo.totale / d) + '</div><div class="lab">costo azienda' + (S.vista==='mensile' ? ' mensile' : ' annuale') + '</div>';
+    document.getElementById('box-netto').innerHTML =
+      '<span class="tag verificato">calcolo verificato</span><div class="num" style="font-size:1.5rem">' + eur(calc.netto / d) + '</div><div class="lab">netto dipendente' + (S.vista==='mensile' ? ' mensile' : ' annuale') + '</div>';
+
+    var boxCosto = document.getElementById('box-costo'), boxNetto = document.getElementById('box-netto');
+    if (modo === 'azienda') {
+      boxCosto.hidden = true;
+      boxNetto.hidden = false;
+      boxNetto.style.gridColumn = '1 / -1';
+    } else {
+      boxCosto.hidden = false;
+      boxNetto.hidden = false;
+      boxCosto.style.gridColumn = '';
+      boxNetto.style.gridColumn = '';
+    }
+
+    var imposteNette = ralUsata - calc.contributi - calc.netto + calc.integrazioni;
+    flowBar(ralUsata, calc.contributi, imposteNette, calc.netto);
+    welfareCallout(ralUsata);
+
+    var vociAzienda = document.getElementById('voci-azienda');
+    vociAzienda.innerHTML = '';
     var ralRiga = document.createElement('tr');
-    ralRiga.innerHTML = '<td>RAL</td><td class="importo">' + eur(r.ral) + '</td>';
-    vociBody.appendChild(ralRiga);
-    r.voci.forEach(function(v){ vociBody.appendChild(rigaVoce(v)); });
+    ralRiga.innerHTML = '<td>RAL</td><td class="importo">' + eur(ralUsata / d) + '</td>';
+    vociAzienda.appendChild(ralRiga);
+    costo.voci.forEach(function(v){ rigaVoce({ label: v.label, importo: v.importo, fonte: v.fonte, tipo: 'contributo' }, vociAzienda); });
+    document.getElementById('tot-azienda').textContent = eur(costo.totale / d);
 
-    sezRisultato.hidden = false;
-    sezDettaglio.hidden = false;
+    var vociDip = document.getElementById('voci-dipendente');
+    vociDip.innerHTML = '';
+    var ralRiga2 = document.createElement('tr');
+    ralRiga2.innerHTML = '<td>RAL</td><td class="importo">' + eur(ralUsata / d) + '</td>';
+    vociDip.appendChild(ralRiga2);
+    calc.voci.forEach(function(v){ rigaVoce(v, vociDip); });
+    document.getElementById('tot-dipendente').textContent = eur(calc.netto / d);
+
+    risultati.hidden = false;
+    breakdown.hidden = false;
   }
 
   form.addEventListener('submit', function(ev){
     ev.preventDefault();
-    var val = parseRal(campoRal.value);
-    if (val === null){ mostraErrore('Inserisci una RAL.'); return; }
+    var val = parseValore(campo.value);
+    if (val === null){ mostraErrore('Inserisci un valore.'); return; }
     if (isNaN(val)){ mostraErrore('Non riconosco questo numero. Usa solo cifre, punti e virgole.'); return; }
-    if (val < 0){ mostraErrore('La RAL non può essere negativa.'); return; }
-    var r = Motore.calcola(val);
-    if (r.errore){ mostraErrore(r.errore); return; }
-    mostraRisultato(r);
+    if (val < 0){ mostraErrore('Il valore non può essere negativo.'); return; }
+
+    var ral, calc;
+    if (S.modo === 'azienda') {
+      calc = Motore.calcola(val);
+      if (calc.errore) { mostraErrore(calc.errore); return; }
+      ral = val;
+    } else {
+      var inv = Motore.ralPerNetto(val);
+      if (inv.errore) { mostraErrore(inv.errore); return; }
+      ral = inv.ral;
+      calc = Motore.calcola(ral);
+    }
+    var costo = Motore.costoAzienda(ral);
+    boxErrore.hidden = true;
+    render({ calc: calc, costo: costo, modo: S.modo, ral: ral });
   });
 
-  // Stato nell'URL (?ral=35000) per condividere un risultato.
   var qs = new URLSearchParams(location.search);
   if (qs.has('ral')){
-    campoRal.value = qs.get('ral');
+    campo.value = qs.get('ral');
     form.dispatchEvent(new Event('submit', {cancelable:true}));
   }
 })();
