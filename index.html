@@ -129,6 +129,23 @@
 
   footer.page{color:var(--muted);font-size:.78rem;text-align:center;margin:28px 0 8px;}
   footer.page a{color:inherit}
+
+  .btn-info{border:none;background:none;padding:0;margin-left:5px;cursor:pointer;color:var(--muted);
+    display:inline-flex;vertical-align:middle;border-radius:50%;}
+  .btn-info svg{width:14px;height:14px;}
+  .btn-info:hover{color:var(--accent);}
+
+  dialog#dialog-fonte{border:none;border-radius:16px;padding:22px;max-width:440px;width:calc(100% - 32px);
+    color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.18);}
+  dialog#dialog-fonte::backdrop{background:rgba(17,21,10,.45);}
+  .dialog-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:4px;}
+  .dialog-head h3{font-size:1.05rem;margin:0;}
+  #dialog-chiudi{border:none;background:none;cursor:pointer;color:var(--muted);padding:2px;flex:none;}
+  #dialog-chiudi svg{width:18px;height:18px;}
+  .dialog-sez-lab{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+    color:var(--muted);margin:14px 0 3px;}
+  dialog#dialog-fonte p{margin:0;font-size:.9rem;line-height:1.55;}
+  .dialog-link a{color:var(--accent);}
 </style>
 </head>
 <body>
@@ -258,6 +275,25 @@
   <footer class="page">Prototipo per il task Product Builder — Jet HR · agosto 2026</footer>
 </div>
 
+<dialog id="dialog-fonte">
+  <div class="dialog-head">
+    <h3 id="dialog-titolo"></h3>
+    <button type="button" id="dialog-chiudi" aria-label="Chiudi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <p class="dialog-sez-lab">Cosa dice la norma</p>
+  <p id="dialog-norma"></p>
+  <p class="dialog-sez-lab">Perché entra in gioco qui</p>
+  <p id="dialog-meccanismo"></p>
+  <div id="dialog-considerazione-wrap">
+    <p class="dialog-sez-lab">Da considerare</p>
+    <p id="dialog-considerazione"></p>
+  </div>
+  <p class="dialog-sez-lab">Fonte</p>
+  <p id="dialog-fonte-link" class="dialog-link"></p>
+</dialog>
+
 <script src="motore.js"></script>
 <script>
 (function(){
@@ -361,7 +397,125 @@
 
   function divisore(){ return S.vista === 'mensile' ? S.mensilita : 1; }
 
-  function rigaVoce(v, tbody){
+  // Perché quella norma entra in gioco QUI, coi numeri di questo calcolo
+  // specifico — non la norma in astratto. ctx = { calc, costo, ral }.
+  var SPIEGAZIONI = {
+    ivs: function(ctx){
+      var capped = ctx.ral > Motore.K.inps.massimale;
+      return {
+        norma: 'I lavoratori dipendenti privati versano un contributo previdenziale IVS ordinario del 9,19% della retribuzione, fino a un tetto annuo.',
+        meccanismo: capped
+          ? 'La tua RAL (' + eur(ctx.ral) + ') supera il massimale di ' + eur(Motore.K.inps.massimale) + ': il 9,19% si applica solo fino a quella soglia.'
+          : 'Sulla tua RAL di ' + eur(ctx.ral) + ', il 9,19% fa ' + eur(Motore.contributiIvs(ctx.ral)) + '.',
+        considerazione: 'Sopra ' + eur(Motore.K.inps.massimale) + ' il contributo non sale più: l\'aliquota effettiva scende quanto più la RAL supera questa soglia.'
+      };
+    },
+    aggiuntivo: function(ctx){
+      var base = Math.min(ctx.ral, Motore.K.inps.massimale) - Motore.K.inps.primaFascia;
+      return {
+        norma: 'Sulla quota di retribuzione che supera ' + eur(Motore.K.inps.primaFascia) + ' annui si applica un ulteriore 1% di contributo.',
+        meccanismo: 'La tua RAL supera quella soglia di ' + eur(base) + ': su quella parte paghi l\'1% in più, cioè ' + eur(Motore.contributoAggiuntivo(ctx.ral)) + '.',
+        considerazione: 'Anche questa quota si ferma al massimale contributivo di ' + eur(Motore.K.inps.massimale) + '.'
+      };
+    },
+    irpef: function(ctx){
+      var imp = ctx.calc.imponibile, d = ctx.calc.voci.find(function(v){return v.id==='irpef';}).dettaglio;
+      return {
+        norma: 'L\'IRPEF si calcola per scaglioni progressivi sull\'imponibile (RAL meno contributi), poi si riducono le detrazioni spettanti per lavoro dipendente.',
+        meccanismo: 'Sul tuo imponibile di ' + eur(imp) + ' l\'imposta lorda è ' + eur(d.lorda) + '. Le detrazioni per lavoro dipendente (' + eur(d.detrLavUsata) + ') e per il cuneo fiscale (' + eur(d.detrUltUsata) + ') la riducono a ' + eur(ctx.calc.irpefNetta) + ' netti.',
+        considerazione: 'Le detrazioni abbattono l\'imposta ma non sono mai rimborsabili: se l\'imposta lorda fosse più bassa della detrazione spettante, la differenza andrebbe persa, non restituita — è la "capienza".'
+      };
+    },
+    addreg: function(ctx){
+      return {
+        norma: 'La Lombardia applica un\'addizionale IRPEF a scaglioni progressivi, calcolata sullo stesso imponibile dell\'IRPEF.',
+        meccanismo: 'Sul tuo imponibile di ' + eur(ctx.calc.imponibile) + ', l\'addizionale regionale fa ' + eur(ctx.calc.addizionaleRegionale) + '.',
+        considerazione: 'Cambia da regione a regione: è una delle voci che varierebbe di più spostando il domicilio fiscale fuori dalla Lombardia.'
+      };
+    },
+    addcom: function(ctx){
+      return {
+        norma: 'Il Comune di Milano applica un\'addizionale unica dello 0,8%, con esenzione sotto i 23.000 € di imponibile.',
+        meccanismo: 'Il tuo imponibile di ' + eur(ctx.calc.imponibile) + ' supera quella soglia, quindi paghi lo 0,8% sull\'intero importo: ' + eur(ctx.calc.addizionaleComunale) + '.',
+        considerazione: 'È un\'esenzione a scaglione secco, non una franchigia: un euro lordo in più sopra 23.000 € fa scattare l\'aliquota sull\'intero imponibile, non solo sulla parte eccedente.'
+      };
+    },
+    bonus: function(ctx){
+      var imp = ctx.calc.imponibile;
+      var pct = imp <= 8500 ? '7,1%' : imp <= 15000 ? '5,3%' : '4,8%';
+      return {
+        norma: 'Per i redditi di lavoro dipendente fino a 20.000 € di imponibile, la legge riconosce un bonus esente da tasse e contributi, a percentuale decrescente per fascia.',
+        meccanismo: 'Il tuo imponibile di ' + eur(imp) + ' rientra nella fascia ' + pct + ', per un bonus di ' + eur(ctx.calc.voci.find(function(v){return v.id==='bonus';}).importo) + '.',
+        considerazione: 'Non è una detrazione: si aggiunge al netto per intero, senza passare dall\'imposta.'
+      };
+    },
+    ti: function(ctx){
+      return {
+        norma: 'Il trattamento integrativo riconosce fino a 1.200 € l\'anno a chi ha un\'imposta lorda che supera la detrazione spettante per lavoro dipendente, meno 75 €.',
+        meccanismo: 'Il tuo imponibile di ' + eur(ctx.calc.imponibile) + ' è sotto i 15.000 € e la condizione è soddisfatta, quindi hai diritto all\'importo pieno.',
+        considerazione: null
+      };
+    },
+    contrDatore: function(ctx){
+      return {
+        norma: 'Il datore versa un contributo previdenziale IVS proprio, il 23,81% della retribuzione — il complemento del 9,19% versato dal lavoratore sullo stesso fondo pensione.',
+        meccanismo: 'Sulla RAL di ' + eur(ctx.ral) + ', il 23,81% fa ' + eur(Motore.contributiDatore(ctx.ral)) + '.',
+        considerazione: 'Stesso massimale contributivo del lavoratore: sopra ' + eur(Motore.K.inps.massimale) + ' non cresce più.'
+      };
+    },
+    naspi: function(ctx){
+      return {
+        norma: 'Il datore versa un contributo ordinario dell\'1,31% per finanziare l\'indennità di disoccupazione (NASpI).',
+        meccanismo: 'Sulla RAL di ' + eur(ctx.ral) + ', l\'1,31% fa ' + eur(Motore.naspi(ctx.ral)) + '.',
+        considerazione: null
+      };
+    },
+    fondoGaranzia: function(ctx){
+      return {
+        norma: 'Un contributo dello 0,20% finanzia il Fondo che garantisce il TFR ai lavoratori in caso di insolvenza del datore.',
+        meccanismo: 'Sulla RAL di ' + eur(ctx.ral) + ', lo 0,20% fa ' + eur(Motore.fondoGaranziaTfr(ctx.ral)) + '.',
+        considerazione: null
+      };
+    },
+    inail: function(ctx){
+      return {
+        norma: 'L\'INAIL è il premio assicurativo obbligatorio contro gli infortuni sul lavoro; il tasso ufficiale dipende dalla lavorazione dell\'azienda, non dalla RAL.',
+        meccanismo: 'Qui uso uno 0,50% indicativo per lavoro d\'ufficio, non il tasso reale della tua azienda: su ' + eur(ctx.ral) + ' fa ' + eur(Motore.inailIndicativo(ctx.ral)) + '.',
+        considerazione: 'È la voce meno solida della stima: il tasso vero può essere molto diverso per settore (da 0,4% a oltre l\'8%). Verificalo sul tasso ditta reale prima di usare questo numero per un budget.'
+      };
+    },
+    tfr: function(ctx){
+      return {
+        norma: 'Il TFR matura al 7,41% della retribuzione utile (RAL/13,5), meno lo 0,50% versato all\'INPS: il 6,91% netto resta accantonato.',
+        meccanismo: 'Sulla RAL di ' + eur(ctx.ral) + ', il 6,91% fa ' + eur(Motore.tfrMaturando(ctx.ral)) + '.',
+        considerazione: 'Non è un costo "perso": è retribuzione differita che il dipendente riceve alla fine del rapporto, o versata a un fondo pensione di sua scelta.'
+      };
+    }
+  };
+
+  var dialogFonte = document.getElementById('dialog-fonte');
+  function apriSpiegazione(v, ctx){
+    var gen = SPIEGAZIONI[v.id];
+    var contenuto = gen ? gen(ctx) : null;
+    document.getElementById('dialog-titolo').textContent = v.label;
+    var fonte = FONTI[v.fonte];
+    document.getElementById('dialog-fonte-link').innerHTML = fonte && fonte[1]
+      ? '<a href="' + fonte[1] + '" target="_blank" rel="noopener">' + fonte[0] + '</a>' : (fonte ? fonte[0] : '');
+    document.getElementById('dialog-norma').textContent = contenuto ? contenuto.norma : '';
+    document.getElementById('dialog-meccanismo').textContent = contenuto ? contenuto.meccanismo : '';
+    var consEl = document.getElementById('dialog-considerazione');
+    if (contenuto && contenuto.considerazione) {
+      consEl.textContent = contenuto.considerazione;
+      consEl.parentElement.hidden = false;
+    } else {
+      consEl.parentElement.hidden = true;
+    }
+    dialogFonte.showModal();
+  }
+  document.getElementById('dialog-chiudi').addEventListener('click', function(){ dialogFonte.close(); });
+  dialogFonte.addEventListener('click', function(ev){ if (ev.target === dialogFonte) dialogFonte.close(); });
+
+  function rigaVoce(v, tbody, ctx){
     var tr = document.createElement('tr');
     var tdLabel = document.createElement('td');
     var icona = ICONE[v.tipo] || '';
@@ -377,6 +531,15 @@
         s.appendChild(a);
       } else {
         s.textContent = fonte[0];
+      }
+      if (SPIEGAZIONI[v.id]) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-info';
+        btn.setAttribute('aria-label', 'Perché si applica: ' + v.label);
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg>';
+        btn.addEventListener('click', function(){ apriSpiegazione(v, ctx); });
+        s.appendChild(btn);
       }
       tdLabel.querySelector('.voce-label').appendChild(s);
     }
@@ -464,7 +627,8 @@
     var ralRiga = document.createElement('tr');
     ralRiga.innerHTML = '<td>RAL</td><td class="importo">' + eur(ralUsata / d) + '</td>';
     vociAzienda.appendChild(ralRiga);
-    costo.voci.forEach(function(v){ rigaVoce({ label: v.label, importo: v.importo, fonte: v.fonte, tipo: 'contributo' }, vociAzienda); });
+    var ctx = { calc: calc, costo: costo, ral: ralUsata };
+    costo.voci.forEach(function(v){ rigaVoce({ id: v.id, label: v.label, importo: v.importo, fonte: v.fonte, tipo: 'contributo' }, vociAzienda, ctx); });
     document.getElementById('tot-azienda').textContent = eur(costo.totale / d);
 
     var vociDip = document.getElementById('voci-dipendente');
@@ -472,7 +636,7 @@
     var ralRiga2 = document.createElement('tr');
     ralRiga2.innerHTML = '<td>RAL</td><td class="importo">' + eur(ralUsata / d) + '</td>';
     vociDip.appendChild(ralRiga2);
-    calc.voci.forEach(function(v){ rigaVoce(v, vociDip); });
+    calc.voci.forEach(function(v){ rigaVoce(v, vociDip, ctx); });
     document.getElementById('tot-dipendente').textContent = eur(calc.netto / d);
 
     risultati.hidden = false;
