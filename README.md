@@ -1,14 +1,20 @@
-# Calcola il costo aziendale e il netto di un dipendente dalla RAL
+# Calcola lo stipendio netto a partire dalla RAL
 
-Prototipo per il task Product Builder di Jet HR. Due direzioni sullo stesso
-motore: **da una RAL** il costo per l'azienda e il netto per il dipendente,
-voce per voce; **da un netto desiderato** la RAL necessaria a ottenerlo.
+Prototipo per il task Product Builder di Jet HR. Un unico percorso
+narrativo — **RAL → contributi → imponibile → imposte → detrazioni →
+netto** — reso esplorabile passo per passo: risultato, cascata visiva,
+tabella di riepilogo e un calcolo dettagliato aperto a richiesta, tutti
+alimentati dallo stesso motore, mai da formule duplicate nell'interfaccia.
+
+Il costo per l'azienda e il calcolo inverso (da un netto desiderato alla RAL
+necessaria) restano nel prototipo ma come sezioni secondarie e collassate:
+utili, ma non in competizione visiva con il percorso principale RAL → netto.
 
 **Caso coperto**: impiegato del settore privato, tempo indeterminato,
 residente a Milano, anno intero, nessuna agevolazione — le semplificazioni
-suggerite dal task stesso. Il netto dipendente è un **calcolo verificato**
-(fonti incrociate, esempio ricalcolato a mano). Il costo azienda è una
-**stima** dichiarata: l'INAIL usa un tasso indicativo, non quello reale della
+suggerite dal task stesso. Il netto è un **calcolo verificato** (fonti
+incrociate, esempio ricalcolato a mano). Il costo azienda è una **stima**
+dichiarata: l'INAIL usa un tasso indicativo, non quello reale della
 lavorazione dell'azienda. Il resto del dominio (altri comuni, CCNL, nucleo
 familiare) resta fuori perimetro; il perché è in
 [`processo/assunzioni-e-fonti.md`](processo/assunzioni-e-fonti.md).

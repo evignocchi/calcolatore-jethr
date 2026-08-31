@@ -90,19 +90,26 @@ ricalcolato a parte — così la tabella mostrata in pagina chiude sempre.
 
 ## Mensilità
 
-Il brief chiede "netto annuale e mensile". Il prototipo mostra la media su
-12, 13 o 14 mensilità a scelta, dichiarando esplicitamente che è una media e
-non l'importo del singolo cedolino — la tredicesima non gode delle stesse
-detrazioni mensili e il conguaglio annuale riequilibra le differenze. La
-quattordicesima non spetta a ogni CCNL: mostrarla come opzione non significa
-dichiarare che spetta nel caso base — è una divisione di presentazione dello
-stesso netto annuale, non un ricalcolo.
+Il brief chiede "netto annuale e mensile". Il risultato principale mostra la
+media su 13 mensilità (la più comune per un impiegato privato), dichiarando
+esplicitamente che è una media e non l'importo del singolo cedolino — la
+tredicesima non gode delle stesse detrazioni mensili e il conguaglio annuale
+riequilibra le differenze. La scelta fra 12/13/14 mensilità resta disponibile
+solo come parametro del calcolo inverso (netto mensile desiderato → RAL), non
+come variante del risultato principale: nel secondo passaggio di refinement
+del prodotto si è scelto di mostrare un solo numero mensile in prima vista,
+per non distrarre dal percorso RAL → netto, e di lasciare la scelta della
+mensilità dove serve davvero, cioè quando è l'utente a partire da un netto
+mensile obiettivo.
 
 ## Estensioni oltre il perimetro del brief
 
 Il brief chiede RAL → netto dipendente. Due estensioni sono state aggiunte
-dopo, esplicitamente fuori dal perimetro minimo, e vanno lette con un livello
-di fiducia diverso dal resto:
+dopo, esplicitamente fuori dal perimetro minimo. Nel secondo passaggio di
+refinement sono state anche retrocesse a sezioni secondarie e collassate
+della pagina, per non competere visivamente con il percorso principale — la
+logica di calcolo non è cambiata, è cambiato solo quanto spazio occupano.
+Vanno lette con un livello di fiducia diverso dal resto:
 
 ### Costo azienda — stima, non calcolo verificato
 
