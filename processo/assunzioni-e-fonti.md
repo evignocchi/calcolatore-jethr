@@ -142,6 +142,27 @@ uno dei punti noti del motore diretto, mostra un avviso nel risultato, non
 solo nel dettaglio. L'input accetta anche un netto mensile (con la
 mensilità di riferimento), convertito in target annuale prima di risolvere.
 
+### Assistente alla simulazione
+
+Non è un chatbot generico: è un livello di spiegazione sopra il motore,
+attivabile da un bottone "Chiedi all'assistente" sotto il risultato o dai
+bottoni "Spiega" su ogni voce della cascata e del costo azienda — le due
+entry point aprono lo stesso pannello (drawer laterale su desktop, foglio
+dal basso su mobile), non due componenti diversi.
+
+Ogni risposta è costruita da `S.calc`/`S.costo`, cioè dall'output già
+prodotto da `Motore.calcola()`/`costoAzienda()` per la RAL corrente:
+l'assistente non contiene una sola formula propria. L'unica eccezione è il
+confronto tra due RAL ("confronta 35.000 con 45.000"), che chiama di nuovo
+`Motore.calcola()` — lo stesso motore, un nuovo input — mai una formula
+riscritta a mano. Le domande libere sono interpretate con un
+riconoscimento di parole chiave deterministico, non un modello linguistico:
+non c'è un backend, quindi niente testo generato che possa inventare un
+numero non presente nella simulazione. Su temi fuori dal perimetro
+dichiarato (altri comuni, carichi di famiglia, CCNL, part-time, partita
+IVA...) l'assistente lo dice esplicitamente e rimanda a questo documento,
+invece di azzardare una stima.
+
 ### L'insight sul welfare esente
 
 Un confronto, non un calcolo verificato: quanto costa all'azienda e quanto

@@ -6,6 +6,12 @@ netto** — reso esplorabile passo per passo: risultato, cascata visiva,
 tabella di riepilogo e un calcolo dettagliato aperto a richiesta, tutti
 alimentati dallo stesso motore, mai da formule duplicate nell'interfaccia.
 
+Un **assistente alla simulazione** (pannello laterale su desktop, foglio
+dal basso su mobile) spiega i singoli passaggi a richiesta: legge solo i
+valori già calcolati dal motore, non ricalcola nulla, e su una domanda
+fuori dal perimetro dichiarato (altri comuni, carichi di famiglia, CCNL...)
+lo dice esplicitamente invece di inventare un numero.
+
 Il costo per l'azienda e il calcolo inverso (da un netto desiderato alla RAL
 necessaria) restano nel prototipo ma come sezioni secondarie e collassate:
 utili, ma non in competizione visiva con il percorso principale RAL → netto.

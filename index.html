@@ -105,12 +105,6 @@
   .cella-nome{display:flex;align-items:center;gap:7px;}
   .cella-nome svg{width:16px;height:16px;flex:none;color:var(--muted);}
 
-  .btn-info{border:1px solid var(--border);background:var(--bg);padding:3px;flex:none;
-    cursor:pointer;color:var(--muted);display:inline-flex;border-radius:50%;}
-  .btn-info svg{width:12px;height:12px;}
-  .btn-info:hover,.btn-info:focus-visible{color:var(--accent);border-color:var(--accent);background:var(--accent-bg);}
-  .btn-info:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
-
   /* ---------- METODOLOGIA ---------- */
   .metodologia h2{font-size:1.3rem;margin:0 0 20px;}
   .step-metodo{display:grid;grid-template-columns:34px 1fr;gap:2px 14px;margin-bottom:16px;}
@@ -175,18 +169,69 @@
 
   footer.page{color:var(--muted);font-size:.78rem;text-align:center;margin:48px 0 12px;}
 
-  /* ---------- dialog ---------- */
-  dialog#dialog-fonte{border:none;border-radius:16px;padding:22px;max-width:440px;width:calc(100% - 32px);
-    color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.18);}
-  dialog#dialog-fonte::backdrop{background:rgba(17,21,10,.45);}
-  .dialog-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:4px;}
-  .dialog-head h3{font-size:1.05rem;margin:0;}
-  #dialog-chiudi{border:none;background:none;cursor:pointer;color:var(--muted);padding:2px;flex:none;}
-  #dialog-chiudi svg{width:18px;height:18px;}
-  .dialog-sez-lab{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;
-    color:var(--muted);margin:14px 0 3px;}
-  dialog#dialog-fonte p{margin:0;font-size:.9rem;line-height:1.55;}
-  .dialog-link a{color:var(--accent);}
+  /* ---------- entry point assistente ---------- */
+  .assist-entry{margin-top:18px;padding-top:16px;border-top:1px solid rgba(17,21,10,.1);
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  .assist-entry p{margin:0;font-size:.86rem;color:var(--muted);}
+  .btn-spiega{font-family:inherit;font-size:.82rem;font-weight:600;color:var(--accent);
+    background:none;border:1px solid var(--accent);border-radius:8px;padding:7px 14px;
+    cursor:pointer;white-space:nowrap;}
+  .btn-spiega:hover{background:var(--accent);color:#fff;}
+  .btn-spiega:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .link-spiega{font-family:inherit;font-size:.74rem;font-weight:600;color:var(--muted);
+    background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px 8px;
+    cursor:pointer;margin-left:8px;white-space:nowrap;}
+  .link-spiega:hover,.link-spiega:focus-visible{color:var(--accent);border-color:var(--accent);}
+  .link-spiega:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+
+  /* ---------- assistente: drawer (desktop) / bottom sheet (mobile) ---------- */
+  dialog#assistente{border:none;padding:0;color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.22);
+    margin:0 0 0 auto;height:100vh;max-height:100vh;width:min(420px,92vw);
+    flex-direction:column;border-radius:0;}
+  dialog#assistente:not([open]){display:none;}
+  dialog#assistente[open]{display:flex;}
+  dialog#assistente::backdrop{background:rgba(17,21,10,.4);}
+  .assist-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+    padding:18px 20px;border-bottom:1px solid var(--border);flex:none;}
+  .assist-head h2{font-size:1.05rem;margin:0 0 3px;}
+  .assist-head .assist-sub{font-size:.8rem;color:var(--muted);margin:0;}
+  #assist-chiudi{border:none;background:none;cursor:pointer;color:var(--muted);padding:2px;flex:none;}
+  #assist-chiudi svg{width:20px;height:20px;}
+  #assist-chiudi:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:4px;}
+
+  .assist-corpo{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px;}
+  .assist-msg{max-width:88%;font-size:.9rem;line-height:1.5;border-radius:12px;padding:10px 13px;}
+  .assist-msg.utente{align-self:flex-end;background:var(--text);color:#fff;border-bottom-right-radius:3px;}
+  .assist-msg.assistente{align-self:flex-start;background:var(--accent-bg);color:var(--text);
+    border-bottom-left-radius:3px;}
+  .assist-msg.assistente strong{color:var(--accent);}
+  .assist-msg p{margin:0 0 8px;}
+  .assist-msg p:last-child{margin-bottom:0;}
+
+  .assist-suggerite{display:flex;flex-direction:column;gap:8px;padding:0 20px 14px;flex:none;}
+  .assist-suggerite button{font-family:inherit;text-align:left;font-size:.84rem;color:var(--text);
+    background:#fff;border:1px solid var(--border);border-radius:9px;padding:9px 12px;cursor:pointer;}
+  .assist-suggerite button:hover,.assist-suggerite button:focus-visible{border-color:var(--accent);color:var(--accent);}
+  .assist-suggerite button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+
+  #assist-form{display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border);flex:none;}
+  #assist-input{flex:1;font-family:inherit;font-size:.9rem;padding:10px 12px;border:1.5px solid #CFCEC5;
+    border-radius:9px;background:#fff;color:var(--text);min-width:0;}
+  #assist-input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  #assist-form button{font-family:inherit;font-size:.86rem;font-weight:700;padding:10px 16px;
+    border-radius:9px;border:none;background:var(--text);color:#fff;cursor:pointer;flex:none;}
+  #assist-form button:hover{opacity:.9}
+  #assist-form button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .assist-disclaimer{font-size:.72rem;color:var(--muted);padding:0 20px 16px;margin:0;flex:none;}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+  @media (max-width:680px){
+    dialog#assistente{margin:auto 0 0;width:100%;height:auto;max-height:88vh;
+      border-radius:16px 16px 0 0;}
+  }
 
   @media (prefers-reduced-motion: no-preference){
     .netto-annuale{transition:opacity .2s;}
@@ -246,6 +291,10 @@
       </span>
     </div>
     <p class="insight" id="insight-testo"></p>
+    <div class="assist-entry">
+      <p>Hai dubbi sul risultato?</p>
+      <button type="button" class="btn-spiega" id="btn-assist-entry">Chiedi all'assistente</button>
+    </div>
   </section>
 
   <!-- CASCATA -->
@@ -416,25 +465,24 @@
   <footer class="page">Prototipo per il task Product Builder — Jet HR · regole 2026, fonti verificate il 31 agosto 2026</footer>
 </div>
 
-<dialog id="dialog-fonte">
-  <div class="dialog-head">
-    <h3 id="dialog-titolo"></h3>
-    <button type="button" id="dialog-chiudi" aria-label="Chiudi">
+<dialog id="assistente" aria-labelledby="assist-titolo">
+  <div class="assist-head">
+    <div>
+      <h2 id="assist-titolo">Assistente alla simulazione</h2>
+      <p class="assist-sub">Spiega i passaggi del calcolo e le singole voci della simulazione.</p>
+    </div>
+    <button type="button" id="assist-chiudi" aria-label="Chiudi assistente">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <p class="dialog-sez-lab">Cosa dice la norma</p>
-  <p id="dialog-norma"></p>
-  <p class="dialog-sez-lab">Perché entra in gioco qui</p>
-  <p id="dialog-meccanismo"></p>
-  <div id="dialog-considerazione-wrap">
-    <p class="dialog-sez-lab">Da considerare</p>
-    <p id="dialog-considerazione"></p>
-  </div>
-  <div id="dialog-fonte-wrap">
-    <p class="dialog-sez-lab">Fonte</p>
-    <p id="dialog-fonte-link" class="dialog-link"></p>
-  </div>
+  <div class="assist-corpo" id="assist-corpo" role="log" aria-live="polite" aria-label="Conversazione con l'assistente"></div>
+  <div class="assist-suggerite" id="assist-suggerite"></div>
+  <form id="assist-form">
+    <label for="assist-input" class="sr-only">Scrivi una domanda sulla simulazione</label>
+    <input type="text" id="assist-input" placeholder="Scrivi una domanda sulla simulazione..." autocomplete="off">
+    <button type="submit">Invia</button>
+  </form>
+  <p class="assist-disclaimer">Le risposte dell'assistente si basano sulla simulazione e sulle assunzioni del modello. Non costituiscono consulenza fiscale.</p>
 </dialog>
 
 <script src="motore.js"></script>
@@ -595,54 +643,223 @@
     }
   };
 
-  var dialogFonte = document.getElementById('dialog-fonte');
-  function riempiDialog(titolo, contenuto, fonteHtml){
-    document.getElementById('dialog-titolo').textContent = titolo;
-    document.getElementById('dialog-norma').textContent = contenuto ? contenuto.norma : '';
-    document.getElementById('dialog-meccanismo').textContent = contenuto ? contenuto.meccanismo : '';
-    var consEl = document.getElementById('dialog-considerazione');
-    if (contenuto && contenuto.considerazione) {
-      consEl.textContent = contenuto.considerazione;
-      consEl.parentElement.hidden = false;
-    } else {
-      consEl.parentElement.hidden = true;
-    }
-    var fonteWrap = document.getElementById('dialog-fonte-wrap');
-    if (fonteHtml) {
-      document.getElementById('dialog-fonte-link').innerHTML = fonteHtml;
-      fonteWrap.hidden = false;
-    } else {
-      fonteWrap.hidden = true;
-    }
-    dialogFonte.showModal();
+  // ---------- Stato ----------
+  var S = { calc: null, ral: null, costo: null, mensilitaRisultato: 13 };
+
+  // ---------- Assistente alla simulazione ----------
+  // Livello di sola spiegazione sopra il motore: legge esclusivamente S.calc
+  // e S.costo, gia' prodotti da Motore.calcola()/costoAzienda(). Non
+  // ricalcola mai una formula qui dentro; per un confronto con un'altra RAL
+  // chiama Motore.calcola() direttamente (stesso motore, nuovo input), mai
+  // una formula riscritta a mano.
+  var assistDialog = document.getElementById('assistente');
+  var assistCorpo = document.getElementById('assist-corpo');
+  var assistSuggerite = document.getElementById('assist-suggerite');
+  var assistForm = document.getElementById('assist-form');
+  var assistInput = document.getElementById('assist-input');
+
+  function escapeHtml(s){
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
   }
-  function apriSpiegazione(id, fonteId, ctx){
+  function p(testo){ return '<p>' + testo + '</p>'; }
+
+  function assistAggiungi(ruolo, html){
+    var div = document.createElement('div');
+    div.className = 'assist-msg ' + ruolo;
+    div.innerHTML = html;
+    assistCorpo.appendChild(div);
+    assistCorpo.scrollTop = assistCorpo.scrollHeight;
+  }
+
+  function assistSuggeriteDefault(){
+    if (!S.calc) return [];
+    var sugg = ['Perché pago questi contributi?', 'Perché ho pagato questa IRPEF?', 'Quanto mi resta con 12 mensilità invece di 13?'];
+    if (S.costo) sugg.push('Quanto costa questa RAL all\'azienda?');
+    return sugg;
+  }
+
+  function assistMostraSuggerite(lista){
+    assistSuggerite.innerHTML = '';
+    lista.forEach(function(testo){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = testo;
+      btn.addEventListener('click', function(){ assistInvia(testo); });
+      assistSuggerite.appendChild(btn);
+    });
+  }
+
+  function assistIntro(){
+    assistCorpo.innerHTML = '';
+    if (!S.calc) {
+      assistAggiungi('assistente', p('Calcola prima una simulazione: dopo potrò spiegarti nel dettaglio le singole voci e il risultato, usando i numeri del tuo caso.'));
+      assistMostraSuggerite([]);
+      return;
+    }
+    assistAggiungi('assistente', p('Ciao. Posso spiegarti come si arriva dalla RAL di ' + eur(S.calc.ral) + ' al netto di ' + eur(S.calc.netto) + ', voce per voce. Cosa vuoi capire meglio?'));
+    assistMostraSuggerite(assistSuggeriteDefault());
+  }
+
+  function apriAssistente(seed){
+    assistIntro();
+    if (seed) {
+      assistAggiungi('utente', escapeHtml(seed.domanda));
+      assistAggiungi('assistente', seed.risposta);
+      assistMostraSuggerite(assistSuggeriteDefault());
+    }
+    if (!assistDialog.open) assistDialog.showModal();
+    assistInput.focus();
+  }
+
+  function spiegaVoce(id, ctx){
     var gen = SPIEGAZIONI[id];
-    var contenuto = gen ? gen(ctx) : null;
-    var fonte = FONTI[fonteId];
-    var fonteHtml = fonte ? (fonte[1] ? '<a href="' + fonte[1] + '" target="_blank" rel="noopener">' + fonte[0] + '</a>' : fonte[0]) : '';
-    var titoloEl = document.querySelector('[data-passo-id="' + id + '"] .nome span') || null;
-    riempiDialog(titoloEl ? titoloEl.textContent : id, contenuto, fonteHtml);
+    if (!gen || !ctx) return null;
+    var c = gen(ctx);
+    var html = p(c.norma) + p(c.meccanismo);
+    if (c.considerazione) html += p(c.considerazione);
+    return html;
   }
-  function apriGenerico(tipo){
+  function spiegaGenerico(tipo){
+    var g = GENERICI[tipo];
+    if (!g) return null;
+    var html = p(g.norma) + p(g.meccanismo);
+    if (g.considerazione) html += p(g.considerazione);
+    return html;
+  }
+
+  function apriConVoce(id, tipoCtx){
+    var ctx = tipoCtx === 'costo' ? S.costo : S.calc;
+    if (!ctx) return;
+    var label = tipoCtx === 'costo'
+      ? ((ctx.voci.find(function(v){ return v.id === id; }) || {}).label || id)
+      : ((passiCascata(S.calc).find(function(x){ return x.id === id; }) || {}).nome || id);
+    var risposta = spiegaVoce(id, ctx) || p('Non ho una spiegazione dettagliata per questa voce.');
+    apriAssistente({ domanda: 'Perché si applica "' + label + '"?', risposta: risposta });
+  }
+  function apriConGenerico(tipo){
     var g = GENERICI[tipo];
     if (!g) return;
-    riempiDialog(g.titolo, g, '');
+    apriAssistente({ domanda: g.titolo + '?', risposta: spiegaGenerico(tipo) });
   }
-  document.getElementById('dialog-chiudi').addEventListener('click', function(){ dialogFonte.close(); });
-  dialogFonte.addEventListener('click', function(ev){ if (ev.target === dialogFonte) dialogFonte.close(); });
+
+  document.getElementById('assist-chiudi').addEventListener('click', function(){ assistDialog.close(); });
+  assistDialog.addEventListener('click', function(ev){ if (ev.target === assistDialog) assistDialog.close(); });
+  document.getElementById('btn-assist-entry').addEventListener('click', function(){ apriAssistente(); });
   document.addEventListener('click', function(ev){
     var t = ev.target.closest('.tag[data-info]');
-    if (t) apriGenerico(t.dataset.info);
+    if (t) apriConGenerico(t.dataset.info);
   });
   document.addEventListener('keydown', function(ev){
     if (ev.key !== 'Enter' && ev.key !== ' ') return;
     var t = ev.target.closest('.tag[data-info]');
-    if (t) { ev.preventDefault(); apriGenerico(t.dataset.info); }
+    if (t) { ev.preventDefault(); apriConGenerico(t.dataset.info); }
   });
 
-  // ---------- Stato ----------
-  var S = { calc: null, ral: null, mensilitaRisultato: 13 };
+  // ---- Motore di risposta deterministico (domande libere) ----
+  function normalizza(s){
+    return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9\s]/g, ' ');
+  }
+  function estraiNumeri(testo){
+    var trovati = testo.match(/\d[\d.,]*\d|\d/g) || [];
+    return trovati.map(parseValore).filter(function(n){ return n !== null && !isNaN(n) && n >= 0; });
+  }
+  function rispondiFuoriPerimetro(motivo){
+    return p('Questa domanda esce dal perimetro di questa simulazione: il modello copre solo il caso standard dichiarato (dipendente privato, tempo indeterminato, Milano, nessun familiare a carico, nessuna agevolazione). ' + motivo + ' Preferisco dirtelo piuttosto che inventare un numero.');
+  }
+  function rispondiRiepilogo(calc){
+    var passi = passiCascata(calc);
+    var righe = passi.map(function(pa){
+      if (pa.id === 'ral') return 'si parte da una RAL di ' + eur(pa.valore);
+      if (pa.finale) return 'si arriva a un netto di ' + eur(pa.valore);
+      var verbo = pa.segno < 0 ? 'si tolgono ' : pa.segno > 0 ? 'si aggiungono ' : 'si calcola ';
+      return verbo + eur(Math.abs(pa.valore)) + ' (' + pa.nome.toLowerCase() + ')';
+    });
+    return p('In sintesi: ' + righe.join('; ') + '.');
+  }
+  function rispondiDetrazioni(calc){
+    var d = calc.voci.find(function(v){ return v.id === 'irpef'; }).dettaglio;
+    var tot = d.detrLavUsata + d.detrUltUsata;
+    if (tot <= 0) return p('In questa simulazione non risultano detrazioni applicate.');
+    var parti = [];
+    if (d.detrLavUsata > 0) parti.push('la detrazione per lavoro dipendente (' + eur(d.detrLavUsata) + ')');
+    if (d.detrUltUsata > 0) parti.push('l\'ulteriore detrazione per il cuneo fiscale (' + eur(d.detrUltUsata) + ')');
+    return p('Le detrazioni applicate riducono l\'IRPEF lorda di ' + eur(tot) + ' in totale: ' + parti.join(' e ') + '.');
+  }
+  function rispondiMensilita(calc){
+    return p('Il netto annuale di ' + eur(calc.netto) + ' diviso per il numero di mensilità: ' +
+      eur(calc.netto/12) + ' su 12, ' + eur(calc.netto/13) + ' su 13, ' + eur(calc.netto/14) + ' su 14. È una media, non l\'importo del singolo cedolino.');
+  }
+  function rispondiNetto(calc){
+    var quota = calc.ral > 0 ? (calc.netto/calc.ral*100) : 0;
+    return p('Con una RAL di ' + eur(calc.ral) + ', il netto annuale stimato è ' + eur(calc.netto) + ' (circa il ' + quota.toFixed(0) + '% della RAL), pari a ' + eur(calc.netto/S.mensilitaRisultato) + ' al mese su ' + S.mensilitaRisultato + ' mensilità.');
+  }
+  function rispondiCostoAzienda(costo){
+    var righe = costo.voci.map(function(v){ return v.label + ': ' + eur(v.importo); }).join(', ');
+    return p('Il costo stimato per l\'azienda su questa RAL è ' + eur(costo.totale) + ' l\'anno (' + righe + '). È una stima dichiarata, non un calcolo verificato come il netto: l\'INAIL usa un tasso indicativo, non quello reale della lavorazione dell\'azienda.');
+  }
+  function rispondiConfrontoRal(numeri){
+    if (numeri.length < 1) return null;
+    var ralA = numeri.length >= 2 ? numeri[0] : S.ral;
+    var ralB = numeri.length >= 2 ? numeri[1] : numeri[0];
+    var a = Motore.calcola(ralA), b = Motore.calcola(ralB);
+    if (a.errore || b.errore) return p('Una delle due RAL non è calcolabile con questo modello (' + (a.errore || b.errore) + ').');
+    var delta = b.netto - a.netto;
+    return p('RAL ' + eur(ralA) + ' → netto ' + eur(a.netto) + '. RAL ' + eur(ralB) + ' → netto ' + eur(b.netto) + '.') +
+      p('Differenza di netto: ' + (delta >= 0 ? '+' : '') + eur(delta) + ' l\'anno.');
+  }
+
+  function rispondiAssistente(testoOriginale){
+    if (!S.calc) return p('Calcola prima una simulazione inserendo una RAL: dopo potrò rispondere usando i numeri reali del tuo caso.');
+    var calc = S.calc, costo = S.costo, t = normalizza(testoOriginale);
+
+    if (/\b(figli|coniuge|moglie|marito|carico)\b/.test(t) || /\bfamiliar/.test(t)) return rispondiFuoriPerimetro('Il modello non considera familiari a carico né altri redditi del nucleo.');
+    if (/\b(roma|torino|napoli|bologna|firenze|altro comune|altra citta|altra regione)\b/.test(t)) return rispondiFuoriPerimetro('Addizionale regionale e comunale sono calcolate solo per Lombardia/Milano.');
+    if (/\b(ccnl|contratto collettivo|inquadramento|livello contrattuale|fondo sanitario|fondo pensione|previdenza complementare)\b/.test(t)) return rispondiFuoriPerimetro('Il modello usa la sola contribuzione IVS ordinaria e non conosce il tuo CCNL o settore.');
+    if (/\b(part.?time|tempo determinato|partita iva|autonomo|libero professionista|co.?co.?co)\b/.test(t)) return rispondiFuoriPerimetro('Il modello copre solo il lavoro dipendente privato a tempo pieno e indeterminato.');
+
+    if (/\b(confront|differenz|paragon)/.test(t) || /\bvs\b/.test(t) || /\bcontro\b/.test(t) ||
+        /\b(se|con)\b.*\bral\b/.test(t) || /\bcambierebbe\b/.test(t)) {
+      var numeri = estraiNumeri(testoOriginale);
+      var confronto = rispondiConfrontoRal(numeri);
+      if (confronto) return confronto;
+    }
+
+    if (/\b(riassum|riepilog)/.test(t) || /\b(spiega tutto|tutti i passaggi|come funziona il calcolo)\b/.test(t)) return rispondiRiepilogo(calc);
+    if (/\bcontribut/.test(t)) return spiegaVoce('ivs', calc) || rispondiRiepilogo(calc);
+    if (/\bimponibil/.test(t)) return spiegaVoce('imponibile', calc) || rispondiRiepilogo(calc);
+    if (/\bdetrazion/.test(t)) return rispondiDetrazioni(calc);
+    if (/\bregional/.test(t)) return spiegaVoce('addreg', calc) || p('In questa simulazione l\'addizionale regionale non risulta applicata.');
+    if (/\bcomunal/.test(t)) return spiegaVoce('addcom', calc) || p('In questa simulazione l\'addizionale comunale non risulta applicata: sotto 23.000 € di imponibile a Milano è esente.');
+    if (/\b(bonus|cuneo)\b/.test(t)) return spiegaVoce('bonus', calc) || p('In questa simulazione il bonus cuneo fiscale non si applica: il reddito imponibile è sopra la soglia prevista (20.000 €).');
+    if (/\b(trattamento integrativo|integrativo)\b/.test(t)) return spiegaVoce('ti', calc) || p('In questa simulazione il trattamento integrativo non si applica: serve un imponibile fino a 15.000 €.');
+    if (/\birpef\b|\btasse\b|\bimposta\b|\bimposte\b/.test(t)) return spiegaVoce('irpef', calc);
+    if (/\bmensilit/.test(t) || /\b12\b/.test(t) || /\b13\b/.test(t) || /\b14\b/.test(t)) return rispondiMensilita(calc);
+    if (/\b(costo azienda|costa all.azienda|costo per l.azienda|datore|assumere|assunzione)\b/.test(t)) {
+      return costo ? rispondiCostoAzienda(costo) : p('Il costo azienda non è ancora disponibile per questa simulazione.');
+    }
+    if (/\b(netto|stipendio|prendo|guadagn|arriva|resta|mese)\b/.test(t)) return rispondiNetto(calc);
+    if (/\b(chi sei|cosa fai|cosa puoi fare|cosa sai fare)\b/.test(t)) {
+      return p('Spiego i passaggi e le singole voci di questa simulazione, usando solo i numeri già calcolati dal motore. Non sono un consulente fiscale e non calcolo casi diversi da quello descritto nelle assunzioni.');
+    }
+    return null;
+  }
+
+  function assistInvia(testo){
+    testo = (testo || '').trim();
+    if (!testo) return;
+    assistAggiungi('utente', escapeHtml(testo));
+    var risposta = rispondiAssistente(testo);
+    if (!risposta) risposta = p('Non ho una risposta pronta per questa domanda. Posso spiegarti i contributi, l\'imponibile, l\'IRPEF, le detrazioni, le addizionali, il netto mensile o il costo per l\'azienda.');
+    assistAggiungi('assistente', risposta);
+  }
+  assistForm.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var val = assistInput.value;
+    assistInput.value = '';
+    assistInvia(val);
+  });
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var form = document.getElementById('form-input');
@@ -720,7 +937,7 @@
       li.setAttribute('data-passo-id', p.id);
       var infoBtn = '';
       if (SPIEGAZIONI[p.id] && p.fonte) {
-        infoBtn = '<button type="button" class="btn-info" aria-label="Perché si applica: ' + p.nome + '" data-spiega="' + p.id + '" data-fonte="' + p.fonte + '"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></button>';
+        infoBtn = ' <button type="button" class="link-spiega" aria-label="Spiega: ' + p.nome + '" data-spiega="' + p.id + '">Spiega</button>';
       }
       li.innerHTML =
         '<span class="num-step">' + (p.finale ? '' : String(i + 1).padStart(2,'0')) + '</span>' +
@@ -730,7 +947,7 @@
       lista.appendChild(li);
     });
     lista.querySelectorAll('button[data-spiega]').forEach(function(btn){
-      btn.addEventListener('click', function(){ apriSpiegazione(btn.dataset.spiega, btn.dataset.fonte, calc); });
+      btn.addEventListener('click', function(){ apriConVoce(btn.dataset.spiega, 'calc'); });
     });
 
     // Riepilogo tabella (stesse voci della cascata, esclusa RAL/NETTO gia' impliciti)
@@ -772,7 +989,7 @@
   }
 
   function renderCostoAzienda(ral){
-    var costo = Motore.costoAzienda(ral);
+    var costo = S.costo;
     document.getElementById('costo-azienda-tot').textContent = eur(costo.totale) + ' l\'anno';
     var corpo = document.getElementById('tabella-costo-azienda');
     corpo.innerHTML = '';
@@ -783,7 +1000,7 @@
       var tr = document.createElement('tr');
       var fonte = FONTI[v.fonte];
       var link = fonte ? (fonte[1] ? '<a href="' + fonte[1] + '" target="_blank" rel="noopener">' + fonte[0] + '</a>' : fonte[0]) : '';
-      var infoBtn = SPIEGAZIONI[v.id] ? '<button type="button" class="btn-info" aria-label="Perché si applica: ' + v.label + '" data-spiega-costo="' + v.id + '"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></button>' : '';
+      var infoBtn = SPIEGAZIONI[v.id] ? ' <button type="button" class="link-spiega" aria-label="Spiega: ' + v.label + '" data-spiega-costo="' + v.id + '">Spiega</button>' : '';
       tr.innerHTML = '<td>' + v.label + infoBtn + '<span style="display:block;font-size:.74rem;color:var(--muted);margin-top:2px;">' + link + '</span></td>' +
         '<td class="importo pos">+' + eur(v.importo) + '</td>';
       corpo.appendChild(tr);
@@ -793,7 +1010,7 @@
     totRiga.innerHTML = '<td>Costo azienda</td><td class="importo">' + eur(costo.totale) + '</td>';
     corpo.appendChild(totRiga);
     corpo.querySelectorAll('button[data-spiega-costo]').forEach(function(btn){
-      btn.addEventListener('click', function(){ apriSpiegazione(btn.dataset.spiegaCosto, costo.voci.find(function(v){return v.id===btn.dataset.spiegaCosto;}).fonte, costo); });
+      btn.addEventListener('click', function(){ apriConVoce(btn.dataset.spiegaCosto, 'costo'); });
     });
 
     var conRal = Motore.calcola(ral + 1000), senzaRal = Motore.calcola(ral);
@@ -822,9 +1039,10 @@
     var calc = Motore.calcola(ral);
     if (calc.errore) { mostraErrore(calc.errore); return; }
     boxErrore.hidden = true;
-    S.calc = calc; S.ral = ral;
+    S.calc = calc; S.ral = ral; S.costo = Motore.costoAzienda(ral);
     renderRisultato(calc);
     renderCostoAzienda(ral);
+    if (assistDialog.open) assistIntro();
     sezRisultato.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   }
 
