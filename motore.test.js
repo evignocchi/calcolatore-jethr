@@ -127,3 +127,36 @@ test('calcolo inverso: netto 0 -> RAL 0, netto oltre il massimo copribile viene 
   const nettoMax = M.calcola(M.RAL_MASSIMA).netto;
   assert.ok(M.ralPerNetto(nettoMax + 1).errore, 'un netto irraggiungibile entro 1.000.000 di RAL deve dare errore, non un numero a caso');
 });
+
+test('aliquota marginale: l\'ultimo scaglione raggiunto, non una media', () => {
+  assert.equal(M.aliquotaMarginale(28000), 0.23, 'esattamente alla soglia appartiene ancora al primo scaglione');
+  assert.equal(M.aliquotaMarginale(28000.01), 0.33);
+  assert.equal(M.aliquotaMarginale(50000), 0.33);
+  assert.equal(M.aliquotaMarginale(50000.01), 0.43);
+});
+
+test('piano mensilità (12): nessuna mensilità aggiuntiva, importo uguale ogni mese', () => {
+  const r = M.calcola(35000);
+  const p = M.pianoMensilita(r, 12);
+  assert.equal(p.extra.length, 0);
+  assert.equal(p.importoOrdinario, M.centesimo(r.netto / 12));
+});
+
+test('piano mensilità (13): la tredicesima è più bassa delle mensilità ordinarie e il totale torna al netto', () => {
+  const r = M.calcola(35000);
+  const p = M.pianoMensilita(r, 13);
+  assert.equal(p.extra.length, 1);
+  assert.ok(p.extra[0] < p.importoOrdinario, 'la tredicesima, senza detrazioni proprie, deve risultare più bassa');
+  const ricostruito = M.centesimo(p.importoOrdinario * 12 + p.extra[0]);
+  vicino(ricostruito, r.netto, 0.05);
+});
+
+test('piano mensilità (14): due mensilità aggiuntive identiche, entrambe più basse delle ordinarie', () => {
+  const r = M.calcola(50000);
+  const p = M.pianoMensilita(r, 14);
+  assert.equal(p.extra.length, 2);
+  assert.equal(p.extra[0], p.extra[1], 'tredicesima e quattordicesima usano la stessa convenzione di tassazione');
+  assert.ok(p.extra[0] < p.importoOrdinario);
+  const ricostruito = M.centesimo(p.importoOrdinario * 12 + p.extra[0] + p.extra[1]);
+  vicino(ricostruito, r.netto, 0.05);
+});

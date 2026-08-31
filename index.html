@@ -73,6 +73,19 @@
   .netto-mensile-riga select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
   .insight{margin:18px 0 0;font-size:.94rem;color:var(--text);}
 
+  .mensilita-piano{margin-top:16px;padding-top:14px;border-top:1px solid rgba(17,21,10,.12);}
+  .mensilita-piano-titolo{display:flex;align-items:center;gap:8px;font-size:.82rem;
+    font-weight:600;color:var(--text);margin:0 0 10px;}
+  .tag.stima-illustrativa{background:var(--stima-bg);color:var(--stima-fg);cursor:default;}
+  .tag.stima-illustrativa:hover{box-shadow:none;}
+  .mensilita-piano-barre{display:flex;gap:3px;align-items:flex-end;height:40px;}
+  .mensilita-piano-barre .barra{flex:1;min-width:4px;border-radius:3px 3px 0 0;background:var(--accent);}
+  .mensilita-piano-barre .barra.extra{background:var(--stima-fg);opacity:.6;}
+  .mensilita-piano-caption{margin:8px 0 0;font-size:.78rem;color:var(--muted);}
+
+  .vedi-costo-riga{margin-top:12px;font-size:.82rem;color:var(--muted);}
+  .vedi-costo-riga a{font-weight:600;}
+
   /* ---------- CASCATA ---------- */
   .cascata h2{font-size:1.3rem;margin:0 0 24px;}
   .passi{list-style:none;margin:0;padding:0;}
@@ -308,11 +321,19 @@
         </select>
       </span>
     </div>
+
+    <div class="mensilita-piano" id="mensilita-piano" hidden>
+      <p class="mensilita-piano-titolo">Come si distribuisce nell'anno <span class="tag stima-illustrativa">stima illustrativa</span></p>
+      <div class="mensilita-piano-barre" id="mensilita-piano-barre"></div>
+      <p class="mensilita-piano-caption" id="mensilita-piano-caption"></p>
+    </div>
+
     <p class="insight" id="insight-testo"></p>
     <div class="assist-entry">
       <p>Hai dubbi sul risultato?</p>
       <button type="button" class="btn-spiega" id="btn-assist-entry">Chiedi all'assistente</button>
     </div>
+    <p class="vedi-costo-riga">Vuoi vedere anche quanto costa questa RAL all'azienda? <a href="#sez-costo-azienda" id="link-costo-azienda">Stima del costo azienda →</a></p>
   </section>
 
   <!-- CASCATA -->
@@ -888,8 +909,54 @@
 
   document.getElementById('sel-mensilita-risultato').addEventListener('change', function(){
     S.mensilitaRisultato = parseInt(this.value, 10);
-    if (S.calc) document.getElementById('netto-mensile').textContent = eur(S.calc.netto / S.mensilitaRisultato);
+    if (S.calc) {
+      document.getElementById('netto-mensile').textContent = eur(S.calc.netto / S.mensilitaRisultato);
+      renderMensilitaPiano(S.calc, S.mensilitaRisultato);
+    }
   });
+
+  document.getElementById('link-costo-azienda').addEventListener('click', function(ev){
+    ev.preventDefault();
+    var det = document.getElementById('sez-costo-azienda');
+    det.open = true;
+    det.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  });
+
+  // Piano illustrativo delle mensilità: quanto arriva in ciascuna mensilità
+  // ordinaria e nelle eventuali mensilità aggiuntive (Motore.pianoMensilita,
+  // gia' calcolato sul netto verificato — vedi processo/assunzioni-e-fonti.md
+  // per la convenzione usata e i suoi limiti).
+  function renderMensilitaPiano(calc, numeroMensilita){
+    var wrap = document.getElementById('mensilita-piano');
+    if (numeroMensilita === 12) { wrap.hidden = true; return; }
+    var piano = Motore.pianoMensilita(calc, numeroMensilita);
+    var barre = document.getElementById('mensilita-piano-barre');
+    barre.innerHTML = '';
+    var maxAltezza = 40;
+    for (var i = 0; i < piano.ordinarie; i++) {
+      var b = document.createElement('div');
+      b.className = 'barra';
+      b.style.height = maxAltezza + 'px';
+      b.title = 'Mensilità ordinaria: circa ' + eur(piano.importoOrdinario);
+      barre.appendChild(b);
+    }
+    piano.extra.forEach(function(v, i){
+      var b = document.createElement('div');
+      b.className = 'barra extra';
+      var h = Math.max(6, Math.round(v / piano.importoOrdinario * maxAltezza));
+      b.style.height = h + 'px';
+      var nome = numeroMensilita === 14 ? (i === 0 ? 'Tredicesima' : 'Quattordicesima') : 'Tredicesima';
+      b.title = nome + ' (stima): circa ' + eur(v);
+      barre.appendChild(b);
+    });
+    var frase = numeroMensilita === 14
+      ? 'la tredicesima e la quattordicesima sono più basse perché tassate'
+      : 'la tredicesima è più bassa perché tassata';
+    document.getElementById('mensilita-piano-caption').textContent =
+      'Le 12 mensilità ordinarie sono circa ' + eur(piano.importoOrdinario) + ' ciascuna; ' + frase +
+      ' all\'aliquota marginale, senza le detrazioni mensili. Le addizionali non sono legate a un mese preciso: la rateizzazione dipende dal sostituto d\'imposta, non è fissata per legge.';
+    wrap.hidden = false;
+  }
 
   // Costruisce il percorso narrativo RAL -> netto usando solo campi già
   // calcolati dal motore (calc.imponibile, calc.irpefLorda, ecc.): nessuna
@@ -932,6 +999,7 @@
     document.getElementById('titolo-cascata').textContent = 'Come si trasforma una RAL di ' + eur(calc.ral) + ' in netto?';
     animaNumero(document.getElementById('netto-annuale'), calc.netto, eur);
     document.getElementById('netto-mensile').textContent = eur(calc.netto / S.mensilitaRisultato);
+    renderMensilitaPiano(calc, S.mensilitaRisultato);
 
     var quota = calc.ral > 0 ? (calc.netto / calc.ral * 100) : 0;
     document.getElementById('insight-testo').textContent =

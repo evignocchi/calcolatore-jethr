@@ -132,6 +132,48 @@
     return imp * K.milano.aliquota;
   }
 
+  // Aliquota marginale: quella dell'ultimo scaglione raggiunto
+  // dall'imponibile annuo (non una media pesata sugli scaglioni
+  // attraversati). E' l'aliquota con cui i software paghe tassano una
+  // mensilita' aggiuntiva (tredicesima/quattordicesima), non gli scaglioni
+  // progressivi ricalcolati da zero.
+  function aliquotaMarginale(imp) {
+    var scaglioni = K.irpef.scaglioni;
+    for (var i = 0; i < scaglioni.length; i++) {
+      if (imp <= scaglioni[i][0]) return scaglioni[i][1];
+    }
+    return scaglioni[scaglioni.length - 1][1];
+  }
+
+  // Piano illustrativo delle mensilita': come il netto annuale (calc.netto,
+  // gia' verificato) si distribuisce tra le mensilita' ordinarie e le
+  // eventuali mensilita' aggiuntive (tredicesima/quattordicesima).
+  // Convenzione standard payroll: la mensilita' aggiuntiva e' tassata
+  // all'aliquota marginale, senza le detrazioni mensili (gia' "consumate"
+  // dalle 12 mensilita' ordinarie) — per questo e' sempre piu' bassa.
+  // Le addizionali regionale/comunale NON vengono isolate su un mese preciso:
+  // la loro rateizzazione e' una scelta del sostituto d'imposta, non fissata
+  // per legge, quindi restano spalmate implicitamente sulle mensilita'
+  // ordinarie. E' per questo che il risultato e' una stima illustrativa del
+  // pattern (utile a capire perche' la tredicesima "sembra" piu' bassa), non
+  // un cedolino verificato come il netto annuale da cui parte.
+  function pianoMensilita(calc, numeroMensilita) {
+    if (numeroMensilita === 12) {
+      return { ordinarie: 12, importoOrdinario: centesimo(calc.netto / 12), extra: [] };
+    }
+    var numeroExtra = numeroMensilita - 12;
+    var aliquota = aliquotaMarginale(calc.imponibile);
+    var lordoExtra = calc.ral / numeroMensilita;
+    var ivsExtra = lordoExtra * K.inps.aliquota;
+    var impExtra = lordoExtra - ivsExtra;
+    var nettoExtra = centesimo(lordoExtra - ivsExtra - impExtra * aliquota);
+    var extra = [];
+    for (var i = 0; i < numeroExtra; i++) extra.push(nettoExtra);
+    var totaleExtra = centesimo(nettoExtra * numeroExtra);
+    var importoOrdinario = centesimo((calc.netto - totaleExtra) / 12);
+    return { ordinarie: 12, importoOrdinario: importoOrdinario, extra: extra };
+  }
+
   function calcola(ralInput) {
     if (typeof ralInput !== 'number' || !isFinite(ralInput) || ralInput < 0) {
       return { errore: 'RAL non valida. Inserisci un numero maggiore o uguale a zero.' };
@@ -258,6 +300,8 @@
     trattamentoIntegrativo: trattamentoIntegrativo,
     addizionaleRegionale: addizionaleRegionale,
     addizionaleComunale: addizionaleComunale,
+    aliquotaMarginale: aliquotaMarginale,
+    pianoMensilita: pianoMensilita,
     centesimo: centesimo,
     RAL_MASSIMA: RAL_MASSIMA,
     K: K

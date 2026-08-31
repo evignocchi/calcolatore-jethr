@@ -96,16 +96,39 @@ sotto la legenda, con lo stesso importo già mostrato nella cascata.
 ## Mensilità
 
 Il brief chiede "netto annuale e mensile". Il risultato principale mostra la
-media su 13 mensilità (la più comune per un impiegato privato), dichiarando
-esplicitamente che è una media e non l'importo del singolo cedolino — la
-tredicesima non gode delle stesse detrazioni mensili e il conguaglio annuale
-riequilibra le differenze. La scelta fra 12/13/14 mensilità resta disponibile
-solo come parametro del calcolo inverso (netto mensile desiderato → RAL), non
-come variante del risultato principale: nel secondo passaggio di refinement
-del prodotto si è scelto di mostrare un solo numero mensile in prima vista,
-per non distrarre dal percorso RAL → netto, e di lasciare la scelta della
-mensilità dove serve davvero, cioè quando è l'utente a partire da un netto
-mensile obiettivo.
+media su 12, 13 o 14 mensilità a scelta (13 di default, la più comune per un
+impiegato privato), dichiarando esplicitamente che è una media e non
+l'importo del singolo cedolino. La stessa scelta di mensilità alimenta anche
+il calcolo inverso (netto mensile desiderato → RAL).
+
+### Piano mensilità: una stima illustrativa, non un cedolino
+
+Sotto il netto medio mensile, se la mensilità scelta è 13 o 14, un piccolo
+grafico mostra come il netto annuale si distribuisce tra le mensilità
+ordinarie e quelle aggiuntive (tredicesima, quattordicesima) — `Motore.
+pianoMensilita()`, che riusa il netto annuale già verificato, non lo
+ricalcola. Con 12 mensilità il grafico resta nascosto: non c'è nessuna
+mensilità aggiuntiva da mostrare.
+
+La convenzione usata per la mensilità aggiuntiva è quella standard dei
+software paghe italiani: stessa aliquota IVS del resto dell'anno, IRPEF
+all'**aliquota marginale** (quella dell'ultimo scaglione raggiunto
+dall'imponibile annuo, non gli scaglioni progressivi ricalcolati da zero) e
+**nessuna detrazione propria** — le detrazioni mensili sono già "consumate"
+dalle 12 mensilità ordinarie. Per questo la tredicesima risulta sempre più
+bassa delle mensilità ordinarie, un effetto reale e non un artefatto del
+modello.
+
+Quello che il grafico **non** prova a mostrare è la rateizzazione delle
+addizionali regionale e comunale su un mese preciso: a differenza
+dell'aliquota marginale sulla tredicesima, il numero di rate e il mese di
+partenza sono una scelta del sostituto d'imposta (del software paghe), non
+fissata dalla legge in modo univoco — esattamente la stessa ragione per cui
+il netto principale resta una media annua e non un cedolino. Le addizionali
+restano quindi implicitamente spalmate sulle mensilità ordinarie. Per questo
+il grafico è marcato **stima illustrativa**, un livello di fiducia più basso
+persino del costo azienda: utile a capire *perché* la tredicesima è più
+bassa, non un calendario di pagamenti preciso.
 
 ## Estensioni oltre il perimetro del brief
 
