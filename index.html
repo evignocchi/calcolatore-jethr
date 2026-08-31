@@ -34,7 +34,7 @@
   /* ---------- HERO ---------- */
   .hero{margin-top:48px;}
   .hero h1{font-size:2rem;margin:0 0 14px;letter-spacing:-.01em;}
-  .hero .sub{color:var(--muted);font-size:1.02rem;max-width:520px;margin:0 0 28px;}
+  .hero .sub{color:var(--muted);font-size:1.02rem;max-width:520px;margin:0 0 16px;}
 
   label.campo-label{display:block;font-size:.76rem;font-weight:700;text-transform:uppercase;
     letter-spacing:.04em;color:var(--muted);margin-bottom:8px;}
@@ -156,6 +156,9 @@
   .tag svg{width:11px;height:11px;}
   .tag:hover,.tag:focus-visible{box-shadow:0 0 0 2px currentColor inset;}
   .tag:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .tag.scope{background:var(--card);color:var(--muted);border:1px solid var(--border);cursor:default;}
+  .tag.scope:hover{box-shadow:none;}
+  .badge-riga{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;}
   .costo-tot{font-size:1.6rem;font-weight:800;margin:10px 0 2px;}
 
   /* ---------- ASSUNZIONI / FONTI ---------- */
@@ -267,6 +270,13 @@
   <section class="hero">
     <h1>Calcola lo stipendio netto a partire dalla RAL</h1>
     <p class="sub">Inserisci una RAL per ottenere una stima del netto annuale e mensile e vedere nel dettaglio come viene calcolata.</p>
+
+    <p class="badge-riga">
+      <span class="tag scope">Regole 2026</span>
+      <span class="tag scope">Settore privato</span>
+      <span class="tag scope">Tempo indeterminato</span>
+      <span class="tag scope">Milano</span>
+    </p>
 
     <form id="form-input">
       <label class="campo-label" for="input-ral">RAL</label>
