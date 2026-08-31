@@ -220,7 +220,7 @@
       <div class="riga-input">
         <div class="euro-input">
           <span>€</span>
-          <input type="text" id="input-ral" inputmode="decimal" value="35.000" autocomplete="off">
+          <input type="text" id="input-ral" inputmode="decimal" placeholder="Es. 35.000" autocomplete="off">
         </div>
         <button type="submit" class="cta">Calcola il netto</button>
       </div>
@@ -871,12 +871,18 @@
   });
 
   // ---------- URL state ----------
+  // Nessun valore precaricato: il campo resta vuoto e non si calcola nulla
+  // finché l'utente non inserisce una RAL, tranne quando arriva da un link
+  // condiviso con ?ral= — lì il valore è un'intenzione esplicita, non un
+  // default silenzioso.
   var qs = new URLSearchParams(location.search);
   if (qs.has('ral')){
     var ralQs = parseValore(qs.get('ral'));
-    if (ralQs !== null && !isNaN(ralQs) && ralQs >= 0) campoRal.value = qs.get('ral');
+    if (ralQs !== null && !isNaN(ralQs) && ralQs >= 0) {
+      campoRal.value = qs.get('ral');
+      esegui(ralQs);
+    }
   }
-  esegui(parseValore(campoRal.value));
 })();
 </script>
 </body>
