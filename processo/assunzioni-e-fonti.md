@@ -86,7 +86,12 @@ coincidono al centesimo.
 
 Arrotondamento al centesimo (metodo commerciale, mezzo in su) su ogni voce
 intermedia; il netto è la somma delle voci già arrotondate, non un totale
-ricalcolato a parte — così la tabella mostrata in pagina chiude sempre.
+ricalcolato a parte — così il grafico di scomposizione della RAL in pagina
+chiude sempre esattamente al 100%. Quando ci sono integrazioni di legge
+(bonus cuneo fiscale o trattamento integrativo, reddito imponibile basso), il
+segmento "Netto" del grafico le esclude — non provengono dalla RAL, quindi
+lasciarle dentro farebbe superare il 100% — e compaiono invece in una nota
+sotto la legenda, con lo stesso importo già mostrato nella cascata.
 
 ## Mensilità
 

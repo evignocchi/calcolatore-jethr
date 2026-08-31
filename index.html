@@ -92,7 +92,7 @@
   .passo.finale .valore{font-size:1.35rem;font-weight:800;}
   .freccia{text-align:center;color:var(--muted);font-size:1.15rem;line-height:1;padding:3px 0;}
 
-  /* ---------- RIEPILOGO ---------- */
+  /* ---------- RIEPILOGO / scomposizione grafica ---------- */
   .riepilogo h2{font-size:1.3rem;margin:0 0 8px;}
   .riepilogo .intro{color:var(--muted);font-size:.9rem;margin:0 0 18px;}
   table{width:100%;border-collapse:collapse;font-size:.92rem;}
@@ -102,30 +102,38 @@
   .neg{color:var(--neg);} .pos{color:var(--accent);}
   tr.finale td{border-top:2px solid var(--text);border-bottom:none;font-weight:800;padding-top:14px;
     font-size:1.05rem;}
-  .cella-nome{display:flex;align-items:center;gap:7px;}
-  .cella-nome svg{width:16px;height:16px;flex:none;color:var(--muted);}
 
-  /* ---------- METODOLOGIA ---------- */
-  .metodologia h2{font-size:1.3rem;margin:0 0 20px;}
+  .barra-scomp{display:flex;gap:2px;height:28px;border-radius:8px;overflow:hidden;background:var(--bg);}
+  .barra-scomp .segmento{height:100%;}
+  .legenda-scomp{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .legenda-scomp li{display:flex;align-items:center;gap:10px;font-size:.9rem;}
+  .legenda-scomp .swatch{width:11px;height:11px;border-radius:3px;flex:none;}
+  .legenda-scomp .etichetta{flex:1;color:var(--text);min-width:0;}
+  .legenda-scomp .valore{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text);}
+  .legenda-scomp .pct{color:var(--muted);font-weight:600;font-size:.84rem;}
+
+  /* ---------- METODOLOGIA (accordion) ---------- */
+  details.metodologia{margin-top:56px;}
+  details.metodologia > summary{font-size:1.3rem;font-weight:700;}
+  details.metodologia > summary::before{font-size:1rem;}
+  .metodologia-corpo{padding-top:14px;}
   .step-metodo{display:grid;grid-template-columns:34px 1fr;gap:2px 14px;margin-bottom:16px;}
   .step-metodo .n{font-weight:800;color:var(--accent);font-size:.95rem;}
   .step-metodo h3{font-size:.98rem;margin:0 0 3px;}
   .step-metodo p{color:var(--muted);font-size:.9rem;margin:0;}
 
-  /* ---------- DEBUG / accordion generico ---------- */
+  /* ---------- accordion generico ---------- */
   details{margin-top:16px;}
   details > summary{cursor:pointer;font-weight:600;font-size:.92rem;color:var(--text);
     padding:6px 0;list-style:none;display:flex;align-items:center;gap:6px;}
   details > summary::-webkit-details-marker{display:none;}
   details > summary::before{content:'▸';color:var(--muted);font-size:.8rem;transition:transform .15s;}
   details[open] > summary::before{transform:rotate(90deg);}
-  .ledger{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86rem;
-    background:var(--text);color:#EDEDE6;border-radius:10px;padding:16px 18px;margin-top:10px;
-    line-height:1.9;overflow-x:auto;}
-  .ledger .riga{display:flex;justify-content:space-between;gap:16px;white-space:nowrap;}
-  .ledger .op{color:#9B9A8E;width:1.2em;flex:none;}
-  .ledger .rf{flex:1;}
-  .ledger hr{border:none;border-top:1px solid #3A3D31;margin:6px 0;}
+
+  /* ---------- potrebbe interessarti anche ---------- */
+  .vedi-anche{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 28px 6px;}
+  .vedi-anche h2{font-size:1.05rem;margin:0;}
+  .vedi-anche details.secondario:first-of-type{margin-top:14px;}
 
   details.secondario{border-top:1px solid var(--border);padding-top:18px;}
   details.secondario > summary{font-weight:600;font-size:.94rem;}
@@ -305,23 +313,17 @@
 
   <!-- RIEPILOGO -->
   <section class="riepilogo" id="sez-riepilogo" hidden>
-    <h2>Riepilogo del calcolo</h2>
-    <p class="intro">Le stesse voci della simulazione, in forma di tabella.</p>
-    <table>
-      <thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
-      <tbody id="tabella-corpo"></tbody>
-    </table>
-
-    <details style="margin-top:20px">
-      <summary>Mostra il calcolo dettagliato</summary>
-      <div class="ledger" id="ledger"></div>
-    </details>
+    <h2>Come si scompone la RAL</h2>
+    <p class="intro">La stessa RAL, divisa tra netto, contributi e imposte.</p>
+    <div class="barra-scomp" id="barra-scomp" role="img" aria-label=""></div>
+    <ul class="legenda-scomp" id="legenda-scomp"></ul>
+    <p class="nota-piccola" id="nota-integrazioni" hidden></p>
   </section>
 
   <!-- METODOLOGIA -->
-  <section class="metodologia">
-    <h2>Come viene calcolato il netto?</h2>
-
+  <details class="metodologia">
+    <summary>Come viene calcolato il netto?</summary>
+    <div class="metodologia-corpo">
     <div class="step-metodo">
       <span class="n">01</span>
       <div><h3>Partenza dalla RAL</h3><p>La RAL rappresenta la retribuzione annua lorda: il punto di partenza di ogni voce successiva.</p></div>
@@ -350,56 +352,62 @@
       <span class="n">07</span>
       <div><h3>Netto</h3><p>RAL meno contributi, imposta netta e addizionali, più eventuali integrazioni di legge per i redditi più bassi: il risultato è il netto annuale stimato.</p></div>
     </div>
-  </section>
+    </div>
+  </details>
 
-  <!-- SECONDARIO: netto -> RAL -->
-  <details class="secondario" id="sez-inversa">
-    <summary>Vuoi partire da un netto desiderato invece che dalla RAL?</summary>
-    <div class="secondario-corpo">
-      <p class="nota-piccola">Trova la RAL necessaria per un netto obiettivo. Alimenta la stessa simulazione qui sopra — non è un percorso separato.</p>
-      <div class="mini-riga">
-        <div class="mini-campo">
-          <label for="input-netto-target">Netto desiderato</label>
-          <div class="euro-input" style="min-width:140px">
-            <span>€</span>
-            <input type="text" id="input-netto-target" inputmode="decimal" placeholder="Es. 2.000" style="font-size:1.05rem;padding:9px 10px 9px 28px;">
+  <!-- POTREBBE INTERESSARTI ANCHE -->
+  <section class="vedi-anche">
+    <h2>Potrebbe interessarti anche...</h2>
+
+    <!-- SECONDARIO: netto -> RAL -->
+    <details class="secondario" id="sez-inversa">
+      <summary>Vuoi partire da un netto desiderato invece che dalla RAL?</summary>
+      <div class="secondario-corpo">
+        <p class="nota-piccola">Trova la RAL necessaria per un netto obiettivo. Alimenta la stessa simulazione qui sopra — non è un percorso separato.</p>
+        <div class="mini-riga">
+          <div class="mini-campo">
+            <label for="input-netto-target">Netto desiderato</label>
+            <div class="euro-input" style="min-width:140px">
+              <span>€</span>
+              <input type="text" id="input-netto-target" inputmode="decimal" placeholder="Es. 2.000" style="font-size:1.05rem;padding:9px 10px 9px 28px;">
+            </div>
           </div>
+          <div class="mini-campo">
+            <label for="periodo-target">Periodo</label>
+            <select id="periodo-target">
+              <option value="annuale">Netto annuale</option>
+              <option value="mensile" selected>Netto al mese</option>
+            </select>
+          </div>
+          <div class="mini-campo" id="wrap-mensilita-target">
+            <label for="mensilita-target">Mensilità</label>
+            <select id="mensilita-target">
+              <option value="12">12</option>
+              <option value="13" selected>13</option>
+              <option value="14">14</option>
+            </select>
+          </div>
+          <button type="button" class="secondario-cta" id="btn-trova-ral">Trova la RAL</button>
         </div>
-        <div class="mini-campo">
-          <label for="periodo-target">Periodo</label>
-          <select id="periodo-target">
-            <option value="annuale">Netto annuale</option>
-            <option value="mensile" selected>Netto al mese</option>
-          </select>
-        </div>
-        <div class="mini-campo" id="wrap-mensilita-target">
-          <label for="mensilita-target">Mensilità</label>
-          <select id="mensilita-target">
-            <option value="12">12</option>
-            <option value="13" selected>13</option>
-            <option value="14">14</option>
-          </select>
-        </div>
-        <button type="button" class="secondario-cta" id="btn-trova-ral">Trova la RAL</button>
+        <p class="errore" id="errore-inversa" hidden></p>
+        <p class="avviso-soglia" id="avviso-soglia" hidden></p>
       </div>
-      <p class="errore" id="errore-inversa" hidden></p>
-      <p class="avviso-soglia" id="avviso-soglia" hidden></p>
-    </div>
-  </details>
+    </details>
 
-  <!-- SECONDARIO: costo azienda -->
-  <details class="secondario" id="sez-costo-azienda">
-    <summary>Vedi anche: costo stimato per l'azienda</summary>
-    <div class="secondario-corpo">
-      <p class="nota-piccola">Quanto costa complessivamente questa RAL a chi assume, oltre a quanto arriva netto al dipendente. <span class="tag stima" data-info="stima" tabindex="0" role="button">stima <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span></p>
-      <p class="costo-tot" id="costo-azienda-tot">—</p>
-      <table>
-        <thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
-        <tbody id="tabella-costo-azienda"></tbody>
-      </table>
-      <div class="avviso-soglia" id="callout-welfare" hidden style="margin-top:16px"></div>
-    </div>
-  </details>
+    <!-- SECONDARIO: costo azienda -->
+    <details class="secondario" id="sez-costo-azienda">
+      <summary>Vedi anche: costo stimato per l'azienda</summary>
+      <div class="secondario-corpo">
+        <p class="nota-piccola">Quanto costa complessivamente questa RAL a chi assume, oltre a quanto arriva netto al dipendente. <span class="tag stima" data-info="stima" tabindex="0" role="button">stima <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span></p>
+        <p class="costo-tot" id="costo-azienda-tot">—</p>
+        <table>
+          <thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
+          <tbody id="tabella-costo-azienda"></tbody>
+        </table>
+        <div class="avviso-soglia" id="callout-welfare" hidden style="margin-top:16px"></div>
+      </div>
+    </details>
+  </section>
 
   <!-- ASSUNZIONI -->
   <section class="assunzioni" id="assunzioni">
@@ -505,10 +513,8 @@
     imponibile: ['TUIR, art. 51', null]
   };
 
-  var ICONE = {
-    contributo: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg>',
-    imposta: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h4"/></svg>',
-    integrazione: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11"/><path d="M4 9V6a2 2 0 0 1 2-2h1a2 2 0 0 1 0 4M20 9V6a2 2 0 0 0-2-2h-1a2 2 0 0 0 0 4M12 4v16"/></svg>'
+  var COLORI_SCOMP = {
+    netto: '#0EA37A', ivs: '#2A78D6', irpef: '#8A3B2B', addreg: '#C98500', addcom: '#4A3AA7'
   };
 
   function eur(n){
@@ -836,7 +842,7 @@
     if (/\b(trattamento integrativo|integrativo)\b/.test(t)) return spiegaVoce('ti', calc) || p('In questa simulazione il trattamento integrativo non si applica: serve un imponibile fino a 15.000 €.');
     if (/\birpef\b|\btasse\b|\bimposta\b|\bimposte\b/.test(t)) return spiegaVoce('irpef', calc);
     if (/\bmensilit/.test(t) || /\b12\b/.test(t) || /\b13\b/.test(t) || /\b14\b/.test(t)) return rispondiMensilita(calc);
-    if (/\b(costo azienda|costa all.azienda|costo per l.azienda|datore|assumere|assunzione)\b/.test(t)) {
+    if ((/\bcost/.test(t) && /\bazienda/.test(t)) || /\b(datore|assumere|assunzione)\b/.test(t)) {
       return costo ? rispondiCostoAzienda(costo) : p('Il costo azienda non è ancora disponibile per questa simulazione.');
     }
     if (/\b(netto|stipendio|prendo|guadagn|arriva|resta|mese)\b/.test(t)) return rispondiNetto(calc);
@@ -950,42 +956,64 @@
       btn.addEventListener('click', function(){ apriConVoce(btn.dataset.spiega, 'calc'); });
     });
 
-    // Riepilogo tabella (stesse voci della cascata, esclusa RAL/NETTO gia' impliciti)
-    var corpo = document.getElementById('tabella-corpo');
-    corpo.innerHTML = '';
-    passi.forEach(function(p){
-      var tr = document.createElement('tr');
-      if (p.finale) tr.className = 'finale';
-      var tipo = p.id === 'ral' || p.id === 'imponibile' ? null : (p.segno < 0 ? 'imposta' : p.segno > 0 ? 'integrazione' : null);
-      if (p.id === 'ivs') tipo = 'contributo';
-      var icona = tipo ? ICONE[tipo] : '';
-      tr.innerHTML = '<td><span class="cella-nome">' + icona + '<span>' + p.nome + '</span></span></td>' +
-        '<td class="importo ' + (p.segno < 0 ? 'neg' : p.segno > 0 ? 'pos' : '') + '">' + (p.segno > 0 ? '+' : '') + eur(p.valore) + '</td>';
-      corpo.appendChild(tr);
-    });
-
-    // Debug ledger
-    var d = calc.voci.find(function(v){ return v.id === 'irpef'; }).dettaglio;
-    var detrTot = d.detrLavUsata + d.detrUltUsata;
-    var righeLedger = [
-      ['', 'RAL', eur(calc.ral)],
-      ['−', 'Contributi', eur(calc.contributi)],
-      ['=', 'Imponibile fiscale', eur(calc.imponibile)],
-      ['−', 'IRPEF lorda', eur(calc.irpefLorda)],
-      ['+', 'Detrazioni', eur(detrTot)],
-      ['=', 'IRPEF netta', eur(calc.irpefNetta)]
-    ];
-    if (calc.addizionaleRegionale > 0) righeLedger.push(['−', 'Addizionale regionale', eur(calc.addizionaleRegionale)]);
-    if (calc.addizionaleComunale > 0) righeLedger.push(['−', 'Addizionale comunale', eur(calc.addizionaleComunale)]);
-    if (calc.integrazioni > 0) righeLedger.push(['+', 'Integrazioni di legge', eur(calc.integrazioni)]);
-    var ledger = document.getElementById('ledger');
-    ledger.innerHTML = righeLedger.map(function(r){
-      return '<div class="riga"><span><span class="op">' + r[0] + '</span>' + r[1] + '</span><span class="rf">' + r[2] + '</span></div>';
-    }).join('') + '<hr>' + '<div class="riga"><span><span class="op">=</span>Netto</span><span class="rf">' + eur(calc.netto) + '</span></div>';
+    renderScomposizione(calc);
 
     sezRisultato.hidden = false;
     sezCascata.hidden = false;
     sezRiepilogo.hidden = false;
+  }
+
+  // Grafico a barra impilata: come la RAL si scompone. Costruito solo dai
+  // campi gia' calcolati da calc, mai da una formula propria — le
+  // integrazioni di legge (bonus/trattamento integrativo) sono gia' incluse
+  // nel netto mostrato altrove in pagina, ma qui vengono tolte dal segmento
+  // "Netto" perche' non provengono dalla RAL: cosi' i segmenti sommano
+  // esattamente alla RAL, non alla RAL + integrazioni.
+  function renderScomposizione(calc){
+    var integrazioni = calc.integrazioni || 0;
+    var nettoDaRal = calc.netto - integrazioni;
+    var segmenti = [
+      { id: 'netto', label: integrazioni > 0 ? 'Netto (dalla RAL)' : 'Netto', valore: nettoDaRal, colore: COLORI_SCOMP.netto },
+      { id: 'ivs', label: 'Contributi previdenziali', valore: calc.contributi, colore: COLORI_SCOMP.ivs },
+      { id: 'irpef', label: 'IRPEF netta', valore: calc.irpefNetta, colore: COLORI_SCOMP.irpef }
+    ];
+    if (calc.addizionaleRegionale > 0) segmenti.push({ id: 'addreg', label: 'Addizionale regionale', valore: calc.addizionaleRegionale, colore: COLORI_SCOMP.addreg });
+    if (calc.addizionaleComunale > 0) segmenti.push({ id: 'addcom', label: 'Addizionale comunale', valore: calc.addizionaleComunale, colore: COLORI_SCOMP.addcom });
+
+    var totale = segmenti.reduce(function(s, x){ return s + Math.max(x.valore, 0); }, 0) || 1;
+
+    var barra = document.getElementById('barra-scomp');
+    barra.innerHTML = '';
+    segmenti.forEach(function(s){
+      var div = document.createElement('div');
+      div.className = 'segmento';
+      div.style.background = s.colore;
+      div.style.flex = '0 0 ' + ((Math.max(s.valore, 0) / totale) * 100).toFixed(3) + '%';
+      div.title = s.label + ': ' + eur(s.valore);
+      barra.appendChild(div);
+    });
+    barra.setAttribute('aria-label', 'Composizione della RAL di ' + eur(calc.ral) + ': ' + segmenti.map(function(s){
+      return s.label + ' ' + eur(s.valore) + ' (' + Math.round(s.valore / totale * 100) + '%)';
+    }).join(', ') + '.');
+
+    var legenda = document.getElementById('legenda-scomp');
+    legenda.innerHTML = '';
+    segmenti.forEach(function(s){
+      var pct = Math.round(s.valore / totale * 100);
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="swatch" style="background:' + s.colore + '" aria-hidden="true"></span>' +
+        '<span class="etichetta">' + s.label + '</span>' +
+        '<span class="valore">' + eur(s.valore) + '<span class="pct"> · ' + pct + '%</span></span>';
+      legenda.appendChild(li);
+    });
+
+    var notaInt = document.getElementById('nota-integrazioni');
+    if (integrazioni > 0) {
+      notaInt.hidden = false;
+      notaInt.textContent = 'Il netto include anche ' + eur(integrazioni) + ' di integrazioni di legge per i redditi più bassi (bonus e/o trattamento integrativo): non provengono dalla RAL, quindi qui sono escluse dal segmento "Netto" perché i segmenti sommino esattamente alla RAL.';
+    } else {
+      notaInt.hidden = true;
+    }
   }
 
   function renderCostoAzienda(ral){
