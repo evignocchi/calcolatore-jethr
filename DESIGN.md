@@ -17,6 +17,9 @@ colors:
   chart-addizionale-regionale: "#C98500"
   chart-addizionale-comunale: "#4A3AA7"
   footer-black: "#000000"
+  jetbot-white: "#F4F7F5"
+  jetbot-black: "#000000"
+  jetbot-accent: "#DDEA57"
 typography:
   display:
     fontFamily: "Wix Madefor Display, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
@@ -66,6 +69,11 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.md}"
     padding: "18px 18px 16px"
+  jetbot-card:
+    backgroundColor: "{colors.jetbot-black}"
+    textColor: "{colors.jetbot-white}"
+    rounded: "{rounded.lg}"
+    padding: "22px 24px"
 ---
 
 # Design System: Simulatore RAL → netto
@@ -105,8 +113,13 @@ Palette ristretta e calda: un fondo crema, superfici bianche, un solo verde di b
 - **Bordo caldo** (`#E3E2DA`): unico colore di bordo in tutto il sistema.
 - **Nero footer** (`#000000`): riservato al solo footer del sito, a imitazione diretta del footer Jet HR reale — l'unica superficie scura della pagina.
 
+### JetBot (eccezione confinata)
+- **Bianco carta Jet** (`#F4F7F5`), **Nero Jet** (`#000000`), **Verde/giallo Jet** (`#DDEA57`): usati esclusivamente dentro la card "Chiedi a JetBot". Non compaiono altrove nella pagina — è l'unico punto in cui il sistema esce dalla propria palette per richiamare esplicitamente il brand Jet HR più ampio.
+
 ### Named Rules
 **La regola dell'accento raro.** Il verde JetHR non diventa mai un colore di sfondo esteso: resta su testo, bordi, badge e barre sottili. Quando serve un colore di sfondo saturo (es. badge "stima"), si usa l'ambra dedicato, non il verde.
+
+**La regola dell'eccezione confinata.** Una palette diversa da quella principale (JetBot) è ammessa solo dentro il perimetro di un singolo componente dichiarato come tale, mai come inizio di una seconda identità visiva della pagina.
 
 ## Typography
 
@@ -132,18 +145,18 @@ Prima del calcolo, lo stage centra verticalmente solo input e bottone (`margin:a
 
 Le sezioni a piena larghezza post-risultato ("Potrebbe interessarti anche", footer) usano il pattern "esterno piena larghezza, interno contenuto": `.sez-full` per il padding, `.contenuto{max-width:760px}` centrato dentro (960px nel footer, per ospitare le due colonne assunzioni/fonti affiancate).
 
-Ritmo verticale: 56px tra sezioni maggiori, 20px tra blocchi correlati dentro una sezione, 12–14px tra elementi di uno stesso gruppo (stat-card, righe delle mini-barre).
+Ritmo verticale: 56px tra sezioni maggiori, 20px tra blocchi correlati dentro una sezione, 12–14px tra elementi di uno stesso gruppo (stat-card, voci della legenda di scomposizione).
 
 ## Elevation & Depth
 
-Sistema piatto per scelta, non per omissione: nessun `box-shadow` decorativo in tutta la pagina (eccetto il bottone flottante dell'assistente, un'eccezione nota da rivedere — vedi Don't). La profondità viene da bordo sottile (`1px solid var(--border)`) più contrasto tonale tra crema/bianco/nero, mai da ombra.
+Sistema piatto per scelta, non per omissione: nessun `box-shadow` decorativo in tutta la pagina (eccetto il bottone flottante di JetBot, un'eccezione nota da rivedere — vedi Don't). La profondità viene da bordo sottile (`1px solid var(--border)`) più contrasto tonale tra crema/bianco/nero, mai da ombra — la card JetBot fa eccezione con un gradiente radiale scuro, non un'ombra: la profondità lì viene dal materiale (nero verso quasi-nero), non da un'elevazione simulata.
 
 ### Named Rules
 **La regola del piatto-per-difetto.** Ogni nuova superficie (card, riquadro, sezione) usa bordo + contrasto tonale, mai `box-shadow`. Un'ombra è sempre un segnale che si sta cercando profondità nel posto sbagliato.
 
 ## Shapes
 
-Raggio coerente per ruolo: 16px per le sezioni contenitore grandi (`.risultato`, `.vedi-anche-riquadro`), 12px per le card (stat-card, dettaglio-trattenute, sidebar), 8–9px per bottoni/input/select, forma a pillola (999px) per tag e badge, cerchio pieno per il bottone flottante dell'assistente. Nessun angolo vivo (0px) in tutto il sistema.
+Raggio coerente per ruolo: 16px per le sezioni contenitore grandi (`.risultato`, `.vedi-anche-riquadro`, la card JetBot), 12px per le card (stat-card, dettaglio-trattenute, sidebar), 8–9px per bottoni/input/select, forma a pillola (999px) per tag e badge, cerchio pieno per il bottone flottante di JetBot. Nessun angolo vivo (0px) in tutto il sistema.
 
 ## Components
 
@@ -160,8 +173,16 @@ Raggio coerente per ruolo: 16px per le sezioni contenitore grandi (`.risultato`,
 - **Contenuto:** etichetta piccola (label, muted) sopra, valore grande (stat-value) sotto; la card del netto annuale ha riga propria a piena larghezza per ospitare il valore più grande senza andare a capo, le altre tre stanno in griglia a 3 colonne (1 su mobile).
 - **Regola:** mai annidare una card dentro un'altra card.
 
-### Mini-barre (componente distintivo)
-- Traccia grigia (`--bg`) alta 7px, riempimento colorato proporzionale all'importo più alto tra le voci mostrate (mai proporzionale alla RAL: sarebbero tutte minuscole). Colore per voce coerente con la barra di scomposizione esistente più in basso nella pagina (stesso codice colore in due punti diversi della stessa vista = stesso significato).
+### Barra di scomposizione (componente distintivo)
+- Barra impilata a piena larghezza (`.barra-scomp`) dentro la card "Come si scompone la RAL", subito sotto le stat-card. Ogni segmento è colorato secondo `COLORI_SCOMP`, con una legenda accanto (swatch, etichetta, valore ed etichetta percentuale reali).
+- **Larghezza minima visibile.** Una voce reale ma minoritaria (es. l'addizionale comunale, spesso ~1% della RAL) non deve sparire nella barra: ogni segmento ha una quota visiva minima (2,5%), poi tutte le quote vengono rinormalizzate così la somma resta 100%. La legenda accanto mostra sempre il valore e la percentuale **reali**, mai quella "gonfiata" — solo la larghezza del segmento nella barra è regolata per restare leggibile.
+
+### JetBot Card (eccezione cromatica confinata)
+- **Posizione:** subito dopo la cascata narrativa ("Come si trasforma la RAL in netto?"), come card a sé, non annidata in un'altra sezione. Larghezza contenuta (max 420px), non a piena larghezza: si legge come un invito, non come un blocco di contenuto.
+- **Background:** gradiente radiale scuro (`#1c1f18` verso `#000`), mai un nero piatto — dà profondità senza usare ombre (vedi Elevation & Depth).
+- **Contenuto:** icona chat in tinta verde/giallo Jet su fondo verde/giallo trasparente, badge pillola "Bot", titolo bianco ("Chiedi a JetBot"), descrizione in bianco attenuato, riga CTA in verde/giallo con freccia che si sposta al hover.
+- **Interazione:** l'intera card è un bottone; click o invio aprono lo stesso JetBot già raggiungibile dal bottone flottante e dal link "Chiedi a JetBot" dentro il risultato — nessuna logica nuova, solo un punto d'accesso in più (additivo, mai in sostituzione degli altri).
+- **Regola:** unica card della pagina che non usa la palette principale — per questo la sua estensione è limitata a se stessa (vedi la regola dell'eccezione confinata in Colors).
 
 ### Tags / Badge
 - **Style:** forma a pillola, tre varianti — `.tag.scope` (informativo, bordo sottile, sfondo bianco), `.tag.verificato` (verde su tint verde), `.tag.stima` (ambra su tint ambra, sempre con icona "i").
@@ -185,10 +206,13 @@ Raggio coerente per ruolo: 16px per le sezioni contenitore grandi (`.risultato`,
 - **Do** riusare `--accent` (#0E6B52) solo su testo, bordi e barre sottili — mai come sfondo esteso.
 - **Do** usare `font-variant-numeric: tabular-nums` su ogni cifra che può cambiare o animare.
 - **Do** mantenere un solo bordo (`--border`, #E3E2DA) e un solo raggio per ruolo in tutto il sistema, invece di introdurne di nuovi per componente.
-- **Do** colorare le mini-barre e la barra di scomposizione con lo stesso codice colore per voce (coerenza semantica tra le due viste della stessa RAL).
+- **Do** tenere la palette JetBot (nero/bianco carta/verde-giallo) confinata alla sua card: è l'unica eccezione cromatica ammessa, e resta tale.
+- **Do** far convergere ogni punto d'accesso a JetBot (bottone flottante, link nel risultato, card dopo la cascata) sulla stessa funzione `apriAssistente()` — mai una seconda implementazione della stessa chat.
 
 ### Don't:
-- **Don't** aggiungere `box-shadow` decorativi o glow colorati: il sistema è piatto per scelta (eccezione nota e da correggere: il bottone flottante `.assist-fab` ha ancora un'ombra verde `rgba(14,107,82,.35)` sopravvissuta a un round precedente — il detector automatico della skill la segnala come "dark-glow"; da sistemare in un round dedicato, non qui).
+- **Don't** aggiungere `box-shadow` decorativi o glow colorati: il sistema è piatto per scelta (eccezione nota e da correggere: il bottone flottante di JetBot ha ancora un'ombra verde `rgba(14,107,82,.35)` sopravvissuta a un round precedente — il detector automatico della skill la segnala come "dark-glow"; da sistemare in un round dedicato, non qui).
 - **Don't** usare rosso puro/allarme per le trattenute: restano nel rosso mattone caldo (#8A3B2B) coerente con la palette.
 - **Don't** annidare una card dentro un'altra card (stat-card dentro dettaglio-trattenute, o simili).
 - **Don't** introdurre un secondo font: la gerarchia viene da peso e dimensione di Wix Madefor Display, mai da un font diverso per "sembrare tecnico" o "sembrare importante".
+- **Don't** lasciare un segmento minoritario della barra di scomposizione a larghezza reale (potrebbe sparire): usare sempre la quota visiva minima rinormalizzata, mai truccare invece il valore o la percentuale mostrati in legenda.
+- **Don't** chiamare la chat "assistente" nel testo rivolto all'utente: il nome di prodotto è JetBot. (Gli identificatori interni nel codice — `assistDialog`, `apriAssistente()` — non cambiano: la rinomina riguarda solo cosa legge chi usa il calcolatore.)
