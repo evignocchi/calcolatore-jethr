@@ -191,9 +191,11 @@ Raggio coerente per ruolo: 16px per le sezioni contenitore grandi (`.risultato`,
 
 ### Grafico a ciambella (componente distintivo)
 - SVG, non canvas: un `<circle>` per segmento con `stroke-dasharray`/`stroke-dashoffset`, capi arrotondati, piccolo distacco tra segmenti. Nessuna porzione "vuota": i segmenti coprono sempre l'intero cerchio perché rappresentano una scomposizione completa (netto+trattenute = RAL; RAL+aggiunte = costo azienda).
-- **Centro:** numero grande (stessa scala di Stat Hero) + didascalia piccola in `--muted` (es. "74% della RAL", "+33% sulla RAL").
+- **Dimensioni:** anello 200×200px, stroke 16px, foro utile ~168px; il blocco di testo al centro è vincolato a 128px di larghezza (non semplicemente centrato su tutto il riquadro) per restare sempre dentro il foro, mai sopra lo stroke colorato.
+- **Centro:** numero grande (stessa scala di Stat Hero) con **auto-fit del font-size**: calcolato sul testo finale (non durante l'animazione, che conta sempre verso l'alto da zero ed è quindi più stretta) misurando `scrollWidth` contro lo spazio disponibile, da 1.5rem fino a un minimo di 0.8rem — necessario perché l'importo può variare da poche centinaia a oltre un milione di euro. Sotto, una didascalia piccola in `--muted` (es. "74% della RAL", "+33% sulla RAL").
 - **Sotto la card:** riga mensilità con icona matita + testo, un `<select>` nativo invisibile sovrapposto per l'interazione — non un popover custom.
 - **Regola:** i segmenti derivano sempre da campi già calcolati dal motore, mai da una formula scritta nell'interfaccia.
+- **Regola:** il numero al centro non va mai a capo (`white-space:nowrap`) e non deve mai sconfinare sullo stroke colorato — verificare con importi realisticamente estremi (RAL vicina a 1.000.000 €), non solo con il caso guida da 35.000 €.
 
 ### Lista voci (componente distintivo, condiviso dai due tab)
 - Righe non a card: icona colorata (tinta 22 dell'esadecimale + colore pieno) in un quadrato 38px raggio 10px, nome + eventuale bottone "Spiega", didascalia/fonte in `--muted`, importo a destra (rosso per le trattenute dipendente, verde per le voci di costo azienda — il segno cambia, non il significato: "+"/"−" segue chi paga cosa).

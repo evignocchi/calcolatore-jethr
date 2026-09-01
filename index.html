@@ -86,19 +86,20 @@
   .tab-btn.is-active{background:var(--card);color:var(--text);border:1px solid var(--border);}
   .tab-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
-  .risultato-grid{display:grid;grid-template-columns:minmax(220px,260px) 1fr;gap:20px;align-items:start;}
+  .risultato-grid{display:grid;grid-template-columns:minmax(260px,300px) 1fr;gap:20px;align-items:start;}
   @media (max-width:700px){ .risultato-grid{grid-template-columns:1fr;} }
 
   .colonna-ring{display:flex;flex-direction:column;gap:16px;}
   .ring-card{background:var(--card);border:1px solid var(--border);border-radius:16px;
     padding:24px 20px;display:flex;flex-direction:column;align-items:center;}
-  .ring-wrap{position:relative;width:180px;height:180px;}
+  .ring-wrap{position:relative;width:200px;height:200px;}
   .ring-svg{width:100%;height:100%;}
-  .ring-svg circle{fill:none;stroke-width:22;}
-  .ring-centro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-    justify-content:center;text-align:center;padding:0 14px;}
+  .ring-svg circle{fill:none;stroke-width:16;}
+  .ring-centro{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:128px;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;}
   .ring-valore{font-size:1.5rem;font-weight:800;color:var(--text);line-height:1.1;margin:0;
-    font-variant-numeric:tabular-nums;word-break:break-word;}
+    font-variant-numeric:tabular-nums;white-space:nowrap;}
   .ring-caption{font-size:.72rem;color:var(--muted);margin:4px 0 0;}
 
   .ring-mensile{display:flex;align-items:center;gap:7px;margin-top:16px;font-size:.82rem;
@@ -1117,7 +1118,7 @@
     if (!S.calc) return;
     if (vista === 'dipendente') {
       disegnaRing(segmentiDipendente(S.calc));
-      animaNumero(document.getElementById('ring-valore'), S.calc.netto, eur);
+      animaValoreRing(document.getElementById('ring-valore'), S.calc.netto);
       var quota = S.calc.ral > 0 ? (S.calc.netto / S.calc.ral * 100) : 0;
       document.getElementById('ring-caption').textContent = quota.toFixed(0) + '% della RAL';
       document.getElementById('lista-titolo').textContent = 'Cosa viene trattenuto sulla RAL';
@@ -1125,7 +1126,7 @@
     } else {
       var costo = S.costo;
       disegnaRing(segmentiAzienda(costo, S.ral));
-      animaNumero(document.getElementById('ring-valore'), costo.totale, eur);
+      animaValoreRing(document.getElementById('ring-valore'), costo.totale);
       var extra = S.ral > 0 ? ((costo.totale / S.ral - 1) * 100) : 0;
       document.getElementById('ring-caption').textContent = '+' + extra.toFixed(0) + '% sulla RAL';
       document.getElementById('lista-titolo').textContent = 'Cosa si aggiunge alla RAL per l\'azienda';
@@ -1169,6 +1170,24 @@
       if (p < 1) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+  }
+
+  // Il numero al centro del ring deve stare dentro il foro della ciambella
+  // qualunque sia la lunghezza della cifra (da poche centinaia a oltre un
+  // milione di euro): calcola la dimensione del font sul testo finale
+  // (sempre il più largo, dato che l'animazione conta verso l'alto da zero)
+  // prima di avviare l'animazione, cosi' il valore non sconfina mai sull'anello colorato.
+  function animaValoreRing(el, valoreFinale){
+    var testoFinale = eur(valoreFinale);
+    var max = el.parentElement.clientWidth;
+    var size = 1.5;
+    el.style.fontSize = size + 'rem';
+    el.textContent = testoFinale;
+    while (el.scrollWidth > max && size > 0.8) {
+      size -= 0.05;
+      el.style.fontSize = size.toFixed(2) + 'rem';
+    }
+    animaNumero(el, valoreFinale, eur);
   }
 
   function renderRisultato(calc){
