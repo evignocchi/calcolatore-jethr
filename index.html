@@ -1038,13 +1038,18 @@
     var svg = document.getElementById('ring-svg');
     svg.innerHTML = '';
     var totale = segmenti.reduce(function(s, x){ return s + Math.max(x.valore, 0); }, 0) || 1;
-    var gap = CIRC_RING * 0.012;
+    var gap = 6, minimo = 4; // unita' del viewBox: distacco netto tra le porzioni,
+    // colore e voce si distinguono a colpo d'occhio; minimo cosi' anche una voce
+    // piccolissima resta visibile come archetto invece di sparire nel distacco.
+    // Il gap resta piccolo apposta: un distacco troppo largo, su una porzione
+    // gia' minoritaria, la riduce a un arco cosi' corto da leggersi come una
+    // pillola dritta invece che come una fetta curva dell'anello.
     var offset = 0;
     var g = document.createElementNS(ns, 'g');
     g.setAttribute('transform', 'rotate(-90 100 100)');
     segmenti.forEach(function(s){
       var quota = Math.max(s.valore, 0) / totale;
-      var lunghezza = Math.max(quota * CIRC_RING - gap, 0);
+      var lunghezza = Math.max(quota * CIRC_RING - gap, quota > 0 ? minimo : 0);
       var circle = document.createElementNS(ns, 'circle');
       circle.setAttribute('cx', '100'); circle.setAttribute('cy', '100'); circle.setAttribute('r', String(R_RING));
       circle.setAttribute('stroke', s.colore);
