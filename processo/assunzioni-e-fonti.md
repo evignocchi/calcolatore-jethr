@@ -101,34 +101,18 @@ impiegato privato), dichiarando esplicitamente che è una media e non
 l'importo del singolo cedolino. La stessa scelta di mensilità alimenta anche
 il calcolo inverso (netto mensile desiderato → RAL).
 
-### Piano mensilità: una stima illustrativa, non un cedolino
+### Cosa viene trattenuto sulla RAL
 
-Sotto il netto medio mensile, se la mensilità scelta è 13 o 14, un piccolo
-grafico mostra come il netto annuale si distribuisce tra le mensilità
-ordinarie e quelle aggiuntive (tredicesima, quattordicesima) — `Motore.
-pianoMensilita()`, che riusa il netto annuale già verificato, non lo
-ricalcola. Con 12 mensilità il grafico resta nascosto: non c'è nessuna
-mensilità aggiuntiva da mostrare.
-
-La convenzione usata per la mensilità aggiuntiva è quella standard dei
-software paghe italiani: stessa aliquota IVS del resto dell'anno, IRPEF
-all'**aliquota marginale** (quella dell'ultimo scaglione raggiunto
-dall'imponibile annuo, non gli scaglioni progressivi ricalcolati da zero) e
-**nessuna detrazione propria** — le detrazioni mensili sono già "consumate"
-dalle 12 mensilità ordinarie. Per questo la tredicesima risulta sempre più
-bassa delle mensilità ordinarie, un effetto reale e non un artefatto del
-modello.
-
-Quello che il grafico **non** prova a mostrare è la rateizzazione delle
-addizionali regionale e comunale su un mese preciso: a differenza
-dell'aliquota marginale sulla tredicesima, il numero di rate e il mese di
-partenza sono una scelta del sostituto d'imposta (del software paghe), non
-fissata dalla legge in modo univoco — esattamente la stessa ragione per cui
-il netto principale resta una media annua e non un cedolino. Le addizionali
-restano quindi implicitamente spalmate sulle mensilità ordinarie. Per questo
-il grafico è marcato **stima illustrativa**, un livello di fiducia più basso
-persino del costo azienda: utile a capire *perché* la tredicesima è più
-bassa, non un calendario di pagamenti preciso.
+Sotto il netto medio mensile, un riepilogo per cifre (non un grafico) mostra
+le trattenute della simulazione corrente: contributi previdenziali, IRPEF,
+addizionale regionale e comunale (solo se dovute), più il totale. Sono gli
+stessi campi già calcolati da `Motore.calcola()` — nessuna somma rifatta a
+parte, nessuna voce nuova. Il motore espone ancora `Motore.pianoMensilita()`/
+`aliquotaMarginale()` (con i loro test) per stimare come il netto si
+distribuisce tra mensilità ordinarie e aggiuntive (tredicesima,
+quattordicesima); la relativa visualizzazione grafica è stata rimossa dal
+risultato principale per tenerlo più essenziale, a favore di questo
+riepilogo diretto.
 
 ## Estensioni oltre il perimetro del brief
 
@@ -156,7 +140,10 @@ dipende da variabili che la RAL da sola non contiene.
 Per questo il costo azienda è marcato in pagina come **stima**, distinto dal
 netto dipendente marcato come **calcolo verificato**. Esclusi esplicitamente:
 CIGO/CIGS e fondi di solidarietà bilaterali, che dipendono da settore e
-dimensione aziendale in un modo che non è deducibile dalla sola RAL.
+dimensione aziendale in un modo che non è deducibile dalla sola RAL. La voce
+"Vedi anche: costo stimato per l'azienda" resta nascosta finché non è stata
+eseguita una simulazione: è un approfondimento sul risultato appena
+calcolato, non qualcosa da offrire prima ancora che esista un risultato.
 
 ### Calcolo inverso (netto → RAL)
 
