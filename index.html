@@ -203,15 +203,35 @@
   .area-fonte p{font-size:.88rem;color:var(--muted);margin:0 0 4px;}
   .area-fonte a{font-size:.86rem;}
 
-  footer.site-footer{background:var(--bg);border-top:1px solid var(--border);margin-top:56px;}
+  footer.site-footer{background:#000;margin-top:56px;color:#C7C6BE;}
+  footer.site-footer .contenuto{max-width:960px;}
   footer.site-footer section{margin-top:40px;}
   footer.site-footer section:first-of-type{margin-top:0;}
+  footer.site-footer h2{color:#fff;}
+  footer.site-footer h3{color:#9C9B93;}
+  footer.site-footer .area-fonte h3{color:#fff;}
+  footer.site-footer .area-fonte p{color:#9C9B93;}
+  footer.site-footer .assunzioni ul, footer.site-footer .fonti ul{color:#D8D7CF;}
+  footer.site-footer .nota-piccola{color:#9C9B93;}
+  footer.site-footer a{color:#4ADE9E;}
+
+  /* assunzioni e fonti affiancate */
+  .footer-colonne{display:grid;grid-template-columns:1fr 1fr;gap:16px 56px;}
+  footer.site-footer .footer-colonne section{margin-top:0;}
+  @media (max-width:700px){
+    .footer-colonne{grid-template-columns:1fr;gap:0;}
+    footer.site-footer .footer-colonne section{margin-top:40px;}
+    footer.site-footer .footer-colonne section:first-of-type{margin-top:0;}
+  }
 
   .disclaimer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);
     font-size:.84rem;color:var(--muted);}
   .disclaimer strong{color:var(--text);}
+  footer.site-footer .disclaimer{border-top-color:rgba(255,255,255,.16);color:#9C9B93;}
+  footer.site-footer .disclaimer strong{color:#fff;}
 
   .contenuto > p.page{color:var(--muted);font-size:.78rem;text-align:center;margin:32px 0 0;}
+  footer.site-footer .contenuto > p.page{color:#68675F;}
 
   /* ---------- entry point assistente ---------- */
   .assist-entry{margin-top:18px;padding-top:16px;border-top:1px solid rgba(17,21,10,.1);
@@ -460,6 +480,8 @@
 <footer class="site-footer sez-full">
   <div class="contenuto">
 
+    <div class="footer-colonne">
+
     <!-- ASSUNZIONI -->
     <section class="assunzioni" id="assunzioni">
       <h2>Assunzioni e limiti del modello</h2>
@@ -519,6 +541,8 @@
       </div>
       <p class="nota-piccola">Elenco completo delle fonti, incluse quelle del costo azienda, in <a href="processo/assunzioni-e-fonti.md">processo/assunzioni-e-fonti.md</a>. Ogni voce della simulazione porta la propria fonte — l'icona <strong>(i)</strong> accanto a ogni riga spiega perché quella regola si applica con i numeri di questo calcolo.</p>
     </section>
+
+    </div><!-- /.footer-colonne -->
 
     <p class="disclaimer"><strong>Nota:</strong> questo calcolatore fornisce una stima indicativa del netto annuale e mensile sulla base delle assunzioni indicate. Non rappresenta un cedolino paga né un parere fiscale o contributivo. Il netto effettivo può variare in base alla situazione personale, contrattuale e fiscale del dipendente.</p>
 
