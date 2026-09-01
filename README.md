@@ -1,20 +1,27 @@
 # Calcola lo stipendio netto a partire dalla RAL
 
-Prototipo per il task Product Builder di Jet HR. Un unico percorso
-narrativo — **RAL → contributi → imponibile → imposte → detrazioni →
-netto** — reso esplorabile passo per passo: risultato, cascata visiva,
-tabella di riepilogo e un calcolo dettagliato aperto a richiesta, tutti
-alimentati dallo stesso motore, mai da formule duplicate nell'interfaccia.
+Prototipo per il task Product Builder di Jet HR. Prima il risultato, poi la
+spiegazione, poi l'approfondimento: **netto → dove va la RAL → dettaglio
+delle voci → assistente → come si calcola → variabili del modello →
+confronto con un'altra RAL → strumenti secondari**, tutto alimentato dallo
+stesso motore, mai da formule duplicate nell'interfaccia. Prima del calcolo
+la pagina mostra solo l'input e il contesto minimo — nessun risultato vuoto,
+nessuna sezione della simulazione ancora inesistente.
 
 Un **assistente alla simulazione** (pannello laterale su desktop, foglio
 dal basso su mobile) spiega i singoli passaggi a richiesta: legge solo i
 valori già calcolati dal motore, non ricalcola nulla, e su una domanda
 fuori dal perimetro dichiarato (altri comuni, carichi di famiglia, CCNL...)
-lo dice esplicitamente invece di inventare un numero.
+lo dice esplicitamente invece di inventare un numero. Una sezione compatta
+("Il tuo netto dipende da queste variabili") rende visibile lo stesso
+perimetro senza dover aprire la documentazione, e un confronto tra due RAL
+mostra quanto del lordo in più arriva davvero al netto — utile per chi
+valuta un'offerta o una negoziazione salariale.
 
 Il costo per l'azienda e il calcolo inverso (da un netto desiderato alla RAL
-necessaria) restano nel prototipo ma come sezioni secondarie e collassate:
-utili, ma non in competizione visiva con il percorso principale RAL → netto.
+necessaria) restano nel prototipo ma come strumenti secondari, visibili solo
+dopo aver eseguito una simulazione: utili, ma non in competizione visiva con
+il percorso principale RAL → netto.
 
 **Caso coperto**: impiegato del settore privato, tempo indeterminato,
 residente a Milano, anno intero, nessuna agevolazione — le semplificazioni

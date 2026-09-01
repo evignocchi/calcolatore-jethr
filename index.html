@@ -71,21 +71,6 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2368675F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat:no-repeat;background-position:right center;background-size:13px;}
   .netto-mensile-riga select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
-  .insight{margin:18px 0 0;font-size:.94rem;color:var(--text);}
-
-  .mensilita-piano{margin-top:16px;padding-top:14px;border-top:1px solid rgba(17,21,10,.12);}
-  .mensilita-piano-titolo{display:flex;align-items:center;gap:8px;font-size:.82rem;
-    font-weight:600;color:var(--text);margin:0 0 10px;}
-  .tag.stima-illustrativa{background:var(--stima-bg);color:var(--stima-fg);cursor:default;}
-  .tag.stima-illustrativa:hover{box-shadow:none;}
-  .mensilita-piano-barre{display:flex;gap:3px;align-items:flex-end;height:40px;}
-  .mensilita-piano-barre .barra{flex:1;min-width:4px;border-radius:3px 3px 0 0;background:var(--accent);}
-  .mensilita-piano-barre .barra.extra{background:var(--stima-fg);opacity:.6;}
-  .mensilita-piano-caption{margin:8px 0 0;font-size:.78rem;color:var(--muted);}
-
-  .vedi-costo-riga{margin-top:12px;font-size:.82rem;color:var(--muted);}
-  .vedi-costo-riga a{font-weight:600;}
-
   /* ---------- CASCATA ---------- */
   .cascata h2{font-size:1.3rem;margin:0 0 24px;}
   .passi{list-style:none;margin:0;padding:0;}
@@ -105,9 +90,9 @@
   .passo.finale .valore{font-size:1.35rem;font-weight:800;}
   .freccia{text-align:center;color:var(--muted);font-size:1.15rem;line-height:1;padding:3px 0;}
 
-  /* ---------- RIEPILOGO / scomposizione grafica ---------- */
-  .riepilogo h2{font-size:1.3rem;margin:0 0 8px;}
-  .riepilogo .intro{color:var(--muted);font-size:.9rem;margin:0 0 18px;}
+  /* ---------- DOVE VA LA TUA RAL ---------- */
+  .dove-va h2{font-size:1.3rem;margin:0 0 8px;}
+  .dove-va .intro{color:var(--muted);font-size:.9rem;margin:0 0 18px;}
   table{width:100%;border-collapse:collapse;font-size:.92rem;}
   th,td{text-align:left;padding:10px 4px;border-bottom:1px solid var(--border);vertical-align:top;}
   th{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
@@ -118,21 +103,35 @@
 
   .barra-scomp{display:flex;gap:2px;height:28px;border-radius:8px;overflow:hidden;background:var(--bg);}
   .barra-scomp .segmento{height:100%;}
-  .legenda-scomp{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;}
-  .legenda-scomp li{display:flex;align-items:center;gap:10px;font-size:.9rem;}
+  .legenda-scomp{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:14px;}
+  .legenda-scomp .riga-principale{display:flex;align-items:center;gap:10px;font-size:.9rem;}
   .legenda-scomp .swatch{width:11px;height:11px;border-radius:3px;flex:none;}
   .legenda-scomp .etichetta{flex:1;color:var(--text);min-width:0;}
   .legenda-scomp .valore{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text);}
   .legenda-scomp .pct{color:var(--muted);font-weight:600;font-size:.84rem;}
+  .legenda-scomp-sub{list-style:none;margin:8px 0 0;padding:0 0 0 21px;display:flex;flex-direction:column;
+    gap:6px;border-left:1px solid var(--border);}
+  .legenda-scomp-sub li{display:flex;justify-content:space-between;gap:10px;font-size:.82rem;
+    color:var(--muted);padding-left:10px;}
+  .legenda-scomp-sub .valore{font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted);}
+  .legenda-scomp-totale{border-top:1px solid var(--border);padding-top:12px;}
+  .legenda-scomp-totale .riga-principale{font-weight:700;}
 
-  /* ---------- METODOLOGIA (accordion) ---------- */
+  /* ---------- METODOLOGIA (accordion, timeline) ---------- */
   details.metodologia{margin-top:56px;}
   details.metodologia > summary{font-size:1.3rem;font-weight:700;}
   details.metodologia > summary::before{font-size:1rem;}
-  .metodologia-corpo{padding-top:14px;}
-  .step-metodo{display:grid;grid-template-columns:34px 1fr;gap:2px 14px;margin-bottom:16px;}
-  .step-metodo .n{font-weight:800;color:var(--accent);font-size:.95rem;}
-  .step-metodo h3{font-size:.98rem;margin:0 0 3px;}
+  .metodologia-corpo{padding-top:18px;}
+  .step-metodo{display:grid;grid-template-columns:32px 1fr;gap:2px 16px;position:relative;
+    padding-bottom:22px;}
+  .step-metodo::before{content:'';position:absolute;left:15px;top:32px;bottom:-4px;width:1px;
+    background:var(--border);}
+  .step-metodo:last-child{padding-bottom:0;}
+  .step-metodo:last-child::before{display:none;}
+  .step-metodo .n{width:32px;height:32px;border-radius:50%;background:var(--accent-bg);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;
+    flex:none;position:relative;z-index:1;}
+  .step-metodo h3{font-size:.98rem;margin:3px 0 3px;}
   .step-metodo p{color:var(--muted);font-size:.9rem;margin:0;}
 
   /* ---------- accordion generico ---------- */
@@ -197,11 +196,37 @@
   .assist-entry{margin-top:18px;padding-top:16px;border-top:1px solid rgba(17,21,10,.1);
     display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
   .assist-entry p{margin:0;font-size:.86rem;color:var(--muted);}
+  .assist-entry.standalone{border-top:none;padding-top:0;margin-top:0;}
   .btn-spiega{font-family:inherit;font-size:.82rem;font-weight:600;color:var(--accent);
     background:none;border:1px solid var(--accent);border-radius:8px;padding:7px 14px;
-    cursor:pointer;white-space:nowrap;}
+    cursor:pointer;white-space:nowrap;flex:none;}
   .btn-spiega:hover{background:var(--accent);color:#fff;}
   .btn-spiega:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  /* ---------- variabili del modello ---------- */
+  .variabili h2{font-size:1.3rem;margin:0 0 8px;}
+  .variabili .intro{color:var(--muted);font-size:.9rem;margin:0 0 18px;}
+  .lista-variabili{list-style:none;margin:0;padding:0;}
+  .lista-variabili li{display:flex;align-items:center;gap:10px;padding:11px 0;
+    border-bottom:1px solid var(--border);font-size:.92rem;}
+  .lista-variabili li:last-child{border-bottom:none;}
+  .lista-variabili .check{color:var(--accent);font-weight:700;flex:none;width:14px;}
+  .lista-variabili .etichetta{color:var(--muted);flex:1;}
+  .lista-variabili .valore{font-weight:600;color:var(--text);text-align:right;}
+
+  /* ---------- confronto RAL ---------- */
+  .confronto h2{font-size:1.3rem;margin:0 0 8px;}
+  .confronto .intro{color:var(--muted);font-size:.9rem;margin:0 0 18px;}
+  .confronto-riga{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;}
+  .confronto-suggeriti{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .confronto-suggeriti button{font-family:inherit;font-size:.8rem;font-weight:600;color:var(--text);
+    background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:5px 12px;
+    cursor:pointer;}
+  .confronto-suggeriti button:hover,.confronto-suggeriti button:focus-visible{border-color:var(--accent);color:var(--accent);}
+  .confronto-risultato{margin-top:20px;}
+  .confronto-delta{margin:14px 0 4px;font-size:1.05rem;color:var(--text);}
+  .confronto-delta strong{font-weight:800;color:var(--accent);}
+  .confronto-pct{display:block;margin-top:4px;font-size:.84rem;font-weight:600;color:var(--muted);}
 
   .link-spiega{font-family:inherit;font-size:.74rem;font-weight:600;color:var(--muted);
     background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px 8px;
@@ -321,19 +346,16 @@
         </select>
       </span>
     </div>
+  </section>
 
-    <div class="mensilita-piano" id="mensilita-piano" hidden>
-      <p class="mensilita-piano-titolo">Come si distribuisce nell'anno <span class="tag stima-illustrativa">stima illustrativa</span></p>
-      <div class="mensilita-piano-barre" id="mensilita-piano-barre"></div>
-      <p class="mensilita-piano-caption" id="mensilita-piano-caption"></p>
-    </div>
-
+  <!-- DOVE VA LA TUA RAL -->
+  <section class="dove-va" id="sez-dove-va" hidden>
+    <h2>Dove va la tua RAL?</h2>
+    <p class="intro">In sintesi: quanto viene trattenuto e per quali motivi, prima di arrivare al netto.</p>
+    <div class="barra-scomp" id="barra-scomp" role="img" aria-label=""></div>
+    <ul class="legenda-scomp" id="legenda-scomp"></ul>
     <p class="insight" id="insight-testo"></p>
-    <div class="assist-entry">
-      <p>Hai dubbi sul risultato?</p>
-      <button type="button" class="btn-spiega" id="btn-assist-entry">Chiedi all'assistente</button>
-    </div>
-    <p class="vedi-costo-riga">Vuoi vedere anche quanto costa questa RAL all'azienda? <a href="#sez-costo-azienda" id="link-costo-azienda">Stima del costo azienda →</a></p>
+    <p class="nota-piccola" id="nota-integrazioni" hidden></p>
   </section>
 
   <!-- CASCATA -->
@@ -342,13 +364,12 @@
     <ol class="passi" id="lista-passi"></ol>
   </section>
 
-  <!-- RIEPILOGO -->
-  <section class="riepilogo" id="sez-riepilogo" hidden>
-    <h2>Come si scompone la RAL</h2>
-    <p class="intro">La stessa RAL, divisa tra netto, contributi e imposte.</p>
-    <div class="barra-scomp" id="barra-scomp" role="img" aria-label=""></div>
-    <ul class="legenda-scomp" id="legenda-scomp"></ul>
-    <p class="nota-piccola" id="nota-integrazioni" hidden></p>
+  <!-- ASSISTENTE: entry point -->
+  <section class="sez-assist-entry" id="sez-assist-entry" hidden>
+    <div class="assist-entry standalone">
+      <p>Hai dubbi sul risultato? L'assistente spiega ogni voce con i numeri di questa simulazione.</p>
+      <button type="button" class="btn-spiega" id="btn-assist-entry">Chiedi all'assistente</button>
+    </div>
   </section>
 
   <!-- METODOLOGIA -->
@@ -386,8 +407,50 @@
     </div>
   </details>
 
+  <!-- VARIABILI DEL MODELLO -->
+  <section class="variabili" id="sez-variabili">
+    <h2>Il tuo netto dipende da queste variabili</h2>
+    <p class="intro">Il caso standard usato da questa simulazione — non modificabile qui: serve solo a rendere trasparente il perimetro del modello.</p>
+    <ul class="lista-variabili">
+      <li><span class="check" aria-hidden="true">✓</span><span class="etichetta">Tipo di contratto</span><span class="valore">Tempo indeterminato</span></li>
+      <li><span class="check" aria-hidden="true">✓</span><span class="etichetta">Tipologia</span><span class="valore">Dipendente privato</span></li>
+      <li><span class="check" aria-hidden="true">✓</span><span class="etichetta">Residenza</span><span class="valore">Milano</span></li>
+      <li><span class="check" aria-hidden="true">✓</span><span class="etichetta">Agevolazioni</span><span class="valore">Nessuna</span></li>
+      <li><span class="check" aria-hidden="true">✓</span><span class="etichetta">Familiari a carico</span><span class="valore">Nessuno</span></li>
+      <li><span class="check" aria-hidden="true">✓</span><span class="etichetta">Altri elementi retributivi</span><span class="valore">Non considerati</span></li>
+      <li><span class="check" aria-hidden="true">✓</span><span class="etichetta">CCNL</span><span class="valore">Caso standard, non modellato</span></li>
+    </ul>
+    <p class="nota-piccola">Il CCNL e altri elementi contrattuali possono influenzare il netto effettivo. Questo prototipo considera un caso standard e non modella le specificità dei singoli CCNL. <a href="#assunzioni">Tutti i dettagli</a></p>
+  </section>
+
+  <!-- CONFRONTO RAL -->
+  <section class="confronto" id="sez-confronto" hidden>
+    <h2>Cosa cambia se la RAL aumenta?</h2>
+    <p class="intro">Confronta con un'altra RAL, calcolata con lo stesso motore della simulazione principale.</p>
+    <div class="confronto-riga">
+      <div class="mini-campo">
+        <label for="input-ral-confronto">RAL da confrontare</label>
+        <div class="euro-input" style="min-width:160px">
+          <span>€</span>
+          <input type="text" id="input-ral-confronto" inputmode="decimal" placeholder="Es. 40.000">
+        </div>
+      </div>
+      <button type="button" class="secondario-cta" id="btn-confronta">Confronta</button>
+    </div>
+    <div class="confronto-suggeriti" id="confronto-suggeriti"></div>
+    <p class="errore" id="errore-confronto" hidden></p>
+    <div class="confronto-risultato" id="confronto-risultato" hidden>
+      <table>
+        <thead><tr><th>RAL</th><th style="text-align:right">Netto annuo</th></tr></thead>
+        <tbody id="confronto-tabella"></tbody>
+      </table>
+      <p class="confronto-delta" id="confronto-delta"></p>
+      <p class="nota-piccola" id="confronto-nota-mensile"></p>
+    </div>
+  </section>
+
   <!-- POTREBBE INTERESSARTI ANCHE -->
-  <section class="vedi-anche">
+  <section class="vedi-anche" id="sez-vedi-anche" hidden>
     <h2>Potrebbe interessarti anche...</h2>
 
     <!-- SECONDARIO: netto -> RAL -->
@@ -427,7 +490,7 @@
 
     <!-- SECONDARIO: costo azienda -->
     <details class="secondario" id="sez-costo-azienda">
-      <summary>Vedi anche: costo stimato per l'azienda</summary>
+      <summary>Approfondisci anche: costo stimato per l'azienda</summary>
       <div class="secondario-corpo">
         <p class="nota-piccola">Quanto costa complessivamente questa RAL a chi assume, oltre a quanto arriva netto al dipendente. <span class="tag stima" data-info="stima" tabindex="0" role="button">stima <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span></p>
         <p class="costo-tot" id="costo-azienda-tot">—</p>
@@ -546,7 +609,7 @@
   };
 
   var COLORI_SCOMP = {
-    netto: '#0EA37A', ivs: '#2A78D6', irpef: '#8A3B2B', addreg: '#C98500', addcom: '#4A3AA7'
+    netto: '#0EA37A', ivs: '#2A78D6', imposte: '#8A3B2B'
   };
 
   function eur(n){
@@ -904,59 +967,16 @@
   var campoRal = document.getElementById('input-ral');
   var boxErrore = document.getElementById('errore');
   var sezRisultato = document.getElementById('sez-risultato');
+  var sezDoveVa = document.getElementById('sez-dove-va');
   var sezCascata = document.getElementById('sez-cascata');
-  var sezRiepilogo = document.getElementById('sez-riepilogo');
+  var sezAssistEntry = document.getElementById('sez-assist-entry');
+  var sezConfronto = document.getElementById('sez-confronto');
+  var sezVediAnche = document.getElementById('sez-vedi-anche');
 
   document.getElementById('sel-mensilita-risultato').addEventListener('change', function(){
     S.mensilitaRisultato = parseInt(this.value, 10);
-    if (S.calc) {
-      document.getElementById('netto-mensile').textContent = eur(S.calc.netto / S.mensilitaRisultato);
-      renderMensilitaPiano(S.calc, S.mensilitaRisultato);
-    }
+    if (S.calc) document.getElementById('netto-mensile').textContent = eur(S.calc.netto / S.mensilitaRisultato);
   });
-
-  document.getElementById('link-costo-azienda').addEventListener('click', function(ev){
-    ev.preventDefault();
-    var det = document.getElementById('sez-costo-azienda');
-    det.open = true;
-    det.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-  });
-
-  // Piano illustrativo delle mensilità: quanto arriva in ciascuna mensilità
-  // ordinaria e nelle eventuali mensilità aggiuntive (Motore.pianoMensilita,
-  // gia' calcolato sul netto verificato — vedi processo/assunzioni-e-fonti.md
-  // per la convenzione usata e i suoi limiti).
-  function renderMensilitaPiano(calc, numeroMensilita){
-    var wrap = document.getElementById('mensilita-piano');
-    if (numeroMensilita === 12) { wrap.hidden = true; return; }
-    var piano = Motore.pianoMensilita(calc, numeroMensilita);
-    var barre = document.getElementById('mensilita-piano-barre');
-    barre.innerHTML = '';
-    var maxAltezza = 40;
-    for (var i = 0; i < piano.ordinarie; i++) {
-      var b = document.createElement('div');
-      b.className = 'barra';
-      b.style.height = maxAltezza + 'px';
-      b.title = 'Mensilità ordinaria: circa ' + eur(piano.importoOrdinario);
-      barre.appendChild(b);
-    }
-    piano.extra.forEach(function(v, i){
-      var b = document.createElement('div');
-      b.className = 'barra extra';
-      var h = Math.max(6, Math.round(v / piano.importoOrdinario * maxAltezza));
-      b.style.height = h + 'px';
-      var nome = numeroMensilita === 14 ? (i === 0 ? 'Tredicesima' : 'Quattordicesima') : 'Tredicesima';
-      b.title = nome + ' (stima): circa ' + eur(v);
-      barre.appendChild(b);
-    });
-    var frase = numeroMensilita === 14
-      ? 'la tredicesima e la quattordicesima sono più basse perché tassate'
-      : 'la tredicesima è più bassa perché tassata';
-    document.getElementById('mensilita-piano-caption').textContent =
-      'Le 12 mensilità ordinarie sono circa ' + eur(piano.importoOrdinario) + ' ciascuna; ' + frase +
-      ' all\'aliquota marginale, senza le detrazioni mensili. Le addizionali non sono legate a un mese preciso: la rateizzazione dipende dal sostituto d\'imposta, non è fissata per legge.';
-    wrap.hidden = false;
-  }
 
   // Costruisce il percorso narrativo RAL -> netto usando solo campi già
   // calcolati dal motore (calc.imponibile, calc.irpefLorda, ecc.): nessuna
@@ -999,11 +1019,6 @@
     document.getElementById('titolo-cascata').textContent = 'Come si trasforma una RAL di ' + eur(calc.ral) + ' in netto?';
     animaNumero(document.getElementById('netto-annuale'), calc.netto, eur);
     document.getElementById('netto-mensile').textContent = eur(calc.netto / S.mensilitaRisultato);
-    renderMensilitaPiano(calc, S.mensilitaRisultato);
-
-    var quota = calc.ral > 0 ? (calc.netto / calc.ral * 100) : 0;
-    document.getElementById('insight-testo').textContent =
-      'Da ' + eur(calc.ral) + ' di RAL a circa ' + eur(calc.netto) + ' di netto: il ' + quota.toFixed(0) + '% della retribuzione lorda rimane come netto.';
 
     // Cascata
     var passi = passiCascata(calc);
@@ -1035,30 +1050,39 @@
       btn.addEventListener('click', function(){ apriConVoce(btn.dataset.spiega, 'calc'); });
     });
 
-    renderScomposizione(calc);
-
-    sezRisultato.hidden = false;
-    sezCascata.hidden = false;
-    sezRiepilogo.hidden = false;
+    renderDoveVaLaRAL(calc);
   }
 
-  // Grafico a barra impilata: come la RAL si scompone. Costruito solo dai
-  // campi gia' calcolati da calc, mai da una formula propria — le
-  // integrazioni di legge (bonus/trattamento integrativo) sono gia' incluse
-  // nel netto mostrato altrove in pagina, ma qui vengono tolte dal segmento
-  // "Netto" perche' non provengono dalla RAL: cosi' i segmenti sommano
-  // esattamente alla RAL, non alla RAL + integrazioni.
-  function renderScomposizione(calc){
+  function rigaLegenda(colore, etichetta, valore, totale, classeExtra){
+    var li = document.createElement('li');
+    if (classeExtra) li.className = classeExtra;
+    var pct = totale > 0 ? Math.round(valore / totale * 100) : 0;
+    var swatch = colore ? '<span class="swatch" style="background:' + colore + '" aria-hidden="true"></span>' : '';
+    li.innerHTML = '<div class="riga-principale">' + swatch +
+      '<span class="etichetta">' + etichetta + '</span>' +
+      '<span class="valore">' + eur(valore) + '<span class="pct"> · ' + pct + '%</span></span></div>';
+    return li;
+  }
+
+  // "Dove va la tua RAL?": un riepilogo per categorie (contributi / imposte /
+  // totale trattenute), costruito solo dai campi gia' calcolati da calc —
+  // nessuna formula fiscale propria. Le imposte (IRPEF netta + addizionali)
+  // sono raggruppate in un'unica voce "Imposte" con il dettaglio sotto,
+  // cosi' la barra usa solo 3 colori invece di 5. Le integrazioni di legge
+  // (bonus/trattamento integrativo) sono gia' incluse nel netto mostrato
+  // altrove in pagina, ma qui vengono tolte dal segmento "Netto" perche' non
+  // provengono dalla RAL: cosi' i segmenti sommano esattamente alla RAL.
+  function renderDoveVaLaRAL(calc){
     var integrazioni = calc.integrazioni || 0;
     var nettoDaRal = calc.netto - integrazioni;
-    var segmenti = [
-      { id: 'netto', label: integrazioni > 0 ? 'Netto (dalla RAL)' : 'Netto', valore: nettoDaRal, colore: COLORI_SCOMP.netto },
-      { id: 'ivs', label: 'Contributi previdenziali', valore: calc.contributi, colore: COLORI_SCOMP.ivs },
-      { id: 'irpef', label: 'IRPEF netta', valore: calc.irpefNetta, colore: COLORI_SCOMP.irpef }
-    ];
-    if (calc.addizionaleRegionale > 0) segmenti.push({ id: 'addreg', label: 'Addizionale regionale', valore: calc.addizionaleRegionale, colore: COLORI_SCOMP.addreg });
-    if (calc.addizionaleComunale > 0) segmenti.push({ id: 'addcom', label: 'Addizionale comunale', valore: calc.addizionaleComunale, colore: COLORI_SCOMP.addcom });
+    var imposte = calc.irpefNetta + calc.addizionaleRegionale + calc.addizionaleComunale;
+    var trattenute = calc.contributi + imposte;
 
+    var segmenti = [
+      { label: integrazioni > 0 ? 'Netto (dalla RAL)' : 'Netto', valore: nettoDaRal, colore: COLORI_SCOMP.netto },
+      { label: 'Contributi previdenziali', valore: calc.contributi, colore: COLORI_SCOMP.ivs },
+      { label: 'Imposte', valore: imposte, colore: COLORI_SCOMP.imposte }
+    ];
     var totale = segmenti.reduce(function(s, x){ return s + Math.max(x.valore, 0); }, 0) || 1;
 
     var barra = document.getElementById('barra-scomp');
@@ -1073,18 +1097,34 @@
     });
     barra.setAttribute('aria-label', 'Composizione della RAL di ' + eur(calc.ral) + ': ' + segmenti.map(function(s){
       return s.label + ' ' + eur(s.valore) + ' (' + Math.round(s.valore / totale * 100) + '%)';
-    }).join(', ') + '.');
+    }).join(', ') + '. Totale trattenute: ' + eur(trattenute) + '.');
 
     var legenda = document.getElementById('legenda-scomp');
     legenda.innerHTML = '';
-    segmenti.forEach(function(s){
-      var pct = Math.round(s.valore / totale * 100);
+    legenda.appendChild(rigaLegenda(COLORI_SCOMP.netto, segmenti[0].label, nettoDaRal, totale));
+    legenda.appendChild(rigaLegenda(COLORI_SCOMP.ivs, 'Contributi previdenziali', calc.contributi, totale));
+
+    var liImposte = rigaLegenda(COLORI_SCOMP.imposte, 'Imposte', imposte, totale);
+    var sub = document.createElement('ul');
+    sub.className = 'legenda-scomp-sub';
+    [
+      ['IRPEF', calc.irpefNetta],
+      ['Addizionale regionale', calc.addizionaleRegionale],
+      ['Addizionale comunale', calc.addizionaleComunale]
+    ].forEach(function(voce){
+      if (voce[1] <= 0) return;
       var li = document.createElement('li');
-      li.innerHTML = '<span class="swatch" style="background:' + s.colore + '" aria-hidden="true"></span>' +
-        '<span class="etichetta">' + s.label + '</span>' +
-        '<span class="valore">' + eur(s.valore) + '<span class="pct"> · ' + pct + '%</span></span>';
-      legenda.appendChild(li);
+      li.innerHTML = '<span class="etichetta">' + voce[0] + '</span><span class="valore">' + eur(voce[1]) + '</span>';
+      sub.appendChild(li);
     });
+    liImposte.appendChild(sub);
+    legenda.appendChild(liImposte);
+
+    legenda.appendChild(rigaLegenda(null, 'Totale trattenute', trattenute, calc.ral, 'legenda-scomp-totale'));
+
+    var quota = calc.ral > 0 ? (trattenute / calc.ral * 100) : 0;
+    document.getElementById('insight-testo').textContent =
+      'Il ' + quota.toFixed(0) + '% della RAL viene trattenuto prima di arrivare al netto.';
 
     var notaInt = document.getElementById('nota-integrazioni');
     if (integrazioni > 0) {
@@ -1134,12 +1174,85 @@
     }
   }
 
+  // ---------- Confronto tra due RAL ----------
+  // Il secondo valore passa sempre da Motore.calcola(): stesso motore della
+  // simulazione principale, nessuna formula di confronto scritta a parte.
+  function formatIntero(n){
+    return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  function renderConfrontoSuggeriti(){
+    var wrap = document.getElementById('confronto-suggeriti');
+    wrap.innerHTML = '';
+    [2000, 5000, 10000].forEach(function(delta){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = '+' + formatIntero(delta) + ' €';
+      btn.addEventListener('click', function(){
+        document.getElementById('input-ral-confronto').value = formatIntero(S.ral + delta);
+        eseguiConfronto();
+      });
+      wrap.appendChild(btn);
+    });
+  }
+
+  function renderConfrontoIniziale(){
+    document.getElementById('input-ral-confronto').value = formatIntero(S.ral + 5000);
+    document.getElementById('confronto-risultato').hidden = true;
+    document.getElementById('errore-confronto').hidden = true;
+    renderConfrontoSuggeriti();
+  }
+
+  function eseguiConfronto(){
+    if (!S.calc) return;
+    var errEl = document.getElementById('errore-confronto');
+    var risWrap = document.getElementById('confronto-risultato');
+    var val = parseValore(document.getElementById('input-ral-confronto').value);
+    if (val === null || isNaN(val) || val < 0) {
+      errEl.textContent = 'Inserisci una RAL valida.'; errEl.hidden = false; risWrap.hidden = true; return;
+    }
+    var altro = Motore.calcola(val);
+    if (altro.errore) { errEl.textContent = altro.errore; errEl.hidden = false; risWrap.hidden = true; return; }
+    errEl.hidden = true;
+
+    var base = S.calc;
+    var deltaRal = altro.ral - base.ral;
+    var deltaNetto = altro.netto - base.netto;
+    var deltaMensile = deltaNetto / S.mensilitaRisultato;
+
+    document.getElementById('confronto-tabella').innerHTML =
+      '<tr><td>' + eur(base.ral) + '</td><td class="importo">' + eur(base.netto) + '</td></tr>' +
+      '<tr><td>' + eur(altro.ral) + '</td><td class="importo">' + eur(altro.netto) + '</td></tr>';
+
+    var segnoRal = deltaRal >= 0 ? '+' : '−';
+    var segnoNetto = deltaNetto >= 0 ? '+' : '−';
+    var pctHtml = '';
+    if (deltaRal !== 0) {
+      var pct = Math.abs(deltaNetto / deltaRal * 100);
+      pctHtml = '<span class="confronto-pct">' + pct.toFixed(0) + '% ' +
+        (deltaRal > 0 ? 'dell\'aumento lordo arriva al netto' : 'della riduzione lorda si riflette sul netto') + '</span>';
+    }
+    document.getElementById('confronto-delta').innerHTML =
+      '<strong>' + segnoRal + eur(Math.abs(deltaRal)) + ' di RAL → ' + segnoNetto + eur(Math.abs(deltaNetto)) + ' di netto l\'anno</strong>' + pctHtml;
+
+    document.getElementById('confronto-nota-mensile').textContent =
+      'In media, circa ' + (deltaNetto >= 0 ? '+' : '−') + eur(Math.abs(deltaMensile)) + ' al mese su ' + S.mensilitaRisultato +
+      ' mensilità: è una media, non l\'importo del singolo cedolino.';
+
+    risWrap.hidden = false;
+  }
+
+  document.getElementById('btn-confronta').addEventListener('click', eseguiConfronto);
+
   function mostraErrore(msg){
     boxErrore.textContent = msg;
     boxErrore.hidden = false;
     sezRisultato.hidden = true;
+    sezDoveVa.hidden = true;
     sezCascata.hidden = true;
-    sezRiepilogo.hidden = true;
+    sezAssistEntry.hidden = true;
+    sezConfronto.hidden = true;
+    sezVediAnche.hidden = true;
   }
 
   function esegui(ral){
@@ -1149,7 +1262,14 @@
     S.calc = calc; S.ral = ral; S.costo = Motore.costoAzienda(ral);
     renderRisultato(calc);
     renderCostoAzienda(ral);
+    renderConfrontoIniziale();
     if (assistDialog.open) assistIntro();
+    sezRisultato.hidden = false;
+    sezDoveVa.hidden = false;
+    sezCascata.hidden = false;
+    sezAssistEntry.hidden = false;
+    sezConfronto.hidden = false;
+    sezVediAnche.hidden = false;
     sezRisultato.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   }
 
