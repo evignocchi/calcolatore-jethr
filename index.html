@@ -18,23 +18,38 @@
   html,body{margin:0;padding:0;background:var(--bg);color:var(--text);overflow-x:hidden;}
   body{font-family:'Wix Madefor Display',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     font-size:16px;line-height:1.55;}
-  .wrap{max-width:680px;margin:0 auto;padding:0 20px 56px;}
+  .contenuto{max-width:760px;}
   section{margin-top:56px;}
   h1,h2,h3{font-weight:700;color:var(--text);line-height:1.2;}
   p{margin:0 0 12px;}
   a{color:var(--accent);}
   [hidden]{display:none!important}
 
-  header.top{border-bottom:1px solid var(--border);}
-  .top-inner{max-width:680px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;
+  header.top{border-bottom:1px solid var(--border);background:var(--card);}
+  .top-inner{padding:16px 40px;display:flex;align-items:center;
     justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .brand{font-weight:700;font-size:.92rem;color:var(--text);}
   .top-tag{font-size:.78rem;color:var(--muted);}
 
-  /* ---------- HERO ---------- */
-  .hero{margin-top:48px;}
-  .hero h1{font-size:2rem;margin:0 0 14px;letter-spacing:-.01em;}
-  .hero .sub{color:var(--muted);font-size:1.02rem;max-width:520px;margin:0 0 16px;}
+  /* ---------- LAYOUT A DUE COLONNE ---------- */
+  .layout{display:grid;grid-template-columns:minmax(280px,340px) 1fr;align-items:start;}
+  .sidebar{background:var(--bg);border-right:1px solid var(--border);padding:40px 36px;
+    position:sticky;top:0;align-self:start;min-height:100vh;}
+  .stage{background:var(--card);padding:56px 48px;min-height:100vh;
+    display:flex;flex-direction:column;}
+  .stage-intro{margin:auto 0;max-width:520px;padding:40px 0;}
+  .stage-intro h1{font-size:2.1rem;margin:0 0 14px;letter-spacing:-.01em;}
+  .stage-intro .sub{color:var(--muted);font-size:1.02rem;margin:0 0 28px;}
+  .stage-corpo{max-width:760px;width:100%;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .sidebar{position:static;min-height:0;border-right:none;border-bottom:1px solid var(--border);
+      padding:28px 20px;}
+    .stage{padding:36px 20px;min-height:0;}
+  }
+
+  /* ---------- HERO / form RAL ---------- */
 
   label.campo-label{display:block;font-size:.76rem;font-weight:700;text-transform:uppercase;
     letter-spacing:.04em;color:var(--muted);margin-bottom:8px;}
@@ -51,8 +66,15 @@
   button.cta:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   .errore{color:var(--neg);font-size:.88rem;margin-top:10px;font-weight:600;}
 
-  .assunzione-riga{margin-top:16px;font-size:.88rem;color:var(--muted);}
-  .assunzione-riga a{font-weight:600;white-space:nowrap;}
+  /* ---------- SIDEBAR: perimetro della simulazione ---------- */
+  .sidebar h2{font-size:1.05rem;margin:0 0 8px;}
+  .sidebar-intro{color:var(--muted);font-size:.86rem;margin:0 0 20px;}
+  .sidebar .badge-riga{margin:0 0 24px;}
+  .lista-perimetro{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .lista-perimetro li{display:flex;align-items:flex-start;gap:9px;font-size:.88rem;color:var(--text);}
+  .lista-perimetro .check{color:var(--accent);font-weight:700;flex:none;line-height:1.4;}
+  .sidebar-nota{font-size:.8rem;color:var(--muted);margin:0;padding-top:16px;border-top:1px solid var(--border);}
+  .sidebar-nota a{font-weight:600;}
 
   /* ---------- RISULTATO ---------- */
   .risultato{background:var(--accent-bg);border-radius:16px;padding:32px 28px;}
@@ -124,25 +146,6 @@
   .legenda-scomp .valore{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text);}
   .legenda-scomp .pct{color:var(--muted);font-weight:600;font-size:.84rem;}
 
-  /* ---------- METODOLOGIA (accordion) ---------- */
-  details.metodologia{margin-top:56px;border:1px solid var(--border);border-radius:14px;
-    background:var(--card);}
-  details.metodologia > summary{padding:18px 20px;gap:14px;font-size:1rem;}
-  details.metodologia > summary::before{content:none;}
-  .metodologia-icona{flex:none;width:38px;height:38px;border-radius:10px;background:var(--accent-bg);
-    color:var(--accent);display:flex;align-items:center;justify-content:center;}
-  .metodologia-icona svg{width:20px;height:20px;}
-  .metodologia-titolo{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;}
-  .metodologia-titolo-testo{font-size:1.02rem;font-weight:700;color:var(--text);}
-  .metodologia-sottotitolo{font-size:.8rem;font-weight:500;color:var(--muted);}
-  .metodologia-chevron{flex:none;width:20px;height:20px;color:var(--muted);transition:transform .15s;}
-  details.metodologia[open] .metodologia-chevron{transform:rotate(180deg);}
-  .metodologia-corpo{padding:6px 20px 22px;}
-  .step-metodo{display:grid;grid-template-columns:34px 1fr;gap:2px 14px;margin-bottom:16px;}
-  .step-metodo .n{font-weight:800;color:var(--accent);font-size:.95rem;}
-  .step-metodo h3{font-size:.98rem;margin:0 0 3px;}
-  .step-metodo p{color:var(--muted);font-size:.9rem;margin:0;}
-
   /* ---------- accordion generico ---------- */
   details{margin-top:16px;}
   details > summary{cursor:pointer;font-weight:600;font-size:.92rem;color:var(--text);
@@ -151,10 +154,15 @@
   details > summary::before{content:'▸';color:var(--muted);font-size:.8rem;transition:transform .15s;}
   details[open] > summary::before{transform:rotate(90deg);}
 
+  /* ---------- sezioni a piena larghezza (vedi anche, footer) ---------- */
+  .sez-full{padding:48px 40px;}
+  .sez-full > .contenuto{margin:0 auto;}
+  @media (max-width:900px){ .sez-full{padding:36px 20px;} }
+
   /* ---------- potrebbe interessarti anche ---------- */
-  .vedi-anche{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 28px 6px;}
-  .vedi-anche h2{font-size:1.05rem;margin:0;}
-  .vedi-anche details.secondario:first-of-type{margin-top:14px;}
+  .vedi-anche-riquadro{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 28px 6px;}
+  .vedi-anche-riquadro h2{font-size:1.05rem;margin:0;}
+  .vedi-anche-riquadro details.secondario:first-of-type{margin-top:14px;}
 
   details.secondario{border-top:1px solid var(--border);padding-top:18px;}
   details.secondario > summary{font-weight:600;font-size:.94rem;}
@@ -195,11 +203,15 @@
   .area-fonte p{font-size:.88rem;color:var(--muted);margin:0 0 4px;}
   .area-fonte a{font-size:.86rem;}
 
+  footer.site-footer{background:var(--bg);border-top:1px solid var(--border);margin-top:56px;}
+  footer.site-footer section{margin-top:40px;}
+  footer.site-footer section:first-of-type{margin-top:0;}
+
   .disclaimer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);
     font-size:.84rem;color:var(--muted);}
   .disclaimer strong{color:var(--text);}
 
-  footer.page{color:var(--muted);font-size:.78rem;text-align:center;margin:48px 0 12px;}
+  .contenuto > p.page{color:var(--muted);font-size:.78rem;text-align:center;margin:32px 0 0;}
 
   /* ---------- entry point assistente ---------- */
   .assist-entry{margin-top:18px;padding-top:16px;border-top:1px solid rgba(17,21,10,.1);
@@ -269,10 +281,21 @@
     .netto-annuale{transition:opacity .2s;}
   }
   @media (max-width:480px){
-    .hero h1{font-size:1.55rem;}
+    .stage-intro h1{font-size:1.55rem;}
     .netto-annuale{font-size:2.3rem;}
     .riga-input{flex-direction:column;}
     button.cta{width:100%;}
+  }
+
+  /* ---------- widget flottante assistente ---------- */
+  .assist-fab{position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:50%;
+    border:none;background:var(--accent);color:#fff;cursor:pointer;display:flex;align-items:center;
+    justify-content:center;box-shadow:0 6px 18px rgba(14,107,82,.35);z-index:40;}
+  .assist-fab svg{width:26px;height:26px;}
+  .assist-fab:hover{background:#0B5A44;}
+  .assist-fab:focus-visible{outline:2px solid var(--text);outline-offset:2px;}
+  @media (max-width:480px){
+    .assist-fab{right:16px;bottom:16px;width:52px;height:52px;}
   }
 </style>
 </head>
@@ -285,12 +308,11 @@
   </div>
 </header>
 
-<div class="wrap">
+<div class="layout">
 
-  <!-- HERO -->
-  <section class="hero">
-    <h1>Calcola lo stipendio netto a partire dalla RAL</h1>
-    <p class="sub">Inserisci una RAL per ottenere una stima del netto annuale e mensile e vedere nel dettaglio come viene calcolata.</p>
+  <aside class="sidebar">
+    <h2>Il perimetro della simulazione</h2>
+    <p class="sidebar-intro">Il calcolo si basa su un caso standard, per restare confrontabile e verificabile.</p>
 
     <p class="badge-riga">
       <span class="tag scope">Regole 2026</span>
@@ -299,22 +321,38 @@
       <span class="tag scope">Milano</span>
     </p>
 
-    <form id="form-input">
-      <label class="campo-label" for="input-ral">RAL</label>
-      <div class="riga-input">
-        <div class="euro-input">
-          <span>€</span>
-          <input type="text" id="input-ral" inputmode="decimal" placeholder="Es. 35.000" autocomplete="off">
+    <ul class="lista-perimetro">
+      <li><span class="check" aria-hidden="true">✓</span> Dipendente del settore privato, tempo indeterminato</li>
+      <li><span class="check" aria-hidden="true">✓</span> Residente a Milano, anno intero</li>
+      <li><span class="check" aria-hidden="true">✓</span> Nessun familiare a carico</li>
+      <li><span class="check" aria-hidden="true">✓</span> Nessuna agevolazione o benefit</li>
+      <li><span class="check" aria-hidden="true">✓</span> CCNL, livello e scatti non modellati</li>
+    </ul>
+
+    <p class="sidebar-nota">Il perimetro è deliberatamente limitato. <a href="#assunzioni">Vedi tutte le assunzioni →</a></p>
+  </aside>
+
+  <main class="stage">
+    <div class="stage-intro">
+      <h1>Calcola lo stipendio netto a partire dalla RAL</h1>
+      <p class="sub">Inserisci una RAL per ottenere una stima del netto annuale e mensile e vedere nel dettaglio come viene calcolata.</p>
+
+      <form id="form-input">
+        <label class="campo-label" for="input-ral">RAL</label>
+        <div class="riga-input">
+          <div class="euro-input">
+            <span>€</span>
+            <input type="text" id="input-ral" inputmode="decimal" placeholder="Es. 35.000" autocomplete="off">
+          </div>
+          <button type="submit" class="cta">Calcola il netto</button>
         </div>
-        <button type="submit" class="cta">Calcola il netto</button>
-      </div>
-      <p class="errore" id="errore" hidden></p>
-    </form>
+        <p class="errore" id="errore" hidden></p>
+      </form>
+    </div>
 
-    <p class="assunzione-riga">Caso standard: dipendente privato a tempo indeterminato, residente a Milano, senza agevolazioni. <a href="#assunzioni">Vedi assunzioni</a></p>
-  </section>
+    <div class="stage-corpo">
 
-  <!-- RISULTATO -->
+    <!-- RISULTATO -->
   <section class="risultato" id="sez-risultato" hidden aria-live="polite">
     <p class="eyebrow">Risultato della simulazione</p>
     <p class="netto-annuale" id="netto-annuale">—</p>
@@ -358,50 +396,14 @@
     <p class="nota-piccola" id="nota-integrazioni" hidden></p>
   </section>
 
-  <!-- METODOLOGIA -->
-  <details class="metodologia">
-    <summary>
-      <span class="metodologia-icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><circle cx="8.5" cy="10.5" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="10.5" r=".75" fill="currentColor" stroke="none"/><circle cx="15.5" cy="10.5" r=".75" fill="currentColor" stroke="none"/><circle cx="8.5" cy="14.5" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r=".75" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r=".75" fill="currentColor" stroke="none"/><circle cx="8.5" cy="18" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="18" r=".75" fill="currentColor" stroke="none"/></svg></span>
-      <span class="metodologia-titolo">
-        <span class="metodologia-titolo-testo">Come viene calcolato il netto?</span>
-        <span class="metodologia-sottotitolo">I 7 passaggi dalla RAL al netto, in breve</span>
-      </span>
-      <svg class="metodologia-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-    </summary>
-    <div class="metodologia-corpo">
-    <div class="step-metodo">
-      <span class="n">01</span>
-      <div><h3>Partenza dalla RAL</h3><p>La RAL rappresenta la retribuzione annua lorda: il punto di partenza di ogni voce successiva.</p></div>
-    </div>
-    <div class="step-metodo">
-      <span class="n">02</span>
-      <div><h3>Contributi previdenziali</h3><p>Nel caso standard considerato, i contributi previdenziali a carico del dipendente sono calcolati applicando un'aliquota del 9,19% alla RAL, fino al massimale contributivo annuo di 122.295 €.</p></div>
-    </div>
-    <div class="step-metodo">
-      <span class="n">03</span>
-      <div><h3>Imponibile fiscale</h3><p>La RAL meno i contributi previdenziali è la base su cui si calcola l'IRPEF.</p></div>
-    </div>
-    <div class="step-metodo">
-      <span class="n">04</span>
-      <div><h3>IRPEF lorda</h3><p>L'imposta si calcola applicando progressivamente tre aliquote per scaglioni di imponibile — 23%, 33%, 43% — non un'unica aliquota su tutta la cifra.</p></div>
-    </div>
-    <div class="step-metodo">
-      <span class="n">05</span>
-      <div><h3>Detrazioni</h3><p>La detrazione per lavoro dipendente e, sotto una certa soglia di imponibile, un'ulteriore detrazione per il cuneo fiscale riducono l'imposta lorda — mai oltre l'imposta stessa.</p></div>
-    </div>
-    <div class="step-metodo">
-      <span class="n">06</span>
-      <div><h3>Addizionali regionale e comunale</h3><p>Sull'imponibile si applicano l'addizionale della Regione Lombardia e quella del Comune di Milano, dovute solo se resta un'imposta netta da versare.</p></div>
-    </div>
-    <div class="step-metodo">
-      <span class="n">07</span>
-      <div><h3>Netto</h3><p>RAL meno contributi, imposta netta e addizionali, più eventuali integrazioni di legge per i redditi più bassi: il risultato è il netto annuale stimato.</p></div>
-    </div>
-    </div>
-  </details>
+    </div><!-- /.stage-corpo -->
+  </main>
 
-  <!-- POTREBBE INTERESSARTI ANCHE -->
-  <section class="vedi-anche">
+</div><!-- /.layout -->
+
+<!-- POTREBBE INTERESSARTI ANCHE -->
+<section class="vedi-anche sez-full" id="sez-vedi-anche" hidden>
+  <div class="contenuto vedi-anche-riquadro">
     <h2>Potrebbe interessarti anche...</h2>
 
     <!-- SECONDARIO: netto -> RAL -->
@@ -440,7 +442,7 @@
     </details>
 
     <!-- SECONDARIO: costo azienda -->
-    <details class="secondario" id="sez-costo-azienda" hidden>
+    <details class="secondario" id="sez-costo-azienda">
       <summary>Vedi anche: costo stimato per l'azienda</summary>
       <div class="secondario-corpo">
         <p class="nota-piccola">Quanto costa complessivamente questa RAL a chi assume, oltre a quanto arriva netto al dipendente. <span class="tag stima" data-info="stima" tabindex="0" role="button">stima <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span></p>
@@ -452,72 +454,77 @@
         <div class="avviso-soglia" id="callout-welfare" hidden style="margin-top:16px"></div>
       </div>
     </details>
-  </section>
+  </div>
+</section>
 
-  <!-- ASSUNZIONI -->
-  <section class="assunzioni" id="assunzioni">
-    <h2>Assunzioni e limiti del modello</h2>
+<footer class="site-footer sez-full">
+  <div class="contenuto">
 
-    <h3>Caso considerato</h3>
-    <ul>
-      <li>Dipendente del settore privato</li>
-      <li>Contratto a tempo indeterminato</li>
-      <li>Residente a Milano, domicilio fiscale invariato per l'anno intero</li>
-      <li>Nessun familiare a carico</li>
-      <li>Nessuna agevolazione, benefit o premio</li>
-      <li>Nessuna situazione fiscale particolare (un solo reddito, nessun onere deducibile o detraibile ulteriore)</li>
-    </ul>
+    <!-- ASSUNZIONI -->
+    <section class="assunzioni" id="assunzioni">
+      <h2>Assunzioni e limiti del modello</h2>
 
-    <h3>Casi non modellati</h3>
-    <ul>
-      <li>Familiari a carico e le relative detrazioni</li>
-      <li>Benefit, welfare aziendale e premi di risultato</li>
-      <li>Agevolazioni contributive o fiscali particolari</li>
-      <li>Situazioni previdenziali diverse da quella ordinaria (es. anzianità pre-1996, fondi di solidarietà)</li>
-      <li>Variazioni di reddito o di residenza durante l'anno</li>
-      <li>Contratti diversi dal tempo indeterminato a tempo pieno</li>
-      <li>Comuni diversi da Milano</li>
-      <li>Altri elementi contrattuali o retributivi non modellati (es. CCNL, livello, scatti di anzianità)</li>
-    </ul>
-    <p class="nota-piccola">Il perimetro è deliberatamente limitato: <a href="processo/assunzioni-e-fonti.md">processo/assunzioni-e-fonti.md</a> spiega perché, con l'esempio calcolato a mano che verifica il motore.</p>
-  </section>
+      <h3>Caso considerato</h3>
+      <ul>
+        <li>Dipendente del settore privato</li>
+        <li>Contratto a tempo indeterminato</li>
+        <li>Residente a Milano, domicilio fiscale invariato per l'anno intero</li>
+        <li>Nessun familiare a carico</li>
+        <li>Nessuna agevolazione, benefit o premio</li>
+        <li>Nessuna situazione fiscale particolare (un solo reddito, nessun onere deducibile o detraibile ulteriore)</li>
+      </ul>
 
-  <!-- FONTI -->
-  <section class="fonti">
-    <h2>Fonti e metodologia</h2>
+      <h3>Casi non modellati</h3>
+      <ul>
+        <li>Familiari a carico e le relative detrazioni</li>
+        <li>Benefit, welfare aziendale e premi di risultato</li>
+        <li>Agevolazioni contributive o fiscali particolari</li>
+        <li>Situazioni previdenziali diverse da quella ordinaria (es. anzianità pre-1996, fondi di solidarietà)</li>
+        <li>Variazioni di reddito o di residenza durante l'anno</li>
+        <li>Contratti diversi dal tempo indeterminato a tempo pieno</li>
+        <li>Comuni diversi da Milano</li>
+        <li>Altri elementi contrattuali o retributivi non modellati (es. CCNL, livello, scatti di anzianità)</li>
+      </ul>
+      <p class="nota-piccola">Il perimetro è deliberatamente limitato: <a href="processo/assunzioni-e-fonti.md">processo/assunzioni-e-fonti.md</a> spiega perché, con l'esempio calcolato a mano che verifica il motore.</p>
+    </section>
 
-    <div class="area-fonte">
-      <h3>Contributi previdenziali</h3>
-      <p>Aliquota IVS ordinaria e massimale contributivo annuo.</p>
-      <a href="https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2026.01.circolare-numero-6-del-30-01-2026_15151.html" target="_blank" rel="noopener">INPS, circolare 6/2026</a>
-    </div>
-    <div class="area-fonte">
-      <h3>IRPEF</h3>
-      <p>Scaglioni e aliquote per il periodo d'imposta 2026.</p>
-      <a href="https://www.normattiva.it/eli/stato/LEGGE/2025/12/30/199/CONSOLIDATED" target="_blank" rel="noopener">L. 199/2025, art. 1</a>
-    </div>
-    <div class="area-fonte">
-      <h3>Detrazioni</h3>
-      <p>Detrazione per lavoro dipendente e cuneo fiscale.</p>
-      <a href="https://www.normattiva.it/eli/stato/LEGGE/2024/12/30/207/CONSOLIDATED/20251219" target="_blank" rel="noopener">L. 207/2024, art. 1 c. 4-9</a>
-    </div>
-    <div class="area-fonte">
-      <h3>Addizionale regionale</h3>
-      <p>Aliquote progressive della Regione Lombardia.</p>
-      <a href="https://www.regione.lombardia.it/bollo-auto-e-tributi-regionali/red-addizionale-regionale-irpef" target="_blank" rel="noopener">Regione Lombardia</a>
-    </div>
-    <div class="area-fonte">
-      <h3>Addizionale comunale</h3>
-      <p>Aliquota unica ed esenzione del Comune di Milano.</p>
-      <a href="https://www.comune.milano.it/argomenti/tributi/addizionale-comunale-irpef" target="_blank" rel="noopener">Comune di Milano</a>
-    </div>
-    <p class="nota-piccola">Elenco completo delle fonti, incluse quelle del costo azienda, in <a href="processo/assunzioni-e-fonti.md">processo/assunzioni-e-fonti.md</a>. Ogni voce della simulazione porta la propria fonte — l'icona <strong>(i)</strong> accanto a ogni riga spiega perché quella regola si applica con i numeri di questo calcolo.</p>
-  </section>
+    <!-- FONTI -->
+    <section class="fonti">
+      <h2>Fonti e metodologia</h2>
 
-  <p class="disclaimer"><strong>Nota:</strong> questo calcolatore fornisce una stima indicativa del netto annuale e mensile sulla base delle assunzioni indicate. Non rappresenta un cedolino paga né un parere fiscale o contributivo. Il netto effettivo può variare in base alla situazione personale, contrattuale e fiscale del dipendente.</p>
+      <div class="area-fonte">
+        <h3>Contributi previdenziali</h3>
+        <p>Aliquota IVS ordinaria e massimale contributivo annuo.</p>
+        <a href="https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2026.01.circolare-numero-6-del-30-01-2026_15151.html" target="_blank" rel="noopener">INPS, circolare 6/2026</a>
+      </div>
+      <div class="area-fonte">
+        <h3>IRPEF</h3>
+        <p>Scaglioni e aliquote per il periodo d'imposta 2026.</p>
+        <a href="https://www.normattiva.it/eli/stato/LEGGE/2025/12/30/199/CONSOLIDATED" target="_blank" rel="noopener">L. 199/2025, art. 1</a>
+      </div>
+      <div class="area-fonte">
+        <h3>Detrazioni</h3>
+        <p>Detrazione per lavoro dipendente e cuneo fiscale.</p>
+        <a href="https://www.normattiva.it/eli/stato/LEGGE/2024/12/30/207/CONSOLIDATED/20251219" target="_blank" rel="noopener">L. 207/2024, art. 1 c. 4-9</a>
+      </div>
+      <div class="area-fonte">
+        <h3>Addizionale regionale</h3>
+        <p>Aliquote progressive della Regione Lombardia.</p>
+        <a href="https://www.regione.lombardia.it/bollo-auto-e-tributi-regionali/red-addizionale-regionale-irpef" target="_blank" rel="noopener">Regione Lombardia</a>
+      </div>
+      <div class="area-fonte">
+        <h3>Addizionale comunale</h3>
+        <p>Aliquota unica ed esenzione del Comune di Milano.</p>
+        <a href="https://www.comune.milano.it/argomenti/tributi/addizionale-comunale-irpef" target="_blank" rel="noopener">Comune di Milano</a>
+      </div>
+      <p class="nota-piccola">Elenco completo delle fonti, incluse quelle del costo azienda, in <a href="processo/assunzioni-e-fonti.md">processo/assunzioni-e-fonti.md</a>. Ogni voce della simulazione porta la propria fonte — l'icona <strong>(i)</strong> accanto a ogni riga spiega perché quella regola si applica con i numeri di questo calcolo.</p>
+    </section>
 
-  <footer class="page">Prototipo per il task Product Builder — Jet HR · regole 2026, fonti verificate il 31 agosto 2026</footer>
-</div>
+    <p class="disclaimer"><strong>Nota:</strong> questo calcolatore fornisce una stima indicativa del netto annuale e mensile sulla base delle assunzioni indicate. Non rappresenta un cedolino paga né un parere fiscale o contributivo. Il netto effettivo può variare in base alla situazione personale, contrattuale e fiscale del dipendente.</p>
+
+    <p class="page">Prototipo per il task Product Builder — Jet HR · regole 2026, fonti verificate il 31 agosto 2026</p>
+  </div>
+</footer>
 
 <dialog id="assistente" aria-labelledby="assist-titolo">
   <div class="assist-head">
@@ -538,6 +545,10 @@
   </form>
   <p class="assist-disclaimer">Le risposte dell'assistente si basano sulla simulazione e sulle assunzioni del modello. Non costituiscono consulenza fiscale.</p>
 </dialog>
+
+<button type="button" class="assist-fab" id="assist-fab" aria-label="Apri l'assistente alla simulazione">
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
 
 <script src="motore.js"></script>
 <script>
@@ -920,6 +931,7 @@
   var sezRisultato = document.getElementById('sez-risultato');
   var sezCascata = document.getElementById('sez-cascata');
   var sezRiepilogo = document.getElementById('sez-riepilogo');
+  var sezVediAnche = document.getElementById('sez-vedi-anche');
 
   document.getElementById('sel-mensilita-risultato').addEventListener('change', function(){
     S.mensilitaRisultato = parseInt(this.value, 10);
@@ -929,10 +941,11 @@
   document.getElementById('link-costo-azienda').addEventListener('click', function(ev){
     ev.preventDefault();
     var det = document.getElementById('sez-costo-azienda');
-    det.hidden = false;
     det.open = true;
     det.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   });
+
+  document.getElementById('assist-fab').addEventListener('click', function(){ apriAssistente(); });
 
   // Riepilogo per cifre di quanto viene trattenuto sulla RAL — solo campi
   // già calcolati dal motore (calc.contributi, calc.irpefNetta, ecc.),
@@ -1140,7 +1153,7 @@
     sezRisultato.hidden = true;
     sezCascata.hidden = true;
     sezRiepilogo.hidden = true;
-    document.getElementById('sez-costo-azienda').hidden = true;
+    sezVediAnche.hidden = true;
   }
 
   function esegui(ral){
@@ -1150,7 +1163,7 @@
     S.calc = calc; S.ral = ral; S.costo = Motore.costoAzienda(ral);
     renderRisultato(calc);
     renderCostoAzienda(ral);
-    document.getElementById('sez-costo-azienda').hidden = false;
+    sezVediAnche.hidden = false;
     if (assistDialog.open) assistIntro();
     sezRisultato.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   }
