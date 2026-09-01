@@ -7,14 +7,14 @@ related_targets: []
 
 ## Direction contract
 
-THESIS: Due letture della stessa RAL — dipendente e azienda — condividono un grafico a ciambella e una lista voci con icone, invece di due sezioni separate scollegate; la scomposizione proporzionale si vede prima di leggerla.
+THESIS: I risultati sono dati da scansionare a colpo d'occhio, non un paragrafo da leggere — rifiuta l'elenco piatto attuale in favore di numeri protagonisti in card statistiche.
 
-OWN-WORLD: Palette e componenti JetHR invariati (crema `#F5F5F0`, verde accento `#0E6B52`, testo `#11150A`, bordi `#E3E2DA`, footer nero `#000`, Wix Madefor Display), con una singola eccezione confinata: la card "JetBot" usa la palette di brand Jet HR (nero `#000000`, bianco carta `#F4F7F5`, verde/giallo `#DDEA57`), mai estesa oltre quella card. Grafico a ciambella SVG (segmenti = campi già calcolati, mai formule proprie), lista voci a righe (icona colorata + nome + fonte + importo + Spiega), tab pillola per passare da un tab all'altro.
+OWN-WORLD: Palette e componenti JetHR invariati — crema `#F5F5F0`, verde accento `#0E6B52`/`#E8F2EC`, testo `#11150A`, bordi `#E3E2DA`, footer nero `#000`; Wix Madefor Display. Card statistiche bianche su fondo crema, bordo sottile, numero enorme in testa, etichetta piccola sotto; mini-barre orizzontali colorate coi token esistenti per le voci di dettaglio.
 
-STORY: L'utente sceglie "Dipendente" o "Azienda"; il grafico, il numero al centro e la lista sotto cambiano insieme. Il costo azienda — prima un accordion secondario — è ora il tab "Azienda" a pieno titolo, con lo stesso badge "stima" e lo stesso callout welfare di prima. La card JetBot rende esplicito, con più risalto di un link testuale, che l'assistente esiste.
+STORY: L'utente vede subito 3-4 numeri chiave (netto annuale, netto mensile, totale trattenute, % trattenuto) come card uguali, poi scende al dettaglio in una card più ampia con mini-barre per voce, prima di raggiungere la cascata narrativa esistente (invariata).
 
-FIRST VIEWPORT: Sotto il form, tab Dipendente/Azienda; sotto, due colonne — a sinistra il grafico a ciambella con didascalia e selettore mensilità, poi la card JetBot; a destra la lista voci (core, più spazio). La cascata narrativa esistente segue invariata più sotto. La vecchia barra di scomposizione ("Come si scompone la RAL") è stata rimossa: il grafico a ciambella la sostituisce, stessa informazione, più impatto.
+FIRST VIEWPORT: Sotto il form, una riga di 3-4 stat-card di pari peso allineate a griglia; sotto, una card di dettaglio più ampia con le mini-barre per voce; la cascata narrativa esistente segue invariata più sotto nella pagina.
 
-FORM: Tab + grafico a ciambella + lista voci con icone — richiesta precisa dell'utente con riferimenti visivi allegati (dashboard fintech), non un lancio del meccanismo di selezione della skill: il brief pinnava già struttura e persino i colori del componente JetBot.
+FORM: Griglia di stat-card — candidata #1 della lista ordinata per pertinenza (IMPECCABLE'S PICK, non pescata dal sorteggio: le pescate erano #6/#5/#7 — cascata a waterfall, striscia KPI + barre impilate, cascata invariata con rail laterale). Seed key: a9a4a3ac.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
