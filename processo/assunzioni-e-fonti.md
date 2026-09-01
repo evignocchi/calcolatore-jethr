@@ -25,13 +25,6 @@ verificabile, non una scusa.
   l'importo del singolo cedolino, perché le addizionali si versano a rate dopo
   il conguaglio.
 
-Questo stesso elenco è ripetuto in pagina, in forma di checklist compatta
-("Il tuo netto dipende da queste variabili"), subito dopo il risultato: non
-modificabile, serve solo a rendere visibile il perimetro senza dover aprire
-questo documento. Include esplicitamente il CCNL, con una formulazione
-pensata per non far credere che il motore ne usi uno specifico: il modello
-non modella nessun CCNL, punto — quello mostrato è un caso standard.
-
 ## Fuori perimetro (esplicitamente, non per dimenticanza)
 
 - **Calcolo inverso netto → RAL.** Il brief chiede RAL → netto; non è una
@@ -93,37 +86,12 @@ coincidono al centesimo.
 
 Arrotondamento al centesimo (metodo commerciale, mezzo in su) su ogni voce
 intermedia; il netto è la somma delle voci già arrotondate, non un totale
-ricalcolato a parte — così il grafico "Dove va la tua RAL?" in pagina chiude
-sempre esattamente al 100%. Quando ci sono integrazioni di legge (bonus
-cuneo fiscale o trattamento integrativo, reddito imponibile basso), il
+ricalcolato a parte — così il grafico di scomposizione della RAL in pagina
+chiude sempre esattamente al 100%. Quando ci sono integrazioni di legge
+(bonus cuneo fiscale o trattamento integrativo, reddito imponibile basso), il
 segmento "Netto" del grafico le esclude — non provengono dalla RAL, quindi
 lasciarle dentro farebbe superare il 100% — e compaiono invece in una nota
 sotto la legenda, con lo stesso importo già mostrato nella cascata.
-
-## Dove va la tua RAL
-
-Un riepilogo per categorie, letto in pochi secondi: quanto viene trattenuto
-e per quali motivi, prima di arrivare al netto. Costruito solo da campi già
-calcolati da `Motore.calcola()` (contributi, irpefNetta, addizionaleRegionale,
-addizionaleComunale) — nessuna formula fiscale nuova. Per non moltiplicare i
-colori sulla barra, IRPEF netta e le due addizionali sono raggruppate sotto
-un'unica voce "Imposte" (col dettaglio delle tre sotto-voci nella legenda);
-la barra usa così solo tre colori (netto, contributi, imposte) invece dei
-cinque della versione precedente. "Totale trattenute" è la somma di
-contributi e imposte, cioè `RAL − netto (al netto delle integrazioni)`: un
-altro modo di leggere gli stessi numeri già verificati, non un nuovo calcolo.
-
-## Confronta due RAL
-
-"Cosa cambia se la RAL aumenta?", sotto le variabili del modello: inserendo
-una seconda RAL, il confronto richiama `Motore.calcola()` una seconda volta
-— stesso motore della simulazione principale, mai una formula di confronto
-scritta a parte. Mostra la differenza di RAL, di netto annuale e di netto
-medio mensile (sulla stessa mensilità scelta per il risultato principale,
-dichiarata come media), più la quota percentuale dell'aumento (o della
-riduzione) lordo che arriva effettivamente al netto — utile per chi valuta
-un'offerta, una promozione o una negoziazione salariale, dove l'aumento
-lordo e l'aumento netto non coincidono quasi mai.
 
 ## Mensilità
 
@@ -133,26 +101,42 @@ impiegato privato), dichiarando esplicitamente che è una media e non
 l'importo del singolo cedolino. La stessa scelta di mensilità alimenta anche
 il calcolo inverso (netto mensile desiderato → RAL).
 
-### Piano mensilità: capacità del motore, non più mostrata in pagina
+### Piano mensilità: una stima illustrativa, non un cedolino
 
-Il motore espone ancora `Motore.pianoMensilita()`/`aliquotaMarginale()` (con
-i loro test), che stimano come il netto si distribuisce tra mensilità
-ordinarie e mensilità aggiuntive (tredicesima/quattordicesima, tassate
-all'aliquota marginale e senza detrazione propria — per questo sempre più
-basse). Nella terza iterazione di prodotto la relativa visualizzazione è
-stata rimossa dal risultato principale, per tenerlo essenziale: il numero
-di mensilità resta un parametro attivo (nel netto medio mensile e nel
-calcolo inverso), solo senza più un grafico dedicato.
+Sotto il netto medio mensile, se la mensilità scelta è 13 o 14, un piccolo
+grafico mostra come il netto annuale si distribuisce tra le mensilità
+ordinarie e quelle aggiuntive (tredicesima, quattordicesima) — `Motore.
+pianoMensilita()`, che riusa il netto annuale già verificato, non lo
+ricalcola. Con 12 mensilità il grafico resta nascosto: non c'è nessuna
+mensilità aggiuntiva da mostrare.
+
+La convenzione usata per la mensilità aggiuntiva è quella standard dei
+software paghe italiani: stessa aliquota IVS del resto dell'anno, IRPEF
+all'**aliquota marginale** (quella dell'ultimo scaglione raggiunto
+dall'imponibile annuo, non gli scaglioni progressivi ricalcolati da zero) e
+**nessuna detrazione propria** — le detrazioni mensili sono già "consumate"
+dalle 12 mensilità ordinarie. Per questo la tredicesima risulta sempre più
+bassa delle mensilità ordinarie, un effetto reale e non un artefatto del
+modello.
+
+Quello che il grafico **non** prova a mostrare è la rateizzazione delle
+addizionali regionale e comunale su un mese preciso: a differenza
+dell'aliquota marginale sulla tredicesima, il numero di rate e il mese di
+partenza sono una scelta del sostituto d'imposta (del software paghe), non
+fissata dalla legge in modo univoco — esattamente la stessa ragione per cui
+il netto principale resta una media annua e non un cedolino. Le addizionali
+restano quindi implicitamente spalmate sulle mensilità ordinarie. Per questo
+il grafico è marcato **stima illustrativa**, un livello di fiducia più basso
+persino del costo azienda: utile a capire *perché* la tredicesima è più
+bassa, non un calendario di pagamenti preciso.
 
 ## Estensioni oltre il perimetro del brief
 
 Il brief chiede RAL → netto dipendente. Due estensioni sono state aggiunte
 dopo, esplicitamente fuori dal perimetro minimo. Nel secondo passaggio di
 refinement sono state anche retrocesse a sezioni secondarie e collassate
-della pagina, per non competere visivamente con il percorso principale; nella
-terza iterazione sono anche diventate visibili solo dopo aver eseguito una
-simulazione, non più al primo caricamento — la logica di calcolo non è mai
-cambiata, è cambiato solo quanto spazio occupano e quando compaiono.
+della pagina, per non competere visivamente con il percorso principale — la
+logica di calcolo non è cambiata, è cambiato solo quanto spazio occupano.
 Vanno lette con un livello di fiducia diverso dal resto:
 
 ### Costo azienda — stima, non calcolo verificato
