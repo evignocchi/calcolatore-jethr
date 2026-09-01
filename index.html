@@ -104,18 +104,8 @@
 
   .dettaglio-trattenute{margin-top:20px;background:var(--card);border:1px solid var(--border);
     border-radius:12px;padding:20px 22px;}
-  .dettaglio-trattenute-titolo{font-size:.84rem;font-weight:600;color:var(--text);margin:0 0 16px;}
-  .barre-trattenute{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
-  .barre-trattenute li{display:flex;flex-direction:column;gap:6px;}
-  .riga-trattenuta{display:flex;justify-content:space-between;gap:12px;font-size:.86rem;}
-  .riga-trattenuta .etichetta{color:var(--text);}
-  .riga-trattenuta .valore{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .traccia-barra{height:7px;border-radius:4px;background:var(--bg);overflow:hidden;}
-  .riempimento-barra{height:100%;border-radius:4px;}
-  .barre-trattenute li.totale{flex-direction:row;justify-content:space-between;align-items:baseline;
-    border-top:1px solid var(--border);margin-top:2px;padding-top:14px;}
-  .barre-trattenute li.totale .etichetta{font-weight:700;font-size:.9rem;}
-  .barre-trattenute li.totale .valore{font-weight:800;font-size:1rem;}
+  .dettaglio-trattenute-titolo{font-size:.84rem;font-weight:600;color:var(--text);margin:0 0 6px;}
+  .dettaglio-trattenute .intro{color:var(--muted);font-size:.86rem;margin:0 0 16px;}
 
   .vedi-costo-riga{margin-top:16px;font-size:.82rem;color:var(--muted);}
   .vedi-costo-riga a{font-weight:600;}
@@ -139,9 +129,7 @@
   .passo.finale .valore{font-size:1.35rem;font-weight:800;}
   .freccia{text-align:center;color:var(--muted);font-size:1.15rem;line-height:1;padding:3px 0;}
 
-  /* ---------- RIEPILOGO / scomposizione grafica ---------- */
-  .riepilogo h2{font-size:1.3rem;margin:0 0 8px;}
-  .riepilogo .intro{color:var(--muted);font-size:.9rem;margin:0 0 18px;}
+  /* ---------- scomposizione grafica / tabella costo azienda ---------- */
   table{width:100%;border-collapse:collapse;font-size:.92rem;}
   th,td{text-align:left;padding:10px 4px;border-bottom:1px solid var(--border);vertical-align:top;}
   th{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
@@ -412,8 +400,11 @@
     </div>
 
     <div class="dettaglio-trattenute" id="riepilogo-trattenute">
-      <p class="dettaglio-trattenute-titolo">Cosa viene trattenuto sulla RAL</p>
-      <ul class="barre-trattenute" id="lista-trattenute"></ul>
+      <p class="dettaglio-trattenute-titolo">Come si scompone la RAL</p>
+      <p class="intro">La stessa RAL, divisa tra netto, contributi e imposte.</p>
+      <div class="barra-scomp" id="barra-scomp" role="img" aria-label=""></div>
+      <ul class="legenda-scomp" id="legenda-scomp"></ul>
+      <p class="nota-piccola" id="nota-integrazioni" hidden></p>
     </div>
 
     <p class="insight" id="insight-testo"></p>
@@ -428,15 +419,6 @@
   <section class="cascata" id="sez-cascata" hidden>
     <h2 id="titolo-cascata">Come si trasforma la RAL in netto?</h2>
     <ol class="passi" id="lista-passi"></ol>
-  </section>
-
-  <!-- RIEPILOGO -->
-  <section class="riepilogo" id="sez-riepilogo" hidden>
-    <h2>Come si scompone la RAL</h2>
-    <p class="intro">La stessa RAL, divisa tra netto, contributi e imposte.</p>
-    <div class="barra-scomp" id="barra-scomp" role="img" aria-label=""></div>
-    <ul class="legenda-scomp" id="legenda-scomp"></ul>
-    <p class="nota-piccola" id="nota-integrazioni" hidden></p>
   </section>
 
     </div><!-- /.stage-corpo -->
@@ -977,7 +959,6 @@
   var boxErrore = document.getElementById('errore');
   var sezRisultato = document.getElementById('sez-risultato');
   var sezCascata = document.getElementById('sez-cascata');
-  var sezRiepilogo = document.getElementById('sez-riepilogo');
   var sezVediAnche = document.getElementById('sez-vedi-anche');
 
   document.getElementById('sel-mensilita-risultato').addEventListener('change', function(){
@@ -994,33 +975,11 @@
 
   document.getElementById('assist-fab').addEventListener('click', function(){ apriAssistente(); });
 
-  // Riepilogo per cifre di quanto viene trattenuto sulla RAL — solo campi
-  // già calcolati dal motore (calc.contributi, calc.irpefNetta, ecc.),
-  // nessuna formula propria. Le mini-barre sono proporzionali alla voce più
-  // alta: solo importi reali, nessun dato inventato.
+  // Totale trattenute per la stat-card — solo campi già calcolati dal
+  // motore (calc.contributi, calc.irpefNetta, ecc.), nessuna formula propria.
+  // Il dettaglio voce per voce è ora la scomposizione a barra qui sotto.
   function renderTrattenute(calc){
-    var lista = document.getElementById('lista-trattenute');
-    lista.innerHTML = '';
-    var righe = [
-      ['Contributi previdenziali', calc.contributi, COLORI_SCOMP.ivs],
-      ['IRPEF', calc.irpefNetta, COLORI_SCOMP.irpef]
-    ];
-    if (calc.addizionaleRegionale > 0) righe.push(['Addizionale regionale', calc.addizionaleRegionale, COLORI_SCOMP.addreg]);
-    if (calc.addizionaleComunale > 0) righe.push(['Addizionale comunale', calc.addizionaleComunale, COLORI_SCOMP.addcom]);
-    var massimo = Math.max.apply(null, righe.map(function(r){ return r[1]; }));
-    righe.forEach(function(r){
-      var pct = massimo > 0 ? (r[1] / massimo * 100) : 0;
-      var li = document.createElement('li');
-      li.innerHTML =
-        '<div class="riga-trattenuta"><span class="etichetta">' + r[0] + '</span><span class="valore">−' + eur(r[1]) + '</span></div>' +
-        '<div class="traccia-barra"><div class="riempimento-barra" style="width:' + pct.toFixed(1) + '%;background:' + r[2] + '"></div></div>';
-      lista.appendChild(li);
-    });
     var totale = calc.contributi + calc.irpefNetta + calc.addizionaleRegionale + calc.addizionaleComunale;
-    var liTot = document.createElement('li');
-    liTot.className = 'totale';
-    liTot.innerHTML = '<span class="etichetta">Totale trattenute</span><span class="valore">−' + eur(totale) + '</span>';
-    lista.appendChild(liTot);
     document.getElementById('stat-trattenute-tot').textContent = '−' + eur(totale);
   }
 
@@ -1106,7 +1065,6 @@
 
     sezRisultato.hidden = false;
     sezCascata.hidden = false;
-    sezRiepilogo.hidden = false;
   }
 
   // Grafico a barra impilata: come la RAL si scompone. Costruito solo dai
@@ -1206,7 +1164,6 @@
     boxErrore.hidden = false;
     sezRisultato.hidden = true;
     sezCascata.hidden = true;
-    sezRiepilogo.hidden = true;
     sezVediAnche.hidden = true;
   }
 
