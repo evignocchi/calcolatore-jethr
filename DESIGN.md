@@ -16,7 +16,14 @@ colors:
   chart-contributi: "#2A78D6"
   chart-addizionale-regionale: "#C98500"
   chart-addizionale-comunale: "#4A3AA7"
+  chart-naspi: "#0E8F82"
+  chart-fondo-garanzia: "#5B6B7A"
+  chart-inail: "#B8622E"
+  chart-tfr: "#7A6FBE"
   footer-black: "#000000"
+  jetbot-white: "#F4F7F5"
+  jetbot-black: "#000000"
+  jetbot-accent: "#DDEA57"
 typography:
   display:
     fontFamily: "Wix Madefor Display, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
@@ -61,11 +68,24 @@ components:
     backgroundColor: "#ffffff"
     textColor: "{colors.ink}"
     rounded: "{rounded.sm}"
-  stat-card:
+  ring-card:
     backgroundColor: "{colors.surface-white}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "18px 18px 16px"
+    rounded: "{rounded.lg}"
+    padding: "24px 20px"
+  jetbot-card:
+    backgroundColor: "{colors.jetbot-black}"
+    textColor: "{colors.jetbot-white}"
+    rounded: "{rounded.lg}"
+    padding: "20px"
+  tab-button:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-muted}"
+    rounded: "{rounded.pill}"
+  tab-button-active:
+    backgroundColor: "{colors.surface-white}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
 ---
 
 # Design System: Simulatore RAL → netto
@@ -76,13 +96,14 @@ components:
 
 Un calcolatore che si comporta come un documento fiscale onesto, non come un'app finanziaria che promette. Ogni cifra che mostra è già stata verificata a mano contro fonti primarie (`processo/assunzioni-e-fonti.md`), e l'interfaccia lo dimostra invece di dirlo: nessun numero appare senza il percorso che lo spiega, nessuna sezione fuori dal perimetro dichiarato resta ambigua. Il fondo caldo color carta e il verde brand JetHR danno un tono accogliente e non clinico a un argomento (le tasse) che di solito è arido; il nero pieno del footer — lo stesso del sito Jet HR reale — ancora il prototipo al brand senza doverlo dire a parole.
 
-La sezione risultato usa un linguaggio da "stat dashboard" (numeri protagonisti in card, mini-barre proporzionali) deliberatamente scelto dall'utente per leggibilità e impatto, pur restando dentro la stessa identità cromatica e tipografica del resto della pagina — non è un'identità nuova innestata sopra, è lo stesso sistema con più gerarchia.
+La sezione risultato si legge come un cruscotto a due percorsi: un tab "Dipendente" e un tab "Azienda" condividono lo stesso grafico a ciambella e la stessa lista di voci, perché sono due letture della stessa RAL, non due funzionalità diverse. Il grafico e la lista sostituiscono la vecchia griglia di stat-card di un round precedente: stessa ambizione (numeri protagonisti, leggibilità), composizione più densa e più adatta a mostrare una scomposizione proporzionale a colpo d'occhio. Tutto resta dentro la stessa identità cromatica e tipografica del resto della pagina — non è un'identità nuova innestata sopra, è lo stesso sistema con più gerarchia.
 
 **Key Characteristics:**
 - Superfici piatte, nessuna ombra decorativa: la profondità viene da bordi sottili e contrasto tonale (crema/bianco/nero), non da elevazione.
-- Un solo accento saturo (il verde JetHR), usato con parsimonia: numeri positivi, link, checkmark, badge attivi.
+- Un solo accento saturo (il verde JetHR) nel sistema principale, usato con parsimonia: numeri positivi, link, checkmark, badge attivi, il segmento "netto"/"RAL" del grafico a ciambella in entrambi i tab.
 - Le trattenute (contributi, imposte) sono sempre in rosso mattone caldo, mai in rosso puro: coerente con la palette calda della pagina.
 - Tipografia unica (Wix Madefor Display) per tutto il sito: la gerarchia viene da peso e dimensione, mai da un secondo font.
+- Un'unica eccezione cromatica deliberata: la card "JetBot" usa la palette di brand Jet HR (nero, bianco carta, verde/giallo `#DDEA57`) invece della palette del calcolatore — è un rimando esplicito al brand più ampio, confinato a quella card sola, mai esteso al resto della pagina.
 
 ## Colors
 
@@ -105,8 +126,18 @@ Palette ristretta e calda: un fondo crema, superfici bianche, un solo verde di b
 - **Bordo caldo** (`#E3E2DA`): unico colore di bordo in tutto il sistema.
 - **Nero footer** (`#000000`): riservato al solo footer del sito, a imitazione diretta del footer Jet HR reale — l'unica superficie scura della pagina.
 
+### Chart (grafico a ciambella e voci)
+Estensione dei colori del grafico oltre i quattro già in Primary/Secondary, riservata al ring e alle icone delle voci — mai al resto dell'interfaccia:
+- **Verde ciambella** (`#0EA37A`): segmento "Netto" (tab Dipendente) o "RAL" (tab Azienda) — sempre il segmento più grande, sempre lo stesso verde a prescindere dal tab.
+- **Teal NASpI** (`#0E8F82`), **Ardesia Fondo Garanzia** (`#5B6B7A`), **Ruggine INAIL** (`#B8622E`), **Indaco TFR** (`#7A6FBE`): le quattro voci solo lato azienda, tonalità coerenti per saturazione/luminosità con blu-contributi, ambra-regionale e viola-comunale già esistenti.
+
+### JetBot (eccezione confinata)
+- **Bianco carta Jet** (`#F4F7F5`), **Nero Jet** (`#000000`), **Verde/giallo Jet** (`#DDEA57`): usati esclusivamente dentro la card "Chiedi a JetBot". Non compaiono altrove nella pagina.
+
 ### Named Rules
 **La regola dell'accento raro.** Il verde JetHR non diventa mai un colore di sfondo esteso: resta su testo, bordi, badge e barre sottili. Quando serve un colore di sfondo saturo (es. badge "stima"), si usa l'ambra dedicato, non il verde.
+
+**La regola dell'eccezione confinata.** Una palette diversa da quella principale (JetBot) è ammessa solo dentro il perimetro di un singolo componente dichiarato come tale, mai come inizio di una seconda identità visiva della pagina.
 
 ## Typography
 
@@ -153,15 +184,27 @@ Raggio coerente per ruolo: 16px per le sezioni contenitore grandi (`.risultato`,
 - **Secondary (`.secondario-cta`):** sfondo bianco, bordo inchiostro, hover inverte a sfondo inchiostro/testo bianco.
 - **Focus:** outline 2px verde JetHR, offset 2px — coerente su tutti gli elementi interattivi del sito.
 
-### Stat Cards (componente distintivo di questa sezione)
-- **Corner Style:** 12px.
-- **Background:** bianco su fondo verde tenuto (`--accent-bg`) del contenitore risultato — due livelli di superficie, non uno.
-- **Border:** 1px `--border`.
-- **Contenuto:** etichetta piccola (label, muted) sopra, valore grande (stat-value) sotto; la card del netto annuale ha riga propria a piena larghezza per ospitare il valore più grande senza andare a capo, le altre tre stanno in griglia a 3 colonne (1 su mobile).
-- **Regola:** mai annidare una card dentro un'altra card.
+### Tab Switch (Dipendente / Azienda)
+- **Style:** pillola contenitore (`--bg`, bordo 1px, raggio 999px, padding 4px); ogni tab è a sua volta una pillola.
+- **Stato attivo:** sfondo bianco + bordo 1px `--border`, testo `--text`. Stato inattivo: nessuno sfondo, testo `--muted`. Nessuna ombra a marcare l'attivo — solo sfondo e bordo.
+- **Comportamento:** cambia contemporaneamente il grafico a ciambella, il numero al centro, il titolo e il contenuto della lista voci — sono due letture della stessa RAL, non due pagine.
 
-### Mini-barre (componente distintivo)
-- Traccia grigia (`--bg`) alta 7px, riempimento colorato proporzionale all'importo più alto tra le voci mostrate (mai proporzionale alla RAL: sarebbero tutte minuscole). Colore per voce coerente con la barra di scomposizione esistente più in basso nella pagina (stesso codice colore in due punti diversi della stessa vista = stesso significato).
+### Grafico a ciambella (componente distintivo)
+- SVG, non canvas: un `<circle>` per segmento con `stroke-dasharray`/`stroke-dashoffset`, capi arrotondati, piccolo distacco tra segmenti. Nessuna porzione "vuota": i segmenti coprono sempre l'intero cerchio perché rappresentano una scomposizione completa (netto+trattenute = RAL; RAL+aggiunte = costo azienda).
+- **Centro:** numero grande (stessa scala di Stat Hero) + didascalia piccola in `--muted` (es. "74% della RAL", "+33% sulla RAL").
+- **Sotto la card:** riga mensilità con icona matita + testo, un `<select>` nativo invisibile sovrapposto per l'interazione — non un popover custom.
+- **Regola:** i segmenti derivano sempre da campi già calcolati dal motore, mai da una formula scritta nell'interfaccia.
+
+### Lista voci (componente distintivo, condiviso dai due tab)
+- Righe non a card: icona colorata (tinta 22 dell'esadecimale + colore pieno) in un quadrato 38px raggio 10px, nome + eventuale bottone "Spiega", didascalia/fonte in `--muted`, importo a destra (rosso per le trattenute dipendente, verde per le voci di costo azienda — il segno cambia, non il significato: "+"/"−" segue chi paga cosa).
+- Separatore 1px `--border` tra righe, nessuno sull'ultima.
+- **Regola:** mai annidare una card dentro un'altra card — la lista vive dentro un unico contenitore (`.colonna-lista`), le righe non sono card proprie.
+
+### JetBot Card (eccezione cromatica confinata)
+- **Background:** gradiente radiale scuro (`#1c1f18` verso `#000`), mai un nero piatto — dà profondità senza usare ombre.
+- **Contenuto:** icona chat in tinta verde/giallo Jet su fondo verde/giallo trasparente, badge pillola "Assistente", titolo bianco, descrizione in bianco attenuato, riga CTA in verde/giallo con freccia che si sposta al hover.
+- **Interazione:** l'intera card è un bottone; click o invio aprono lo stesso assistente già usato altrove (nessuna logica nuova, solo un punto d'accesso in più).
+- **Regola:** unica card della pagina che non usa la palette principale — per questo la sua estensione è limitata a se stessa (vedi regola dell'eccezione confinata).
 
 ### Tags / Badge
 - **Style:** forma a pillola, tre varianti — `.tag.scope` (informativo, bordo sottile, sfondo bianco), `.tag.verificato` (verde su tint verde), `.tag.stima` (ambra su tint ambra, sempre con icona "i").
@@ -185,10 +228,12 @@ Raggio coerente per ruolo: 16px per le sezioni contenitore grandi (`.risultato`,
 - **Do** riusare `--accent` (#0E6B52) solo su testo, bordi e barre sottili — mai come sfondo esteso.
 - **Do** usare `font-variant-numeric: tabular-nums` su ogni cifra che può cambiare o animare.
 - **Do** mantenere un solo bordo (`--border`, #E3E2DA) e un solo raggio per ruolo in tutto il sistema, invece di introdurne di nuovi per componente.
-- **Do** colorare le mini-barre e la barra di scomposizione con lo stesso codice colore per voce (coerenza semantica tra le due viste della stessa RAL).
+- **Do** derivare i segmenti del grafico a ciambella e le voci della lista sempre da campi già calcolati dal motore (`Motore.calcola`/`Motore.costoAzienda`), mai da una formula scritta nell'interfaccia.
+- **Do** tenere la palette JetBot (nero/bianco carta/verde-giallo) confinata alla sua card: è l'unica eccezione cromatica ammessa, e resta tale.
 
 ### Don't:
 - **Don't** aggiungere `box-shadow` decorativi o glow colorati: il sistema è piatto per scelta (eccezione nota e da correggere: il bottone flottante `.assist-fab` ha ancora un'ombra verde `rgba(14,107,82,.35)` sopravvissuta a un round precedente — il detector automatico della skill la segnala come "dark-glow"; da sistemare in un round dedicato, non qui).
 - **Don't** usare rosso puro/allarme per le trattenute: restano nel rosso mattone caldo (#8A3B2B) coerente con la palette.
-- **Don't** annidare una card dentro un'altra card (stat-card dentro dettaglio-trattenute, o simili).
+- **Don't** annidare una card dentro un'altra card (icona/riga della lista voci dentro la sua card contenitore, o simili).
 - **Don't** introdurre un secondo font: la gerarchia viene da peso e dimensione di Wix Madefor Display, mai da un font diverso per "sembrare tecnico" o "sembrare importante".
+- **Don't** lasciare un segmento "vuoto"/grigio nel grafico a ciambella: i segmenti rappresentano sempre una scomposizione completa e reale, mai una barra di progresso con una porzione "non ancora usata".

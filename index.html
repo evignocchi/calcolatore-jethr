@@ -76,49 +76,72 @@
   .sidebar-nota{font-size:.8rem;color:var(--muted);margin:0;padding-top:16px;border-top:1px solid var(--border);}
   .sidebar-nota a{font-weight:600;}
 
-  /* ---------- RISULTATO ---------- */
-  .risultato{background:var(--accent-bg);border-radius:16px;padding:28px;}
+  /* ---------- RISULTATO: tab dipendente/azienda ---------- */
+  .risultato{background:transparent;padding:0;}
 
-  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
-    padding:18px 18px 16px;min-width:0;}
-  .stat-card--hero{padding:22px 24px 20px;margin-bottom:12px;}
-  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-  .stat-label{font-size:.78rem;color:var(--muted);margin:0 0 8px;}
-  .stat-value{font-size:1.5rem;font-weight:800;color:var(--text);line-height:1.1;margin:0;
-    white-space:nowrap;font-variant-numeric:tabular-nums;}
-  .stat-value--hero{font-size:2.75rem;}
-  .stat-value--neg{color:var(--neg);}
-  .stat-card select{display:block;margin-top:9px;font-family:inherit;font-size:.78rem;
-    color:var(--muted);font-weight:600;border:none;background:none;padding:2px 15px 2px 0;
-    cursor:pointer;-webkit-appearance:none;appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2368675F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;background-position:right center;background-size:12px;}
-  .stat-card select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
+  .tab-switch{display:inline-flex;gap:2px;background:var(--bg);border:1px solid var(--border);
+    border-radius:999px;padding:4px;margin:0 0 20px;}
+  .tab-btn{font-family:inherit;font-size:.88rem;font-weight:600;color:var(--muted);
+    background:none;border:none;border-radius:999px;padding:9px 20px;cursor:pointer;}
+  .tab-btn.is-active{background:var(--card);color:var(--text);border:1px solid var(--border);}
+  .tab-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
-  @media (max-width:560px){
-    .stat-grid{grid-template-columns:1fr;}
-    .stat-value--hero{font-size:2.1rem;}
-  }
+  .risultato-grid{display:grid;grid-template-columns:minmax(220px,260px) 1fr;gap:20px;align-items:start;}
+  @media (max-width:700px){ .risultato-grid{grid-template-columns:1fr;} }
 
-  .insight{margin:20px 0 0;font-size:.94rem;color:var(--text);}
+  .colonna-ring{display:flex;flex-direction:column;gap:16px;}
+  .ring-card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:24px 20px;display:flex;flex-direction:column;align-items:center;}
+  .ring-wrap{position:relative;width:180px;height:180px;}
+  .ring-svg{width:100%;height:100%;}
+  .ring-svg circle{fill:none;stroke-width:22;}
+  .ring-centro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:0 14px;}
+  .ring-valore{font-size:1.5rem;font-weight:800;color:var(--text);line-height:1.1;margin:0;
+    font-variant-numeric:tabular-nums;word-break:break-word;}
+  .ring-caption{font-size:.72rem;color:var(--muted);margin:4px 0 0;}
 
-  .dettaglio-trattenute{margin-top:20px;background:var(--card);border:1px solid var(--border);
-    border-radius:12px;padding:20px 22px;}
-  .dettaglio-trattenute-titolo{font-size:.84rem;font-weight:600;color:var(--text);margin:0 0 16px;}
-  .barre-trattenute{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
-  .barre-trattenute li{display:flex;flex-direction:column;gap:6px;}
-  .riga-trattenuta{display:flex;justify-content:space-between;gap:12px;font-size:.86rem;}
-  .riga-trattenuta .etichetta{color:var(--text);}
-  .riga-trattenuta .valore{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .traccia-barra{height:7px;border-radius:4px;background:var(--bg);overflow:hidden;}
-  .riempimento-barra{height:100%;border-radius:4px;}
-  .barre-trattenute li.totale{flex-direction:row;justify-content:space-between;align-items:baseline;
-    border-top:1px solid var(--border);margin-top:2px;padding-top:14px;}
-  .barre-trattenute li.totale .etichetta{font-weight:700;font-size:.9rem;}
-  .barre-trattenute li.totale .valore{font-weight:800;font-size:1rem;}
+  .ring-mensile{display:flex;align-items:center;gap:7px;margin-top:16px;font-size:.82rem;
+    color:var(--muted);font-weight:600;position:relative;}
+  .ring-mensile svg{width:14px;height:14px;flex:none;color:var(--muted);}
+  .ring-mensile select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;
+    border:none;padding:0;}
+  .ring-mensile span{white-space:nowrap;}
 
-  .vedi-costo-riga{margin-top:16px;font-size:.82rem;color:var(--muted);}
-  .vedi-costo-riga a{font-weight:600;}
+  .jetbot-card{display:block;width:100%;text-align:left;font-family:inherit;cursor:pointer;
+    border:none;border-radius:16px;padding:20px;background:radial-gradient(120% 140% at 15% 0%,#1c1f18,#000 65%);
+    color:#F4F7F5;}
+  .jetbot-top{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px;}
+  .jetbot-icona{width:32px;height:32px;border-radius:9px;background:rgba(221,234,87,.16);
+    display:flex;align-items:center;justify-content:center;color:#DDEA57;flex:none;}
+  .jetbot-icona svg{width:18px;height:18px;}
+  .jetbot-badge{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    color:rgba(244,247,245,.6);background:rgba(244,247,245,.1);padding:4px 10px;border-radius:999px;}
+  .jetbot-titolo{display:block;font-size:1.05rem;font-weight:800;margin:0 0 6px;color:#fff;}
+  .jetbot-testo{display:block;font-size:.82rem;line-height:1.5;color:rgba(244,247,245,.62);margin:0 0 16px;}
+  .jetbot-cta{display:flex;align-items:center;gap:6px;font-size:.86rem;font-weight:700;color:#DDEA57;}
+  .jetbot-cta svg{width:15px;height:15px;transition:transform .15s;}
+  .jetbot-card:hover .jetbot-cta svg{transform:translateX(3px);}
+  .jetbot-card:focus-visible{outline:2px solid #DDEA57;outline-offset:2px;}
+
+  .colonna-lista{background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:22px 24px;}
+  .lista-titolo-riga{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    margin:0 0 18px;flex-wrap:wrap;}
+  .lista-titolo{font-size:1rem;font-weight:700;color:var(--text);margin:0;}
+  .lista-voci{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
+  .voce-riga{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--border);}
+  .voce-riga:last-child{border-bottom:none;}
+  .voce-icona{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;
+    justify-content:center;}
+  .voce-icona svg{width:19px;height:19px;}
+  .voce-info{flex:1;min-width:0;}
+  .voce-nome{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600;font-size:.96rem;color:var(--text);}
+  .voce-fonte{display:block;color:var(--muted);font-size:.82rem;margin-top:3px;}
+  .voce-valore{font-weight:700;font-size:.98rem;white-space:nowrap;font-variant-numeric:tabular-nums;
+    text-align:right;flex:none;}
+  .voce-valore.neg{color:var(--neg);}
+  .voce-valore.pos{color:var(--accent);}
 
   /* ---------- CASCATA ---------- */
   .cascata h2{font-size:1.3rem;margin:0 0 24px;}
@@ -138,26 +161,6 @@
   .passo.finale .nome{font-weight:800;font-size:1.1rem;}
   .passo.finale .valore{font-size:1.35rem;font-weight:800;}
   .freccia{text-align:center;color:var(--muted);font-size:1.15rem;line-height:1;padding:3px 0;}
-
-  /* ---------- RIEPILOGO / scomposizione grafica ---------- */
-  .riepilogo h2{font-size:1.3rem;margin:0 0 8px;}
-  .riepilogo .intro{color:var(--muted);font-size:.9rem;margin:0 0 18px;}
-  table{width:100%;border-collapse:collapse;font-size:.92rem;}
-  th,td{text-align:left;padding:10px 4px;border-bottom:1px solid var(--border);vertical-align:top;}
-  th{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
-  td.importo{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600;}
-  .neg{color:var(--neg);} .pos{color:var(--accent);}
-  tr.finale td{border-top:2px solid var(--text);border-bottom:none;font-weight:800;padding-top:14px;
-    font-size:1.05rem;}
-
-  .barra-scomp{display:flex;gap:2px;height:28px;border-radius:8px;overflow:hidden;background:var(--bg);}
-  .barra-scomp .segmento{height:100%;}
-  .legenda-scomp{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;}
-  .legenda-scomp li{display:flex;align-items:center;gap:10px;font-size:.9rem;}
-  .legenda-scomp .swatch{width:11px;height:11px;border-radius:3px;flex:none;}
-  .legenda-scomp .etichetta{flex:1;color:var(--text);min-width:0;}
-  .legenda-scomp .valore{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text);}
-  .legenda-scomp .pct{color:var(--muted);font-weight:600;font-size:.84rem;}
 
   /* ---------- accordion generico ---------- */
   details{margin-top:16px;}
@@ -201,7 +204,6 @@
   .tag.scope{background:var(--card);color:var(--muted);border:1px solid var(--border);cursor:default;}
   .tag.scope:hover{box-shadow:none;}
   .badge-riga{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;}
-  .costo-tot{font-size:1.6rem;font-weight:800;margin:10px 0 2px;}
 
   /* ---------- ASSUNZIONI / FONTI ---------- */
   .assunzioni h2, .fonti h2{font-size:1.3rem;margin:0 0 18px;}
@@ -245,16 +247,6 @@
 
   .contenuto > p.page{color:var(--muted);font-size:.78rem;text-align:center;margin:32px 0 0;}
   footer.site-footer .contenuto > p.page{color:#68675F;}
-
-  /* ---------- entry point assistente ---------- */
-  .assist-entry{margin-top:18px;padding-top:16px;border-top:1px solid rgba(17,21,10,.1);
-    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
-  .assist-entry p{margin:0;font-size:.86rem;color:var(--muted);}
-  .btn-spiega{font-family:inherit;font-size:.82rem;font-weight:600;color:var(--accent);
-    background:none;border:1px solid var(--accent);border-radius:8px;padding:7px 14px;
-    cursor:pointer;white-space:nowrap;}
-  .btn-spiega:hover{background:var(--accent);color:#fff;}
-  .btn-spiega:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
   .link-spiega{font-family:inherit;font-size:.74rem;font-weight:600;color:var(--muted);
     background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px 8px;
@@ -311,7 +303,7 @@
   }
 
   @media (prefers-reduced-motion: no-preference){
-    #netto-annuale{transition:opacity .2s;}
+    #ring-valore{transition:opacity .2s;}
   }
   @media (max-width:480px){
     .stage-intro h1{font-size:1.55rem;}
@@ -386,57 +378,59 @@
 
     <!-- RISULTATO -->
   <section class="risultato" id="sez-risultato" hidden aria-live="polite">
-    <div class="stat-card stat-card--hero">
-      <p class="stat-label">Netto annuale stimato</p>
-      <p class="stat-value stat-value--hero" id="netto-annuale">—</p>
+
+    <div class="tab-switch" role="tablist" aria-label="Vista dipendente o azienda">
+      <button type="button" class="tab-btn is-active" id="tab-dipendente" role="tab" aria-selected="true" aria-controls="pannello-vista">Dipendente</button>
+      <button type="button" class="tab-btn" id="tab-azienda" role="tab" aria-selected="false" aria-controls="pannello-vista">Azienda</button>
     </div>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <p class="stat-label">Netto medio mensile</p>
-        <p class="stat-value" id="netto-mensile">—</p>
-        <select id="sel-mensilita-risultato" aria-label="Numero di mensilità per il netto medio mensile">
-          <option value="12">su 12 mensilità</option>
-          <option value="13" selected>su 13 mensilità</option>
-          <option value="14">su 14 mensilità</option>
-        </select>
-      </div>
-      <div class="stat-card">
-        <p class="stat-label">Totale trattenute</p>
-        <p class="stat-value stat-value--neg" id="stat-trattenute-tot">—</p>
-      </div>
-      <div class="stat-card">
-        <p class="stat-label">Netto sulla RAL</p>
-        <p class="stat-value" id="stat-percentuale">—</p>
-      </div>
-    </div>
+    <div class="risultato-grid" id="pannello-vista">
+      <div class="colonna-ring">
+        <div class="ring-card">
+          <div class="ring-wrap">
+            <svg class="ring-svg" viewBox="0 0 200 200" role="img" id="ring-svg" aria-label=""></svg>
+            <div class="ring-centro">
+              <p class="ring-valore" id="ring-valore">—</p>
+              <p class="ring-caption" id="ring-caption"></p>
+            </div>
+          </div>
+          <label class="ring-mensile" for="sel-mensilita-risultato">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            <span id="ring-mensile-testo">Netto mensile —</span>
+            <select id="sel-mensilita-risultato" aria-label="Numero di mensilità per il netto medio mensile">
+              <option value="12">su 12 mensilità</option>
+              <option value="13" selected>su 13 mensilità</option>
+              <option value="14">su 14 mensilità</option>
+            </select>
+          </label>
+        </div>
 
-    <div class="dettaglio-trattenute" id="riepilogo-trattenute">
-      <p class="dettaglio-trattenute-titolo">Cosa viene trattenuto sulla RAL</p>
-      <ul class="barre-trattenute" id="lista-trattenute"></ul>
-    </div>
+        <button type="button" class="jetbot-card" id="jetbot-card">
+          <span class="jetbot-top">
+            <span class="jetbot-icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+            <span class="jetbot-badge">Assistente</span>
+          </span>
+          <span class="jetbot-titolo">Chiedi a JetBot</span>
+          <span class="jetbot-testo">Spiega ogni voce della simulazione, con le fonti citate. Se una domanda è fuori dal perimetro dichiarato, te lo dice invece di inventare un numero.</span>
+          <span class="jetbot-cta">Apri la chat<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </button>
+      </div>
 
-    <p class="insight" id="insight-testo"></p>
-    <div class="assist-entry">
-      <p>Hai dubbi sul risultato?</p>
-      <button type="button" class="btn-spiega" id="btn-assist-entry">Chiedi all'assistente</button>
+      <div class="colonna-lista">
+        <div class="lista-titolo-riga">
+          <p class="lista-titolo" id="lista-titolo">Cosa viene trattenuto sulla RAL</p>
+          <span class="tag stima" id="tag-stima-azienda" data-info="stima" tabindex="0" role="button" hidden>stima <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span>
+        </div>
+        <ul class="lista-voci" id="lista-voci"></ul>
+        <div class="avviso-soglia" id="callout-welfare" hidden></div>
+      </div>
     </div>
-    <p class="vedi-costo-riga">Vuoi vedere anche quanto costa questa RAL all'azienda? <a href="#sez-costo-azienda" id="link-costo-azienda">Stima del costo azienda →</a></p>
   </section>
 
   <!-- CASCATA -->
   <section class="cascata" id="sez-cascata" hidden>
     <h2 id="titolo-cascata">Come si trasforma la RAL in netto?</h2>
     <ol class="passi" id="lista-passi"></ol>
-  </section>
-
-  <!-- RIEPILOGO -->
-  <section class="riepilogo" id="sez-riepilogo" hidden>
-    <h2>Come si scompone la RAL</h2>
-    <p class="intro">La stessa RAL, divisa tra netto, contributi e imposte.</p>
-    <div class="barra-scomp" id="barra-scomp" role="img" aria-label=""></div>
-    <ul class="legenda-scomp" id="legenda-scomp"></ul>
-    <p class="nota-piccola" id="nota-integrazioni" hidden></p>
   </section>
 
     </div><!-- /.stage-corpo -->
@@ -481,20 +475,6 @@
         </div>
         <p class="errore" id="errore-inversa" hidden></p>
         <p class="avviso-soglia" id="avviso-soglia" hidden></p>
-      </div>
-    </details>
-
-    <!-- SECONDARIO: costo azienda -->
-    <details class="secondario" id="sez-costo-azienda">
-      <summary>Vedi anche: costo stimato per l'azienda</summary>
-      <div class="secondario-corpo">
-        <p class="nota-piccola">Quanto costa complessivamente questa RAL a chi assume, oltre a quanto arriva netto al dipendente. <span class="tag stima" data-info="stima" tabindex="0" role="button">stima <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg></span></p>
-        <p class="costo-tot" id="costo-azienda-tot">—</p>
-        <table>
-          <thead><tr><th>Voce</th><th style="text-align:right">Importo</th></tr></thead>
-          <tbody id="tabella-costo-azienda"></tbody>
-        </table>
-        <div class="avviso-soglia" id="callout-welfare" hidden style="margin-top:16px"></div>
       </div>
     </details>
   </div>
@@ -856,7 +836,6 @@
 
   document.getElementById('assist-chiudi').addEventListener('click', function(){ assistDialog.close(); });
   assistDialog.addEventListener('click', function(ev){ if (ev.target === assistDialog) assistDialog.close(); });
-  document.getElementById('btn-assist-entry').addEventListener('click', function(){ apriAssistente(); });
   document.addEventListener('click', function(ev){
     var t = ev.target.closest('.tag[data-info]');
     if (t) apriConGenerico(t.dataset.info);
@@ -977,51 +956,182 @@
   var boxErrore = document.getElementById('errore');
   var sezRisultato = document.getElementById('sez-risultato');
   var sezCascata = document.getElementById('sez-cascata');
-  var sezRiepilogo = document.getElementById('sez-riepilogo');
   var sezVediAnche = document.getElementById('sez-vedi-anche');
+  var vistaCorrente = 'dipendente';
 
   document.getElementById('sel-mensilita-risultato').addEventListener('change', function(){
     S.mensilitaRisultato = parseInt(this.value, 10);
-    if (S.calc) document.getElementById('netto-mensile').textContent = eur(S.calc.netto / S.mensilitaRisultato);
+    if (S.calc) aggiornaMensile();
   });
 
-  document.getElementById('link-costo-azienda').addEventListener('click', function(ev){
-    ev.preventDefault();
-    var det = document.getElementById('sez-costo-azienda');
-    det.open = true;
-    det.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-  });
-
+  document.getElementById('jetbot-card').addEventListener('click', function(){ apriAssistente(); });
   document.getElementById('assist-fab').addEventListener('click', function(){ apriAssistente(); });
 
-  // Riepilogo per cifre di quanto viene trattenuto sulla RAL — solo campi
-  // già calcolati dal motore (calc.contributi, calc.irpefNetta, ecc.),
-  // nessuna formula propria. Le mini-barre sono proporzionali alla voce più
-  // alta: solo importi reali, nessun dato inventato.
-  function renderTrattenute(calc){
-    var lista = document.getElementById('lista-trattenute');
-    lista.innerHTML = '';
-    var righe = [
-      ['Contributi previdenziali', calc.contributi, COLORI_SCOMP.ivs],
-      ['IRPEF', calc.irpefNetta, COLORI_SCOMP.irpef]
+  document.getElementById('tab-dipendente').addEventListener('click', function(){ cambiaVista('dipendente'); });
+  document.getElementById('tab-azienda').addEventListener('click', function(){ cambiaVista('azienda'); });
+
+  // Icone per voce — autorate, un solo stroke/peso coerente col resto della
+  // pagina. Colori del grafico e delle icone condivisi con COLORI_SCOMP dove
+  // il concetto e' lo stesso (es. contributi datore = stesso blu dei
+  // contributi dipendente), estesi con poche tinte in piu' per le voci solo
+  // lato azienda.
+  var ICONE = {
+    ivs: '<path d="M12 3l7 3.5v5.5c0 4.8-3 8-7 9-4-1-7-4.2-7-9V6.5L12 3z"/>',
+    irpef: '<path d="M6 3h9l3 3v15H6z"/><path d="M15 3v3h3"/><path d="M9 12h6M9 16h6M9 8h2"/>',
+    addreg: '<path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+    addcom: '<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/>',
+    contrDatore: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/>',
+    naspi: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M5.3 5.3l3.3 3.3M18.7 5.3l-3.3 3.3M5.3 18.7l3.3-3.3M18.7 18.7l-3.3-3.3"/>',
+    fondoGaranzia: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    inail: '<path d="M12 3l7 3.5v5.5c0 4.8-3 8-7 9-4-1-7-4.2-7-9V6.5L12 3z"/><path d="M12 9v6M9 12h6"/>',
+    tfr: '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14" r="1" fill="currentColor" stroke="none"/>'
+  };
+  function iconaSvg(id){
+    return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (ICONE[id] || ICONE.ivs) + '</svg>';
+  }
+  var COLORI_VOCI = {
+    ivs: COLORI_SCOMP.ivs, irpef: COLORI_SCOMP.irpef, addreg: COLORI_SCOMP.addreg, addcom: COLORI_SCOMP.addcom,
+    contrDatore: COLORI_SCOMP.ivs, naspi: '#0E8F82', fondoGaranzia: '#5B6B7A', inail: '#B8622E', tfr: '#7A6FBE'
+  };
+
+  // Segmenti del grafico a ciambella — condividono i campi gia' calcolati da
+  // Motore.calcola()/costoAzienda(), nessuna formula propria qui.
+  function segmentiDipendente(calc){
+    var integrazioni = calc.integrazioni || 0;
+    var segs = [
+      { id: 'netto', label: integrazioni > 0 ? 'Netto (dalla RAL)' : 'Netto', valore: calc.netto - integrazioni, colore: COLORI_SCOMP.netto },
+      { id: 'ivs', label: 'Contributi previdenziali', valore: calc.contributi, colore: COLORI_VOCI.ivs },
+      { id: 'irpef', label: 'IRPEF netta', valore: calc.irpefNetta, colore: COLORI_VOCI.irpef }
     ];
-    if (calc.addizionaleRegionale > 0) righe.push(['Addizionale regionale', calc.addizionaleRegionale, COLORI_SCOMP.addreg]);
-    if (calc.addizionaleComunale > 0) righe.push(['Addizionale comunale', calc.addizionaleComunale, COLORI_SCOMP.addcom]);
-    var massimo = Math.max.apply(null, righe.map(function(r){ return r[1]; }));
-    righe.forEach(function(r){
-      var pct = massimo > 0 ? (r[1] / massimo * 100) : 0;
+    if (calc.addizionaleRegionale > 0) segs.push({ id: 'addreg', label: 'Addizionale regionale', valore: calc.addizionaleRegionale, colore: COLORI_VOCI.addreg });
+    if (calc.addizionaleComunale > 0) segs.push({ id: 'addcom', label: 'Addizionale comunale', valore: calc.addizionaleComunale, colore: COLORI_VOCI.addcom });
+    return segs;
+  }
+  function vociDipendente(calc){
+    var voci = [
+      { id: 'ivs', label: 'Contributi previdenziali', valore: calc.contributi, segno: -1, colore: COLORI_VOCI.ivs, fonte: 'A carico del dipendente, destinati alla previdenza sociale.' },
+      { id: 'irpef', label: 'IRPEF netta', valore: calc.irpefNetta, segno: -1, colore: COLORI_VOCI.irpef, fonte: 'IRPEF lorda meno le detrazioni spettanti.' }
+    ];
+    if (calc.addizionaleRegionale > 0) voci.push({ id: 'addreg', label: 'Addizionale regionale', valore: calc.addizionaleRegionale, segno: -1, colore: COLORI_VOCI.addreg, fonte: 'Addizionale IRPEF applicata dalla Regione Lombardia.' });
+    if (calc.addizionaleComunale > 0) voci.push({ id: 'addcom', label: 'Addizionale comunale', valore: calc.addizionaleComunale, segno: -1, colore: COLORI_VOCI.addcom, fonte: 'Addizionale IRPEF applicata dal Comune di Milano.' });
+    return voci;
+  }
+  function segmentiAzienda(costo, ral){
+    return [{ id: 'ral', label: 'RAL', valore: ral, colore: COLORI_SCOMP.netto }].concat(
+      costo.voci.map(function(v){ return { id: v.id, label: v.label, valore: v.importo, colore: COLORI_VOCI[v.id] || COLORI_VOCI.ivs }; })
+    );
+  }
+  function vociAzienda(costo){
+    return costo.voci.map(function(v){
+      var fonte = FONTI[v.fonte];
+      var link = fonte ? (fonte[1] ? '<a href="' + fonte[1] + '" target="_blank" rel="noopener">' + fonte[0] + '</a>' : fonte[0]) : '';
+      return { id: v.id, label: v.label, valore: v.importo, segno: 1, colore: COLORI_VOCI[v.id] || COLORI_VOCI.ivs, fonte: link };
+    });
+  }
+
+  // Grafico a ciambella SVG generico — un cerchio per segmento, costruito
+  // solo da campi gia' calcolati, mai da una formula propria.
+  var R_RING = 78, CIRC_RING = 2 * Math.PI * 78;
+  function disegnaRing(segmenti){
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.getElementById('ring-svg');
+    svg.innerHTML = '';
+    var totale = segmenti.reduce(function(s, x){ return s + Math.max(x.valore, 0); }, 0) || 1;
+    var gap = CIRC_RING * 0.012;
+    var offset = 0;
+    var g = document.createElementNS(ns, 'g');
+    g.setAttribute('transform', 'rotate(-90 100 100)');
+    segmenti.forEach(function(s){
+      var quota = Math.max(s.valore, 0) / totale;
+      var lunghezza = Math.max(quota * CIRC_RING - gap, 0);
+      var circle = document.createElementNS(ns, 'circle');
+      circle.setAttribute('cx', '100'); circle.setAttribute('cy', '100'); circle.setAttribute('r', String(R_RING));
+      circle.setAttribute('stroke', s.colore);
+      circle.setAttribute('stroke-linecap', 'round');
+      circle.setAttribute('stroke-dasharray', lunghezza.toFixed(2) + ' ' + (CIRC_RING - lunghezza).toFixed(2));
+      circle.setAttribute('stroke-dashoffset', (-offset).toFixed(2));
+      var title = document.createElementNS(ns, 'title');
+      title.textContent = s.label + ': ' + eur(s.valore) + ' (' + Math.round(quota * 100) + '%)';
+      circle.appendChild(title);
+      g.appendChild(circle);
+      offset += quota * CIRC_RING;
+    });
+    svg.appendChild(g);
+    svg.setAttribute('aria-label', segmenti.map(function(s){
+      return s.label + ' ' + eur(s.valore) + ' (' + Math.round(Math.max(s.valore, 0) / totale * 100) + '%)';
+    }).join(', '));
+  }
+
+  // Lista voci condivisa dai due tab — icona, nome, fonte/didascalia,
+  // importo, bottone Spiega verso lo stesso assistente gia' esistente.
+  function disegnaListaVoci(voci, contesto){
+    var lista = document.getElementById('lista-voci');
+    lista.innerHTML = '';
+    voci.forEach(function(v){
       var li = document.createElement('li');
+      li.className = 'voce-riga';
+      var infoBtn = SPIEGAZIONI[v.id] ? ' <button type="button" class="link-spiega" aria-label="Spiega: ' + v.label + '" data-spiega-voce="' + v.id + '">Spiega</button>' : '';
       li.innerHTML =
-        '<div class="riga-trattenuta"><span class="etichetta">' + r[0] + '</span><span class="valore">−' + eur(r[1]) + '</span></div>' +
-        '<div class="traccia-barra"><div class="riempimento-barra" style="width:' + pct.toFixed(1) + '%;background:' + r[2] + '"></div></div>';
+        '<span class="voce-icona" style="background:' + v.colore + '22;color:' + v.colore + '">' + iconaSvg(v.id) + '</span>' +
+        '<span class="voce-info"><span class="voce-nome">' + v.label + infoBtn + '</span>' +
+        (v.fonte ? '<span class="voce-fonte">' + v.fonte + '</span>' : '') + '</span>' +
+        '<span class="voce-valore ' + (v.segno < 0 ? 'neg' : 'pos') + '">' + (v.segno < 0 ? '−' : '+') + eur(Math.abs(v.valore)) + '</span>';
       lista.appendChild(li);
     });
-    var totale = calc.contributi + calc.irpefNetta + calc.addizionaleRegionale + calc.addizionaleComunale;
-    var liTot = document.createElement('li');
-    liTot.className = 'totale';
-    liTot.innerHTML = '<span class="etichetta">Totale trattenute</span><span class="valore">−' + eur(totale) + '</span>';
-    lista.appendChild(liTot);
-    document.getElementById('stat-trattenute-tot').textContent = '−' + eur(totale);
+    lista.querySelectorAll('button[data-spiega-voce]').forEach(function(btn){
+      btn.addEventListener('click', function(){ apriConVoce(btn.dataset.spiegaVoce, contesto); });
+    });
+  }
+
+  function aggiornaMensile(){
+    var testo = document.getElementById('ring-mensile-testo');
+    if (!S.calc) { testo.textContent = 'Netto mensile —'; return; }
+    testo.textContent = 'Netto mensile ' + eur(S.calc.netto / S.mensilitaRisultato) + ' · su ' + S.mensilitaRisultato + ' mensilità';
+  }
+
+  function aggiornaCalloutWelfare(){
+    var ral = S.ral, costo = S.costo;
+    var conRal = Motore.calcola(ral + 1000), senzaRal = Motore.calcola(ral);
+    var conCosto = Motore.costoAzienda(ral + 1000);
+    var deltaCostoRal = conCosto.totale - costo.totale;
+    var deltaNettoRal = conRal.netto - senzaRal.netto;
+    var deltaCostoWelfare = 1000 + Motore.inailIndicativo(1000) + Motore.tfrMaturando(1000);
+    var elW = document.getElementById('callout-welfare');
+    if (ral <= 900000) {
+      elW.hidden = false;
+      elW.innerHTML = '<strong>Welfare invece di RAL.</strong> 1.000 € in più di RAL costano all\'azienda circa ' + eur(deltaCostoRal) + ' e diventano circa ' + eur(deltaNettoRal) + ' netti per il dipendente. 1.000 € di welfare esente (L. 207/2024) costano invece circa ' + eur(deltaCostoWelfare) + ' e arrivano interi, perché non sono tassati né contribuiti. Stima semplificata: non tiene conto di limiti annui o di quanto welfare l\'azienda offra già.';
+    } else {
+      elW.hidden = true;
+    }
+  }
+
+  function cambiaVista(vista){
+    vistaCorrente = vista;
+    var btnDip = document.getElementById('tab-dipendente'), btnAz = document.getElementById('tab-azienda');
+    btnDip.classList.toggle('is-active', vista === 'dipendente');
+    btnDip.setAttribute('aria-selected', String(vista === 'dipendente'));
+    btnAz.classList.toggle('is-active', vista === 'azienda');
+    btnAz.setAttribute('aria-selected', String(vista === 'azienda'));
+    document.getElementById('tag-stima-azienda').hidden = vista !== 'azienda';
+    document.getElementById('callout-welfare').hidden = true;
+    if (!S.calc) return;
+    if (vista === 'dipendente') {
+      disegnaRing(segmentiDipendente(S.calc));
+      animaNumero(document.getElementById('ring-valore'), S.calc.netto, eur);
+      var quota = S.calc.ral > 0 ? (S.calc.netto / S.calc.ral * 100) : 0;
+      document.getElementById('ring-caption').textContent = quota.toFixed(0) + '% della RAL';
+      document.getElementById('lista-titolo').textContent = 'Cosa viene trattenuto sulla RAL';
+      disegnaListaVoci(vociDipendente(S.calc), 'calc');
+    } else {
+      var costo = S.costo;
+      disegnaRing(segmentiAzienda(costo, S.ral));
+      animaNumero(document.getElementById('ring-valore'), costo.totale, eur);
+      var extra = S.ral > 0 ? ((costo.totale / S.ral - 1) * 100) : 0;
+      document.getElementById('ring-caption').textContent = '+' + extra.toFixed(0) + '% sulla RAL';
+      document.getElementById('lista-titolo').textContent = 'Cosa si aggiunge alla RAL per l\'azienda';
+      disegnaListaVoci(vociAzienda(costo), 'costo');
+      aggiornaCalloutWelfare();
+    }
   }
 
   // Costruisce il percorso narrativo RAL -> netto usando solo campi già
@@ -1063,14 +1173,7 @@
 
   function renderRisultato(calc){
     document.getElementById('titolo-cascata').textContent = 'Come si trasforma una RAL di ' + eur(calc.ral) + ' in netto?';
-    animaNumero(document.getElementById('netto-annuale'), calc.netto, eur);
-    document.getElementById('netto-mensile').textContent = eur(calc.netto / S.mensilitaRisultato);
-    renderTrattenute(calc);
-
-    var quota = calc.ral > 0 ? (calc.netto / calc.ral * 100) : 0;
-    document.getElementById('stat-percentuale').textContent = quota.toFixed(0) + '%';
-    document.getElementById('insight-testo').textContent =
-      'Da ' + eur(calc.ral) + ' di RAL a circa ' + eur(calc.netto) + ' di netto: il ' + quota.toFixed(0) + '% della retribuzione lorda rimane come netto.';
+    aggiornaMensile();
 
     // Cascata
     var passi = passiCascata(calc);
@@ -1102,103 +1205,10 @@
       btn.addEventListener('click', function(){ apriConVoce(btn.dataset.spiega, 'calc'); });
     });
 
-    renderScomposizione(calc);
+    cambiaVista(vistaCorrente);
 
     sezRisultato.hidden = false;
     sezCascata.hidden = false;
-    sezRiepilogo.hidden = false;
-  }
-
-  // Grafico a barra impilata: come la RAL si scompone. Costruito solo dai
-  // campi gia' calcolati da calc, mai da una formula propria — le
-  // integrazioni di legge (bonus/trattamento integrativo) sono gia' incluse
-  // nel netto mostrato altrove in pagina, ma qui vengono tolte dal segmento
-  // "Netto" perche' non provengono dalla RAL: cosi' i segmenti sommano
-  // esattamente alla RAL, non alla RAL + integrazioni.
-  function renderScomposizione(calc){
-    var integrazioni = calc.integrazioni || 0;
-    var nettoDaRal = calc.netto - integrazioni;
-    var segmenti = [
-      { id: 'netto', label: integrazioni > 0 ? 'Netto (dalla RAL)' : 'Netto', valore: nettoDaRal, colore: COLORI_SCOMP.netto },
-      { id: 'ivs', label: 'Contributi previdenziali', valore: calc.contributi, colore: COLORI_SCOMP.ivs },
-      { id: 'irpef', label: 'IRPEF netta', valore: calc.irpefNetta, colore: COLORI_SCOMP.irpef }
-    ];
-    if (calc.addizionaleRegionale > 0) segmenti.push({ id: 'addreg', label: 'Addizionale regionale', valore: calc.addizionaleRegionale, colore: COLORI_SCOMP.addreg });
-    if (calc.addizionaleComunale > 0) segmenti.push({ id: 'addcom', label: 'Addizionale comunale', valore: calc.addizionaleComunale, colore: COLORI_SCOMP.addcom });
-
-    var totale = segmenti.reduce(function(s, x){ return s + Math.max(x.valore, 0); }, 0) || 1;
-
-    var barra = document.getElementById('barra-scomp');
-    barra.innerHTML = '';
-    segmenti.forEach(function(s){
-      var div = document.createElement('div');
-      div.className = 'segmento';
-      div.style.background = s.colore;
-      div.style.flex = '0 0 ' + ((Math.max(s.valore, 0) / totale) * 100).toFixed(3) + '%';
-      div.title = s.label + ': ' + eur(s.valore);
-      barra.appendChild(div);
-    });
-    barra.setAttribute('aria-label', 'Composizione della RAL di ' + eur(calc.ral) + ': ' + segmenti.map(function(s){
-      return s.label + ' ' + eur(s.valore) + ' (' + Math.round(s.valore / totale * 100) + '%)';
-    }).join(', ') + '.');
-
-    var legenda = document.getElementById('legenda-scomp');
-    legenda.innerHTML = '';
-    segmenti.forEach(function(s){
-      var pct = Math.round(s.valore / totale * 100);
-      var li = document.createElement('li');
-      li.innerHTML = '<span class="swatch" style="background:' + s.colore + '" aria-hidden="true"></span>' +
-        '<span class="etichetta">' + s.label + '</span>' +
-        '<span class="valore">' + eur(s.valore) + '<span class="pct"> · ' + pct + '%</span></span>';
-      legenda.appendChild(li);
-    });
-
-    var notaInt = document.getElementById('nota-integrazioni');
-    if (integrazioni > 0) {
-      notaInt.hidden = false;
-      notaInt.textContent = 'Il netto include anche ' + eur(integrazioni) + ' di integrazioni di legge per i redditi più bassi (bonus e/o trattamento integrativo): non provengono dalla RAL, quindi qui sono escluse dal segmento "Netto" perché i segmenti sommino esattamente alla RAL.';
-    } else {
-      notaInt.hidden = true;
-    }
-  }
-
-  function renderCostoAzienda(ral){
-    var costo = S.costo;
-    document.getElementById('costo-azienda-tot').textContent = eur(costo.totale) + ' l\'anno';
-    var corpo = document.getElementById('tabella-costo-azienda');
-    corpo.innerHTML = '';
-    var ralRiga = document.createElement('tr');
-    ralRiga.innerHTML = '<td>RAL</td><td class="importo">' + eur(ral) + '</td>';
-    corpo.appendChild(ralRiga);
-    costo.voci.forEach(function(v){
-      var tr = document.createElement('tr');
-      var fonte = FONTI[v.fonte];
-      var link = fonte ? (fonte[1] ? '<a href="' + fonte[1] + '" target="_blank" rel="noopener">' + fonte[0] + '</a>' : fonte[0]) : '';
-      var infoBtn = SPIEGAZIONI[v.id] ? ' <button type="button" class="link-spiega" aria-label="Spiega: ' + v.label + '" data-spiega-costo="' + v.id + '">Spiega</button>' : '';
-      tr.innerHTML = '<td>' + v.label + infoBtn + '<span style="display:block;font-size:.74rem;color:var(--muted);margin-top:2px;">' + link + '</span></td>' +
-        '<td class="importo pos">+' + eur(v.importo) + '</td>';
-      corpo.appendChild(tr);
-    });
-    var totRiga = document.createElement('tr');
-    totRiga.className = 'finale';
-    totRiga.innerHTML = '<td>Costo azienda</td><td class="importo">' + eur(costo.totale) + '</td>';
-    corpo.appendChild(totRiga);
-    corpo.querySelectorAll('button[data-spiega-costo]').forEach(function(btn){
-      btn.addEventListener('click', function(){ apriConVoce(btn.dataset.spiegaCosto, 'costo'); });
-    });
-
-    var conRal = Motore.calcola(ral + 1000), senzaRal = Motore.calcola(ral);
-    var conCosto = Motore.costoAzienda(ral + 1000), senzaCosto = costo;
-    var deltaCostoRal = conCosto.totale - senzaCosto.totale;
-    var deltaNettoRal = conRal.netto - senzaRal.netto;
-    var deltaCostoWelfare = 1000 + Motore.inailIndicativo(1000) + Motore.tfrMaturando(1000);
-    var elW = document.getElementById('callout-welfare');
-    if (ral <= 900000) {
-      elW.hidden = false;
-      elW.innerHTML = '<strong>Welfare invece di RAL.</strong> 1.000 € in più di RAL costano all\'azienda circa ' + eur(deltaCostoRal) + ' e diventano circa ' + eur(deltaNettoRal) + ' netti per il dipendente. 1.000 € di welfare esente (L. 207/2024) costano invece circa ' + eur(deltaCostoWelfare) + ' e arrivano interi, perché non sono tassati né contribuiti. Stima semplificata: non tiene conto di limiti annui o di quanto welfare l\'azienda offra già.';
-    } else {
-      elW.hidden = true;
-    }
   }
 
   function mostraErrore(msg){
@@ -1206,7 +1216,6 @@
     boxErrore.hidden = false;
     sezRisultato.hidden = true;
     sezCascata.hidden = true;
-    sezRiepilogo.hidden = true;
     sezVediAnche.hidden = true;
   }
 
@@ -1216,7 +1225,6 @@
     boxErrore.hidden = true;
     S.calc = calc; S.ral = ral; S.costo = Motore.costoAzienda(ral);
     renderRisultato(calc);
-    renderCostoAzienda(ral);
     sezVediAnche.hidden = false;
     if (assistDialog.open) assistIntro();
     sezRisultato.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
