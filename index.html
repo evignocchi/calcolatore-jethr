@@ -77,34 +77,47 @@
   .sidebar-nota a{font-weight:600;}
 
   /* ---------- RISULTATO ---------- */
-  .risultato{background:var(--accent-bg);border-radius:16px;padding:32px 28px;}
-  .eyebrow{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-    color:var(--accent);margin:0 0 10px;}
-  .netto-annuale{font-size:3rem;font-weight:800;color:var(--text);line-height:1;margin:0;
-    word-break:break-word;}
-  .netto-annuale-lab{color:var(--muted);font-size:.92rem;margin:6px 0 20px;}
-  .netto-mensile-riga{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
-    border-top:1px solid rgba(17,21,10,.12);padding-top:16px;}
-  .netto-mensile-riga .num{font-size:1.4rem;font-weight:700;}
-  .netto-mensile-riga .lab{color:var(--muted);font-size:.86rem;}
-  .netto-mensile-riga select{font-family:inherit;font-size:.86rem;color:var(--text);font-weight:600;
-    border:none;background:none;padding:2px 18px 2px 2px;cursor:pointer;
-    -webkit-appearance:none;appearance:none;
+  .risultato{background:var(--accent-bg);border-radius:16px;padding:28px;}
+
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:18px 18px 16px;min-width:0;}
+  .stat-card--hero{padding:22px 24px 20px;margin-bottom:12px;}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .stat-label{font-size:.78rem;color:var(--muted);margin:0 0 8px;}
+  .stat-value{font-size:1.5rem;font-weight:800;color:var(--text);line-height:1.1;margin:0;
+    white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .stat-value--hero{font-size:2.75rem;}
+  .stat-value--neg{color:var(--neg);}
+  .stat-card select{display:block;margin-top:9px;font-family:inherit;font-size:.78rem;
+    color:var(--muted);font-weight:600;border:none;background:none;padding:2px 15px 2px 0;
+    cursor:pointer;-webkit-appearance:none;appearance:none;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2368675F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;background-position:right center;background-size:13px;}
-  .netto-mensile-riga select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
-  .insight{margin:18px 0 0;font-size:.94rem;color:var(--text);}
+    background-repeat:no-repeat;background-position:right center;background-size:12px;}
+  .stat-card select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
 
-  .riepilogo-trattenute{margin-top:16px;padding-top:14px;border-top:1px solid rgba(17,21,10,.12);}
-  .riepilogo-trattenute-titolo{font-size:.82rem;font-weight:600;color:var(--text);margin:0 0 10px;}
-  .lista-trattenute{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;}
-  .lista-trattenute li{display:flex;justify-content:space-between;gap:12px;font-size:.86rem;color:var(--muted);}
-  .lista-trattenute li .valore{font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .lista-trattenute li.totale{border-top:1px solid rgba(17,21,10,.12);margin-top:2px;padding-top:9px;
-    font-weight:700;color:var(--text);}
-  .lista-trattenute li.totale .valore{font-weight:800;}
+  @media (max-width:560px){
+    .stat-grid{grid-template-columns:1fr;}
+    .stat-value--hero{font-size:2.1rem;}
+  }
 
-  .vedi-costo-riga{margin-top:12px;font-size:.82rem;color:var(--muted);}
+  .insight{margin:20px 0 0;font-size:.94rem;color:var(--text);}
+
+  .dettaglio-trattenute{margin-top:20px;background:var(--card);border:1px solid var(--border);
+    border-radius:12px;padding:20px 22px;}
+  .dettaglio-trattenute-titolo{font-size:.84rem;font-weight:600;color:var(--text);margin:0 0 16px;}
+  .barre-trattenute{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+  .barre-trattenute li{display:flex;flex-direction:column;gap:6px;}
+  .riga-trattenuta{display:flex;justify-content:space-between;gap:12px;font-size:.86rem;}
+  .riga-trattenuta .etichetta{color:var(--text);}
+  .riga-trattenuta .valore{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .traccia-barra{height:7px;border-radius:4px;background:var(--bg);overflow:hidden;}
+  .riempimento-barra{height:100%;border-radius:4px;}
+  .barre-trattenute li.totale{flex-direction:row;justify-content:space-between;align-items:baseline;
+    border-top:1px solid var(--border);margin-top:2px;padding-top:14px;}
+  .barre-trattenute li.totale .etichetta{font-weight:700;font-size:.9rem;}
+  .barre-trattenute li.totale .valore{font-weight:800;font-size:1rem;}
+
+  .vedi-costo-riga{margin-top:16px;font-size:.82rem;color:var(--muted);}
   .vedi-costo-riga a{font-weight:600;}
 
   /* ---------- CASCATA ---------- */
@@ -298,11 +311,10 @@
   }
 
   @media (prefers-reduced-motion: no-preference){
-    .netto-annuale{transition:opacity .2s;}
+    #netto-annuale{transition:opacity .2s;}
   }
   @media (max-width:480px){
     .stage-intro h1{font-size:1.55rem;}
-    .netto-annuale{font-size:2.3rem;}
     .riga-input{flex-direction:column;}
     button.cta{width:100%;}
   }
@@ -374,23 +386,34 @@
 
     <!-- RISULTATO -->
   <section class="risultato" id="sez-risultato" hidden aria-live="polite">
-    <p class="eyebrow">Risultato della simulazione</p>
-    <p class="netto-annuale" id="netto-annuale">—</p>
-    <p class="netto-annuale-lab">Netto annuale stimato</p>
-    <div class="netto-mensile-riga">
-      <span class="num" id="netto-mensile">—</span>
-      <span class="lab">Netto medio mensile su
-        <select id="sel-mensilita-risultato" aria-label="Numero di mensilità per il netto medio mensile">
-          <option value="12">12 mensilità</option>
-          <option value="13" selected>13 mensilità</option>
-          <option value="14">14 mensilità</option>
-        </select>
-      </span>
+    <div class="stat-card stat-card--hero">
+      <p class="stat-label">Netto annuale stimato</p>
+      <p class="stat-value stat-value--hero" id="netto-annuale">—</p>
     </div>
 
-    <div class="riepilogo-trattenute" id="riepilogo-trattenute">
-      <p class="riepilogo-trattenute-titolo">Cosa viene trattenuto sulla RAL</p>
-      <ul class="lista-trattenute" id="lista-trattenute"></ul>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <p class="stat-label">Netto medio mensile</p>
+        <p class="stat-value" id="netto-mensile">—</p>
+        <select id="sel-mensilita-risultato" aria-label="Numero di mensilità per il netto medio mensile">
+          <option value="12">su 12 mensilità</option>
+          <option value="13" selected>su 13 mensilità</option>
+          <option value="14">su 14 mensilità</option>
+        </select>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Totale trattenute</p>
+        <p class="stat-value stat-value--neg" id="stat-trattenute-tot">—</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Netto sulla RAL</p>
+        <p class="stat-value" id="stat-percentuale">—</p>
+      </div>
+    </div>
+
+    <div class="dettaglio-trattenute" id="riepilogo-trattenute">
+      <p class="dettaglio-trattenute-titolo">Cosa viene trattenuto sulla RAL</p>
+      <ul class="barre-trattenute" id="lista-trattenute"></ul>
     </div>
 
     <p class="insight" id="insight-testo"></p>
@@ -973,26 +996,32 @@
 
   // Riepilogo per cifre di quanto viene trattenuto sulla RAL — solo campi
   // già calcolati dal motore (calc.contributi, calc.irpefNetta, ecc.),
-  // nessuna formula propria. Niente grafico: solo importi, come richiesto.
+  // nessuna formula propria. Le mini-barre sono proporzionali alla voce più
+  // alta: solo importi reali, nessun dato inventato.
   function renderTrattenute(calc){
     var lista = document.getElementById('lista-trattenute');
     lista.innerHTML = '';
     var righe = [
-      ['Contributi previdenziali', calc.contributi],
-      ['IRPEF', calc.irpefNetta]
+      ['Contributi previdenziali', calc.contributi, COLORI_SCOMP.ivs],
+      ['IRPEF', calc.irpefNetta, COLORI_SCOMP.irpef]
     ];
-    if (calc.addizionaleRegionale > 0) righe.push(['Addizionale regionale', calc.addizionaleRegionale]);
-    if (calc.addizionaleComunale > 0) righe.push(['Addizionale comunale', calc.addizionaleComunale]);
+    if (calc.addizionaleRegionale > 0) righe.push(['Addizionale regionale', calc.addizionaleRegionale, COLORI_SCOMP.addreg]);
+    if (calc.addizionaleComunale > 0) righe.push(['Addizionale comunale', calc.addizionaleComunale, COLORI_SCOMP.addcom]);
+    var massimo = Math.max.apply(null, righe.map(function(r){ return r[1]; }));
     righe.forEach(function(r){
+      var pct = massimo > 0 ? (r[1] / massimo * 100) : 0;
       var li = document.createElement('li');
-      li.innerHTML = '<span>' + r[0] + '</span><span class="valore">−' + eur(r[1]) + '</span>';
+      li.innerHTML =
+        '<div class="riga-trattenuta"><span class="etichetta">' + r[0] + '</span><span class="valore">−' + eur(r[1]) + '</span></div>' +
+        '<div class="traccia-barra"><div class="riempimento-barra" style="width:' + pct.toFixed(1) + '%;background:' + r[2] + '"></div></div>';
       lista.appendChild(li);
     });
     var totale = calc.contributi + calc.irpefNetta + calc.addizionaleRegionale + calc.addizionaleComunale;
     var liTot = document.createElement('li');
     liTot.className = 'totale';
-    liTot.innerHTML = '<span>Totale trattenute</span><span class="valore">−' + eur(totale) + '</span>';
+    liTot.innerHTML = '<span class="etichetta">Totale trattenute</span><span class="valore">−' + eur(totale) + '</span>';
     lista.appendChild(liTot);
+    document.getElementById('stat-trattenute-tot').textContent = '−' + eur(totale);
   }
 
   // Costruisce il percorso narrativo RAL -> netto usando solo campi già
@@ -1039,6 +1068,7 @@
     renderTrattenute(calc);
 
     var quota = calc.ral > 0 ? (calc.netto / calc.ral * 100) : 0;
+    document.getElementById('stat-percentuale').textContent = quota.toFixed(0) + '%';
     document.getElementById('insight-testo').textContent =
       'Da ' + eur(calc.ral) + ' di RAL a circa ' + eur(calc.netto) + ' di netto: il ' + quota.toFixed(0) + '% della retribuzione lorda rimane come netto.';
 
